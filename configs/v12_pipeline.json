@@ -1,0 +1,62 @@
+{
+  "version": "260522_v12_pipeline_scaffold",
+  "output_root": "outputs/final_annotations/260522_v12_pipeline_scaffold",
+  "report": {
+    "default_language": "en",
+    "development_languages": ["ja"],
+    "write_languages": ["en", "ja"]
+  },
+  "ontology": {
+    "path": "data/reference/CT_Ontology_Spreadsheet_20260323.tsv",
+    "label_column": "Celltype",
+    "excluded_submission_labels": ["Effector B"]
+  },
+  "screfmapping": {
+    "enabled": true,
+    "scope_policy": "lineage_scoped_only",
+    "references_manifest": "configs/screfmapping_references.tsv",
+    "marker_availability_alerts": {
+      "critical_present_fraction_lt": 0.30,
+      "warning_present_fraction_lt": 0.60,
+      "critical_action": "do_not_trust_fine_label_without_independent_support",
+      "warning_action": "require_celltypist_panhuman_cluster_or_marker_context"
+    }
+  },
+  "marker_sets": {
+    "CD4_naive_tcm": {
+      "official_labels": ["CD4 Naive / T Central Memory"],
+      "genes": ["CD3D", "CD3E", "CD4", "IL7R", "CCR7", "SELL", "TCF7", "LEF1", "LTB"],
+      "critical_genes": []
+    },
+    "CD4_effector_memory": {
+      "official_labels": ["CD4 T Effector Memory"],
+      "genes": ["GZMK", "CCL5", "NKG7", "GNLY", "PRF1", "GZMB", "CXCR3", "KLRB1"],
+      "critical_genes": ["GZMK", "CCL5", "NKG7", "PRF1", "GZMB"]
+    },
+    "Treg": {
+      "official_labels": ["Treg"],
+      "genes": ["FOXP3", "IL2RA", "CTLA4", "IKZF2", "TIGIT", "TNFRSF18", "CCR8"],
+      "critical_genes": ["FOXP3", "IL2RA", "CTLA4"]
+    },
+    "B_naive": {
+      "official_labels": ["Naive B Cell"],
+      "genes": ["MS4A1", "CD79A", "CD79B", "TCL1A", "IGHD", "IGHM", "FCER2", "IL4R"],
+      "critical_genes": []
+    },
+    "B_memory_ABC": {
+      "official_labels": ["Memory B Cell"],
+      "genes": ["CD27", "TNFRSF13B", "FCRL5", "ITGAX", "TBX21", "AIM2", "BANK1", "CD86"],
+      "critical_genes": ["CD27", "TNFRSF13B", "FCRL5", "ITGAX", "TBX21"]
+    },
+    "Plasma_ASC": {
+      "official_labels": ["Plasma Cell", "Plasmablast"],
+      "genes": ["MZB1", "XBP1", "JCHAIN", "SDC1", "PRDM1", "IRF4", "TNFRSF17", "IGHG1", "IGHA1"],
+      "critical_genes": ["MZB1", "JCHAIN", "XBP1", "PRDM1"]
+    }
+  },
+  "decision_engine": {
+    "screfmapping_single_source_rescue_allowed_when_alert": ["pass"],
+    "screfmapping_requires_independent_support_when_alert": ["warning", "critical"],
+    "independent_support_sources": ["CellTypist", "Pan-human", "Azimuth PBMC", "cluster_consensus", "marker_score"]
+  }
+}

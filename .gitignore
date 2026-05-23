@@ -1,0 +1,15 @@
+# Large or generated data
+data/raw/
+outputs/
+reports/assets/
+scanpy/
+slog/
+notebooks/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local environments
+envs/
+.venv/
