@@ -38,6 +38,14 @@ Validate outputs:
 /gpfs/gibbs/project/hafler/yy693/conda_envs/scanpy1.10.2/bin/python skills/hipc-annotation-v12/scripts/validate_v12_outputs.py   --out outputs/final_annotations/260523_v12_submission_check
 ```
 
+## Full Run Report Bundle
+
+- Updated: 2026-05-23 EDT
+- Report bundle: `reports/260523_v12_full_run/`
+- Execution command: `HIPC_V12_OUT=outputs/final_annotations/260523_v12_full_run HIPC_V12_MANIFEST=configs/v12_manifest.team04.shared.tsv REPORT_LANGUAGES=en,ja skills/hipc-annotation-v12/scripts/run_v12.sh`
+- Validation: `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD v12 labels match submission TSVs, confidence columns are present, and report image links resolve.
+- Repository policy: only Markdown reports and inline figure assets are committed; generated H5ADs, submission TSVs, and diagnostics tables remain ignored under `outputs/`.
+
 ## Data Policy
 
 Large input H5ADs and generated outputs are not committed. Team04 shared evidence containers currently live in the working repository output area and are referenced by `configs/v12_manifest.team04.shared.tsv`.

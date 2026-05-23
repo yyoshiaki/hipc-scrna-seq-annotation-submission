@@ -1,4 +1,6 @@
 import argparse
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import json
 import os
 import re
@@ -103,6 +105,7 @@ project_root = Path.cwd()
 config = json.loads(project_path(args.config).read_text())
 manifest = pd.read_csv(project_path(args.manifest), sep="\t").fillna("")
 version = config["version"].replace("pipeline_scaffold", "independent_cli")
+report_updated = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d EDT")
 output_root = project_path(args.out or config["output_root"].replace("pipeline_scaffold", "independent_cli"))
 submission_dir = output_root / "submissions"
 tables_dir = output_root / "tables"
@@ -728,7 +731,7 @@ for language in requested_languages:
         report_lines = [
             "# HIPC beta final annotation v12 fully independent calibrated-resolution report",
             "",
-            "Updated: 2026-05-22 EDT",
+            f"Updated: {report_updated}",
             "",
             "## Summary",
             "",
@@ -746,7 +749,7 @@ for language in requested_languages:
         report_lines = [
             "# HIPC beta final annotation v12 fully independent calibrated-resolution report",
             "",
-            "Updated: 2026-05-22 EDT",
+            f"Updated: {report_updated}",
             "",
             "## Summary",
             "",
