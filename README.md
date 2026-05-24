@@ -47,19 +47,31 @@ For one dataset:
 
 The submission TSV contains `cell_barcode`, `predicted_cell_type`, and `confidence_score`.
 
-## Standard Single-Dataset Run
+## Standard Codex Use
 
-The skill is Codex-facing. In normal use, ask Codex to apply `hipc-annotation-v12` to one H5AD and let Codex run the helper, validate outputs, inspect the report, and summarize concerns. The command below documents the deterministic helper that Codex uses internally.
+Use this repository by asking Codex to apply the `hipc-annotation-v12` skill to one dataset. Codex should inspect the input, run the deterministic helper internally, validate outputs, inspect the report, and return a concise completion summary.
 
-```bash
-skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --input-h5ad /path/to/infection_study_04.h5ad   --out outputs/single_dataset/infection_study_04   --report-languages en,ja
+Example request:
+
+```text
+Use the hipc-annotation-v12 skill on this dataset.
+Study ID: infection_study_04
+Input H5AD: /path/to/infection_study_04.h5ad
+Output root: outputs/single_dataset/infection_study_04
+Report languages: en,ja
+Run end-to-end and report back only after validation passes.
 ```
 
-Validation-only helper for existing output:
+Validation-only request for existing output:
 
-```bash
-skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --out outputs/single_dataset/infection_study_04   --validate-only
+```text
+Use the hipc-annotation-v12 skill to validate this existing output.
+Study ID: infection_study_04
+Output root: outputs/single_dataset/infection_study_04
+Inspect the report links and summarize any remaining concerns.
 ```
+
+Developer helper scripts live under `skills/hipc-annotation-v12/scripts/`. They are bundled resources for Codex, not the primary user interface.
 
 ## Workflow
 
