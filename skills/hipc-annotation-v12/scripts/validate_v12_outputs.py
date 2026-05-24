@@ -69,7 +69,10 @@ for sub_path in submission_paths:
         failures.append(f"{study}: invalid labels {invalid_labels}")
 
 broken_links = []
-for report in sorted((output_root / "reports").glob("report_*.md")):
+report_paths = sorted(output_root.glob("report_*.md"))
+if not report_paths:
+    report_paths = sorted((output_root / "reports").glob("report_*.md"))
+for report in report_paths:
     text = report.read_text()
     for target in re.findall(r"!\[[^\]]*\]\(([^)]+)\)", text):
         resolved = (report.parent / target).resolve()

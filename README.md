@@ -79,9 +79,9 @@ For one dataset:
 <output_root>/
   submissions/<study_id>_annotation.tsv
   cellxgene/<study_id>.final_v12_recursive_screfmapping.cxg.h5ad
-  reports/report_en.md
-  reports/report_ja.md
-  report_assets/*.png
+  report_en.md
+  report_ja.md
+  assets/*.png
   figures/*.png
   tables/final_annotation_summary_v12_recursive_screfmapping.tsv
   tables/final_annotation_validation_v12_recursive_screfmapping.tsv
@@ -153,7 +153,7 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 7. **Ontology-constrained labels**: final labels must be official ontology labels after configured exclusions. Known problematic labels such as `Effector B` are excluded by config when appropriate.
 8. **Doublet and QC handling**: doublet evidence is not a filter. Supported doublets are submitted as `Doublet`; low-QC or mixed-marker cells receive confidence caps or review concerns.
 9. **Confidence calibration**: confidence reflects reference agreement, marker support, subcluster coherence, score margin, QC penalties, and doublet/mixed-lineage flags.
-10. **Report generation**: reports include Mermaid workflow, study summary, UMAPs, marker dotplots, lineage-specific subcluster plots, and diagnostics tables.
+10. **Report generation**: reports are generated from Markdown templates in `templates/` and focus on dataset-specific summary, marker availability alerts, interpretation notes, UMAPs, marker dotplots, lineage-specific subcluster plots, and output files. The fixed workflow is documented in this README and is not repeated in every report.
 11. **Validation**: Codex must confirm submission row counts, official labels, non-missing predictions, H5AD/submission agreement, confidence fields, and report image links.
 12. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
 

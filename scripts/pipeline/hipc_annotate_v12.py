@@ -131,8 +131,8 @@ submission_dir = output_root / "submissions"
 tables_dir = output_root / "tables"
 cxg_dir = output_root / "cellxgene"
 figures_dir = output_root / "figures"
-report_dir = output_root / "reports"
-asset_dir = output_root / "report_assets"
+report_dir = output_root
+asset_dir = output_root / "assets"
 
 for path in [submission_dir, tables_dir, cxg_dir, figures_dir, report_dir, asset_dir]:
     path.mkdir(parents=True, exist_ok=True)
@@ -753,7 +753,7 @@ fig.savefig(asset_dir / "figure_01_v12_parent_or_blood_fraction.png", dpi=180)
 fig.savefig(figures_dir / "figure_01_v12_parent_or_blood_fraction.pdf")
 plt.close(fig)
 
-asset_link_root = "../report_assets"
+asset_link_root = "assets"
 requested_languages = [language.strip() for language in args.report_languages.split(",") if language.strip()]
 report_title = ", ".join(summary_df["study"].astype(str).tolist())
 
@@ -773,33 +773,6 @@ for row in summary_df.itertuples(index=False):
             "invalid_labels": row.invalid_labels if row.invalid_labels else "none",
         }
     )
-study_summary_table = markdown_table(
-    summary_rows,
-    ["study", "cells", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"],
-)
-
-interpretation_lines = []
-for row in summary_df.itertuples(index=False):
-    interpretation_lines.append(
-        f"- `{row.study}`: {row.n_cells:,} cells, {row.n_v12_labels} submitted labels, "
-        f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}, median confidence {row.median_confidence:.3f}."
-    )
-    if row.invalid_labels:
-        interpretation_lines.append(f"  - Invalid labels require immediate review: {row.invalid_labels}.")
-    if row.low_confidence_n:
-        interpretation_lines.append(f"  - {row.low_confidence_n:,} cells have low confidence and should be inspected on QC/confidence UMAPs.")
-    if row.doublet_n:
-        interpretation_lines.append(f"  - {row.doublet_n:,} cells are submitted as `Doublet`; inspect mixed-lineage marker expression before final submission.")
-    if row.blood_cell_n:
-        interpretation_lines.append(f"  - {row.blood_cell_n:,} cells remain `Blood Cell`; these are residual ambiguous cells rather than filtered cells.")
-    study_alerts = marker_alert_df[marker_alert_df["study"].astype(str).eq(str(row.study))]
-    if not study_alerts.empty:
-        alert_labels = ", ".join(study_alerts["marker_set"].astype(str).tolist())
-        interpretation_lines.append(f"  - Marker availability alerts are present for: {alert_labels}. Fine labels relying on these marker sets should be treated cautiously.")
-if not interpretation_lines:
-    interpretation_lines.append("- No dataset-specific interpretation notes were generated.")
-interpretation_notes = "\n".join(interpretation_lines)
-
 marker_alert_rows = []
 for row in marker_alert_df.itertuples(index=False):
     marker_alert_rows.append(
@@ -812,21 +785,15 @@ for row in marker_alert_df.itertuples(index=False):
             "missing_genes": row.missing_genes or "none",
         }
     )
-marker_alerts = markdown_table(
-    marker_alert_rows,
-    ["study", "marker_set", "alert", "present_fraction", "missing_critical_markers", "missing_genes"],
-)
 
 concern_rows_for_report = []
 if not concern_df.empty:
     for row in concern_df.itertuples(index=False):
         concern_rows_for_report.append({"study": row.study, "concern": row.concern, "cells": f"{row.n_cells:,}"})
-review_concerns = markdown_table(concern_rows_for_report, ["study", "concern", "cells"])
 
 label_rows_for_report = []
 for row in label_df.itertuples(index=False):
     label_rows_for_report.append({"study": row.study, "predicted_cell_type": row.predicted_cell_type, "cells": f"{row.n_cells:,}"})
-label_composition = markdown_table(label_rows_for_report, ["study", "predicted_cell_type", "cells"])
 
 figure_lines = []
 for study in summary_df["study"]:
@@ -859,43 +826,130 @@ for study in summary_df["study"]:
         )
 figure_blocks = "\n".join(figure_lines)
 
-file_block = "\n".join(
-    [
-        f"- Submission TSVs: `{output_root_display}/submissions/`",
-        f"- cellxgene H5ADs: `{output_root_display}/cellxgene/`",
-        f"- Marker availability table: `{output_root_display}/tables/marker_gene_availability.tsv`",
-        f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
-        f"- Subcluster evidence: `{output_root_display}/tables/v12_lineage_subcluster_evidence.tsv.gz`",
-        f"- Diagnostics tables: `{output_root_display}/tables/`",
-    ]
-)
+# Language-specific report sections are centralized so EN/JA templates render
+# from the same computed evidence without maintaining two divergent write paths.
+def table_or_none(rows, columns, language):
+    if rows:
+        return markdown_table(rows, columns)
+    if language == "ja":
+        return "なし。"
+    return "None."
 
-llm_review_prompt = "\n".join(
-    [
-        "Review this dataset-specific HIPC v12 annotation report.",
-        "Focus on marker availability alerts, residual parent/Blood labels, low-confidence regions, doublet calls, and whether marker-expression UMAPs support the submitted labels.",
-        "Do not restate the fixed pipeline workflow from README; provide dataset-specific concerns and suggested next checks only.",
-    ]
-)
 
-template_values = {
-    "REPORT_TITLE": report_title,
-    "REPORT_UPDATED": report_updated,
-    "STUDY_SUMMARY_TABLE": study_summary_table,
-    "INTERPRETATION_NOTES": interpretation_notes,
-    "MARKER_ALERTS": marker_alerts,
-    "REVIEW_CONCERNS": review_concerns,
-    "LABEL_COMPOSITION": label_composition,
-    "FIGURE_BLOCKS": figure_blocks,
-    "FILE_BLOCK": file_block,
-    "LLM_REVIEW_PROMPT": llm_review_prompt,
-}
+def report_values(language):
+    if language == "ja":
+        summary_columns = ["study", "cells", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"]
+        interpretation_lines = []
+        for row in summary_df.itertuples(index=False):
+            interpretation_lines.append(
+                f"- `{row.study}`: {row.n_cells:,} cells、submitted label {row.n_v12_labels} 種、"
+                f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}、median confidence {row.median_confidence:.3f}。"
+            )
+            if row.invalid_labels:
+                interpretation_lines.append(f"  - Invalid label があるため即時確認が必要: {row.invalid_labels}。")
+            if row.low_confidence_n:
+                interpretation_lines.append(f"  - {row.low_confidence_n:,} cells は low confidence。QC / confidence UMAP 上で局在を確認する。")
+            if row.doublet_n:
+                interpretation_lines.append(f"  - {row.doublet_n:,} cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。")
+            if row.blood_cell_n:
+                interpretation_lines.append(f"  - {row.blood_cell_n:,} cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。")
+            study_alerts = marker_alert_df[marker_alert_df["study"].astype(str).eq(str(row.study))]
+            if not study_alerts.empty:
+                alert_labels = ", ".join(study_alerts["marker_set"].astype(str).tolist())
+                interpretation_lines.append(f"  - Marker gene 欠損アラート: {alert_labels}。該当 marker set に依存する fine label は慎重に見る。")
+        if not interpretation_lines:
+            interpretation_lines.append("- データセット固有の解釈メモは生成されていない。")
+        run_summary = "\n".join(
+            [
+                "- 実行単位: one dataset in, one annotated dataset out。",
+                "- 実行経路: Codex skill `hipc-annotation-v12` -> bundled helper `run_one.sh` -> v12 CLI -> validator -> report inspection。",
+                "- 検証: submission row count、H5AD observation count、official label validity、H5AD/submission agreement、confidence column、report image link を確認する。",
+                "- このレポートは workflow の再掲ではなく、このデータセットの marker 欠損、UMAP、label 構成、review concern を読むためのもの。",
+            ]
+        )
+        file_block = "\n".join(
+            [
+                f"- Submission TSVs: `{output_root_display}/submissions/`",
+                f"- cellxgene H5ADs: `{output_root_display}/cellxgene/`",
+                f"- Marker availability table: `{output_root_display}/tables/marker_gene_availability.tsv`",
+                f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
+                f"- Subcluster evidence: `{output_root_display}/tables/v12_lineage_subcluster_evidence.tsv.gz`",
+                f"- Diagnostics tables: `{output_root_display}/tables/`",
+            ]
+        )
+        llm_review_prompt = "\n".join(
+            [
+                "このデータセット別 HIPC v12 annotation report をレビューしてください。",
+                "marker gene 欠損アラート、parent/Blood label の残存、low-confidence 領域、doublet call、marker-expression UMAP が submitted label を支持しているかに注目してください。",
+                "README の固定 workflow は繰り返さず、このデータセット固有の懸念点と次に確認すべき点だけを返してください。",
+            ]
+        )
+    else:
+        summary_columns = ["study", "cells", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"]
+        interpretation_lines = []
+        for row in summary_df.itertuples(index=False):
+            interpretation_lines.append(
+                f"- `{row.study}`: {row.n_cells:,} cells, {row.n_v12_labels} submitted labels, "
+                f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}, median confidence {row.median_confidence:.3f}."
+            )
+            if row.invalid_labels:
+                interpretation_lines.append(f"  - Invalid labels require immediate review: {row.invalid_labels}.")
+            if row.low_confidence_n:
+                interpretation_lines.append(f"  - {row.low_confidence_n:,} cells have low confidence and should be inspected on QC/confidence UMAPs.")
+            if row.doublet_n:
+                interpretation_lines.append(f"  - {row.doublet_n:,} cells are submitted as `Doublet`; inspect mixed-lineage marker expression before final submission.")
+            if row.blood_cell_n:
+                interpretation_lines.append(f"  - {row.blood_cell_n:,} cells remain `Blood Cell`; these are residual ambiguous cells rather than filtered cells.")
+            study_alerts = marker_alert_df[marker_alert_df["study"].astype(str).eq(str(row.study))]
+            if not study_alerts.empty:
+                alert_labels = ", ".join(study_alerts["marker_set"].astype(str).tolist())
+                interpretation_lines.append(f"  - Marker availability alerts are present for: {alert_labels}. Fine labels relying on these marker sets should be treated cautiously.")
+        if not interpretation_lines:
+            interpretation_lines.append("- No dataset-specific interpretation notes were generated.")
+        run_summary = "\n".join(
+            [
+                "- Execution unit: one dataset in, one annotated dataset out.",
+                "- Execution path: Codex skill `hipc-annotation-v12` -> bundled helper `run_one.sh` -> v12 CLI -> validator -> report inspection.",
+                "- Validation checks: submission row count, H5AD observation count, official label validity, H5AD/submission agreement, confidence column, and report image links.",
+                "- This report is for dataset-specific marker availability, UMAPs, label composition, and review concerns rather than repeating the fixed workflow.",
+            ]
+        )
+        file_block = "\n".join(
+            [
+                f"- Submission TSVs: `{output_root_display}/submissions/`",
+                f"- cellxgene H5ADs: `{output_root_display}/cellxgene/`",
+                f"- Marker availability table: `{output_root_display}/tables/marker_gene_availability.tsv`",
+                f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
+                f"- Subcluster evidence: `{output_root_display}/tables/v12_lineage_subcluster_evidence.tsv.gz`",
+                f"- Diagnostics tables: `{output_root_display}/tables/`",
+            ]
+        )
+        llm_review_prompt = "\n".join(
+            [
+                "Review this dataset-specific HIPC v12 annotation report.",
+                "Focus on marker availability alerts, residual parent/Blood labels, low-confidence regions, doublet calls, and whether marker-expression UMAPs support the submitted labels.",
+                "Do not restate the fixed pipeline workflow from README; provide dataset-specific concerns and suggested next checks only.",
+            ]
+        )
+    return {
+        "REPORT_TITLE": report_title,
+        "REPORT_UPDATED": report_updated,
+        "STUDY_SUMMARY_TABLE": table_or_none(summary_rows, summary_columns, language),
+        "RUN_SUMMARY": run_summary,
+        "INTERPRETATION_NOTES": "\n".join(interpretation_lines),
+        "MARKER_ALERTS": table_or_none(marker_alert_rows, ["study", "marker_set", "alert", "present_fraction", "missing_critical_markers", "missing_genes"], language),
+        "REVIEW_CONCERNS": table_or_none(concern_rows_for_report, ["study", "concern", "cells"], language),
+        "LABEL_COMPOSITION": table_or_none(label_rows_for_report, ["study", "predicted_cell_type", "cells"], language),
+        "FIGURE_BLOCKS": figure_blocks,
+        "FILE_BLOCK": file_block,
+        "LLM_REVIEW_PROMPT": llm_review_prompt,
+    }
 
 for language in requested_languages:
     template_path = project_root / "templates" / f"report_dataset_{language}.md"
     if not template_path.exists():
         template_path = project_root / "templates" / "report_dataset_en.md"
-    report_text = render_template(template_path, template_values)
+    report_text = render_template(template_path, report_values(language))
     (report_dir / f"report_{language}.md").write_text(report_text + "\n", encoding="utf-8")
 
 print(summary_df.to_string(index=False))

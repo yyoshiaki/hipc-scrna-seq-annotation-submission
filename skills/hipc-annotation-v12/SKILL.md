@@ -102,8 +102,8 @@ For one dataset, the output root should include:
 
 - `submissions/<study_id>_annotation.tsv`
 - `cellxgene/<study_id>.final_v12_recursive_screfmapping.cxg.h5ad`
-- `reports/report_en.md` and optional `reports/report_ja.md`
-- `report_assets/*.png`
+- `report_en.md` and optional `report_ja.md`
+- `assets/*.png`
 - diagnostics tables under `tables/`
 
 ## Required Validation
@@ -121,7 +121,6 @@ A run is not complete unless validation confirms:
 
 Before declaring success, Codex should inspect that the report includes:
 
-- workflow Mermaid diagram
 - summary table with parent-label fraction, invalid labels, doublet counts, low-confidence counts, and median confidence
 - UMAPs for final labels, lineage/reason, QC/confidence, and lineage-specific subclusters
 - marker dotplots for submitted labels

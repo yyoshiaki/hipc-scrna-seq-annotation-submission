@@ -1,37 +1,41 @@
-# HIPC v12 Dataset Annotation Report: {{REPORT_TITLE}}
+# HIPC v12 データセットアノテーションレポート: {{REPORT_TITLE}}
 
-Updated: {{REPORT_UPDATED}}
+更新日: {{REPORT_UPDATED}}
 
-これは `hipc-annotation-v12` Codex workflow が生成した dataset-specific annotation report です。固定の method と workflow 図は README に置き、この report では dataset 固有の出力、alert、解釈、review item を中心にまとめます。
+このレポートは `hipc-annotation-v12` Codex workflow によって生成したデータセット別レポートです。固定の workflow 図ではなく、このデータセットの annotation 結果、marker gene 欠損、解釈、レビュー上の懸念、UMAP / dotplot を中心にまとめます。
 
-## Dataset Summary
+## データセット概要
 
 {{STUDY_SUMMARY_TABLE}}
 
-## Dataset-Specific Interpretation
+## 実行概要
+
+{{RUN_SUMMARY}}
+
+## 解釈メモ
 
 {{INTERPRETATION_NOTES}}
 
-## Marker Gene Availability Alerts
+## Marker Gene 欠損アラート
 
 {{MARKER_ALERTS}}
 
-## Review Concerns
+## レビュー上の懸念
 
 {{REVIEW_CONCERNS}}
 
-## Label Composition
+## ラベル構成
 
 {{LABEL_COMPOSITION}}
 
-## Figures
+## 図
 
 {{FIGURE_BLOCKS}}
 
-## Files
+## 出力ファイル
 
 {{FILE_BLOCK}}
 
-## Suggested LLM Review Prompt
+## LLM レビュー用プロンプト
 
 {{LLM_REVIEW_PROMPT}}
