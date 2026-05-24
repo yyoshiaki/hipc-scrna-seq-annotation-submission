@@ -8,7 +8,7 @@ Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark v12 
 
 This repository holds the portable submission implementation. The primary interface is **one dataset in, one annotated dataset out**. Multi-dataset work should be handled by Codex, another agent, or an external scheduler by repeating the single-dataset workflow.
 
-The repository is intentionally organized around a Codex skill. The shell scripts are bundled deterministic helpers used by Codex; they are not the main user interface.
+The repository is intentionally organized around a Codex skill. The shell scripts are bundled deterministic helpers used by Codex; they are not the main user interface. Per-dataset reports are template-driven and should emphasize dataset-specific alerts, interpretation, marker availability, and expression figures rather than restating the fixed workflow.
 
 ## Directory Map
 
@@ -16,6 +16,7 @@ The repository is intentionally organized around a Codex skill. The shell script
 - `configs/`: pipeline config, manifest templates, and reference manifests
 - `data/reference/`: small official ontology/reference tables only
 - `skills/`: Codex operating procedure for annotation concept, execution, validation, and reporting contract
+- `templates/`: Markdown templates for dataset-specific reports
 - `outputs/`: generated outputs, ignored by git
 - `reports/`: committed report bundles only
 

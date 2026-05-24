@@ -93,6 +93,22 @@ def project_path(path):
         return path
     return project_root / path
 
+def markdown_table(rows, columns):
+    if not rows:
+        return "None."
+    lines = ["| " + " | ".join(columns) + " |", "| " + " | ".join(["---"] * len(columns)) + " |"]
+    for row in rows:
+        values = [str(row.get(column, "")).replace("|", ";") for column in columns]
+        lines.append("| " + " | ".join(values) + " |")
+    return "\n".join(lines)
+
+
+def render_template(path, values):
+    text = path.read_text(encoding="utf-8")
+    for key, value in values.items():
+        text = text.replace("{{" + key + "}}", str(value))
+    return text
+
 
 parser = argparse.ArgumentParser(description="HIPC v12 independent annotation runner")
 parser.add_argument("--config", required=True)
@@ -645,10 +661,20 @@ for input_row in manifest.itertuples(index=False):
     sc.pl.dotplot(adata, var_names=available_markers, groupby="submission_cell_type_v12_recursive_screfmapping", standard_scale="var", dendrogram=False, show=False, save=f"_{study}_v12_marker_dotplot.png")
     plt.close("all")
 
+    feature_markers = [
+        "MS4A1", "CD79A", "MZB1", "CD3D", "CD4", "CD8A",
+        "NKG7", "GNLY", "LYZ", "S100A8", "FCGR3A", "LILRA4",
+    ]
+    available_feature_markers = [gene for gene in feature_markers if gene in adata.var_names]
+    if available_feature_markers:
+        sc.pl.umap(adata, color=available_feature_markers, ncols=4, frameon=False, show=False, save=f"_{study}_v12_marker_expression.png")
+        plt.close("all")
+
     for figure_name in [
         f"umap_{study}_v12_label.png",
         f"umap_{study}_v12_lineage_reason.png",
         f"umap_{study}_v12_qc_confidence.png",
+        f"umap_{study}_v12_marker_expression.png",
     ]:
         source_png = figures_dir / figure_name
         if source_png.exists():
@@ -729,144 +755,148 @@ plt.close(fig)
 
 asset_link_root = "../report_assets"
 requested_languages = [language.strip() for language in args.report_languages.split(",") if language.strip()]
+report_title = ", ".join(summary_df["study"].astype(str).tolist())
 
-for language in requested_languages:
-    if language == "ja":
-        report_lines = [
-            "# HIPC beta final annotation v12 fully independent calibrated-resolution report",
-            "",
-            f"Updated: {report_updated}",
-            "",
-            "## Summary",
-            "",
-            "`v12_recursive_screfmapping` は、前バージョンの submission label、parent lineage、subcluster、confidence を使わずに、broad lineage、lineage-specific subcluster、final label、confidence を作り直す独立 annotation pass です。入力 evidence は CellTypist、Pan-human Azimuth、cluster consensus、top-marker label、raw reference label、marker score、QC、doublet flag です。",
-            "",
-            "## Main Logic",
-            "",
-            "- Broad lineage は CellTypist、Pan-human Azimuth、cluster consensus、top marker lineage、raw reference label、marker score から独立に投票して決める。",
-            "- B、T/NK、myeloid lineage は別々に再クラスタリングする。親ラベルだけを取り出して救済する処理ではない。",
-            "- Final label は lineage subcluster ごとの marker/reference consensus から決める。",
-            "- 各 study について B、T/NK、myeloid の subcluster UMAP を出力する。",
-            "- Doublet は override label とし、低 QC または mixed-marker cell は confidence を cap する。",
-        ]
-    else:
-        report_lines = [
-            "# HIPC beta final annotation v12 fully independent calibrated-resolution report",
-            "",
-            f"Updated: {report_updated}",
-            "",
-            "## Summary",
-            "",
-            "`v12_recursive_screfmapping` is a fully independent hierarchical annotation pass. It rebuilds broad lineage, lineage-specific subclusters, final labels, and confidence scores from CellTypist, Pan-human Azimuth, cluster consensus, top-marker labels, raw reference labels, marker scores, QC, and doublet flags. It does not use prior version submission labels, prior parent-lineage labels, prior subcluster labels, or prior confidence scores.",
-            "",
-            "## Main Logic",
-            "",
-            "- Broad lineage is assigned independently from CellTypist, Pan-human Azimuth, cluster consensus, top marker lineage, raw reference labels, and marker scores.",
-            "- B, T/NK, and myeloid lineages are reclustered separately. Parent labels alone are not isolated.",
-            "- Final labels are assigned from lineage subcluster marker/reference consensus, not by rescuing any previous-version parent labels.",
-            "- Subcluster UMAPs are exported for B, T/NK, and myeloid lineages in each study.",
-            "- Doublet calls remain overriding labels; low-QC or mixed-marker cells keep capped confidence.",
-        ]
+summary_rows = []
+for row in summary_df.itertuples(index=False):
+    summary_rows.append(
+        {
+            "study": row.study,
+            "cells": f"{row.n_cells:,}",
+            "labels": row.n_v12_labels,
+            "parent_or_blood_fraction": f"{row.parent_or_blood_fraction:.3f}",
+            "Blood Cell": f"{row.blood_cell_n:,}",
+            "Doublet": f"{row.doublet_n:,}",
+            "artifact_like": f"{row.artifact_n:,}",
+            "median_confidence": f"{row.median_confidence:.3f}",
+            "low_confidence": f"{row.low_confidence_n:,}",
+            "invalid_labels": row.invalid_labels if row.invalid_labels else "none",
+        }
+    )
+study_summary_table = markdown_table(
+    summary_rows,
+    ["study", "cells", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"],
+)
 
-    report_lines.extend(
+interpretation_lines = []
+for row in summary_df.itertuples(index=False):
+    interpretation_lines.append(
+        f"- `{row.study}`: {row.n_cells:,} cells, {row.n_v12_labels} submitted labels, "
+        f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}, median confidence {row.median_confidence:.3f}."
+    )
+    if row.invalid_labels:
+        interpretation_lines.append(f"  - Invalid labels require immediate review: {row.invalid_labels}.")
+    if row.low_confidence_n:
+        interpretation_lines.append(f"  - {row.low_confidence_n:,} cells have low confidence and should be inspected on QC/confidence UMAPs.")
+    if row.doublet_n:
+        interpretation_lines.append(f"  - {row.doublet_n:,} cells are submitted as `Doublet`; inspect mixed-lineage marker expression before final submission.")
+    if row.blood_cell_n:
+        interpretation_lines.append(f"  - {row.blood_cell_n:,} cells remain `Blood Cell`; these are residual ambiguous cells rather than filtered cells.")
+    study_alerts = marker_alert_df[marker_alert_df["study"].astype(str).eq(str(row.study))]
+    if not study_alerts.empty:
+        alert_labels = ", ".join(study_alerts["marker_set"].astype(str).tolist())
+        interpretation_lines.append(f"  - Marker availability alerts are present for: {alert_labels}. Fine labels relying on these marker sets should be treated cautiously.")
+if not interpretation_lines:
+    interpretation_lines.append("- No dataset-specific interpretation notes were generated.")
+interpretation_notes = "\n".join(interpretation_lines)
+
+marker_alert_rows = []
+for row in marker_alert_df.itertuples(index=False):
+    marker_alert_rows.append(
+        {
+            "study": row.study,
+            "marker_set": row.marker_set,
+            "alert": row.alert_level,
+            "present_fraction": f"{float(row.present_fraction):.3f}",
+            "missing_critical_markers": row.missing_critical_markers or "none",
+            "missing_genes": row.missing_genes or "none",
+        }
+    )
+marker_alerts = markdown_table(
+    marker_alert_rows,
+    ["study", "marker_set", "alert", "present_fraction", "missing_critical_markers", "missing_genes"],
+)
+
+concern_rows_for_report = []
+if not concern_df.empty:
+    for row in concern_df.itertuples(index=False):
+        concern_rows_for_report.append({"study": row.study, "concern": row.concern, "cells": f"{row.n_cells:,}"})
+review_concerns = markdown_table(concern_rows_for_report, ["study", "concern", "cells"])
+
+label_rows_for_report = []
+for row in label_df.itertuples(index=False):
+    label_rows_for_report.append({"study": row.study, "predicted_cell_type": row.predicted_cell_type, "cells": f"{row.n_cells:,}"})
+label_composition = markdown_table(label_rows_for_report, ["study", "predicted_cell_type", "cells"])
+
+figure_lines = []
+for study in summary_df["study"]:
+    figure_lines.extend(
         [
+            f"### {study}",
             "",
-            "## Workflow",
+            f"![{study} final labels]({asset_link_root}/umap_{study}_v12_label.png)",
             "",
-            "```mermaid",
-            "flowchart TD",
-            "    A[Input H5AD evidence container] --> B[Per-cell evidence extraction]",
-            "    B --> B1[CellTypist labels]",
-            "    B --> B2[Pan-human Azimuth labels]",
-            "    B --> B3[Cluster consensus and top-marker labels]",
-            "    B --> B4[Raw reference labels]",
-            "    B --> B5[Marker gene scores and QC metrics]",
-            "    B1 --> C[Broad lineage vote per cell]",
-            "    B2 --> C",
-            "    B3 --> C",
-            "    B4 --> C",
-            "    B5 --> C",
-            "    C --> D{Broad lineage}",
-            "    D --> E[B lineage subset]",
-            "    D --> F[T/NK lineage subset]",
-            "    D --> G[Myeloid lineage subset]",
-            "    D --> H[Other or ambiguous cells]",
-            "    E --> I[Lineage-specific HVG, PCA, Leiden, UMAP]",
-            "    F --> I",
-            "    G --> I",
-            "    I --> J[Subcluster evidence scoring]",
-            "    J --> J1[Reference fraction]",
-            "    J --> J2[Raw-label fraction]",
-            "    J --> J3[Marker percentile]",
-            "    J --> J4[Best-vs-second score margin]",
-            "    J1 --> K[Final ontology label]",
-            "    J2 --> K",
-            "    J3 --> K",
-            "    J4 --> L[Calibrated confidence]",
-            "    H --> M[Ambiguous fallback or direct artifact call]",
-            "    K --> N[Doublet override and QC/mixed-marker confidence cap]",
-            "    L --> N",
-            "    M --> N",
-            "    N --> O[Submission TSV, cellxgene H5AD, diagnostics, report figures]",
-            "```",
+            f"![{study} lineage and annotation reason]({asset_link_root}/umap_{study}_v12_lineage_reason.png)",
             "",
-            "## Study Summary",
+            f"![{study} QC and confidence]({asset_link_root}/umap_{study}_v12_qc_confidence.png)",
             "",
-            "| study | cells | v12 labels | parent/Blood fraction | B Cell | T Cell | Myeloid Cell | Blood Cell | artifact-like | Doublet | Effector B | median confidence | low confidence | invalid labels |",
-            "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
+            f"![{study} marker expression UMAPs]({asset_link_root}/umap_{study}_v12_marker_expression.png)",
+            "",
+            f"![{study} submitted-label marker dotplot]({asset_link_root}/dotplot_{study}_v12_marker_dotplot.png)",
+            "",
         ]
     )
-    for row in summary_df.itertuples(index=False):
-        invalid = row.invalid_labels if row.invalid_labels else "none"
-        report_lines.append(
-            f"| {row.study} | {row.n_cells:,} | {row.n_v12_labels} | {row.parent_or_blood_fraction:.3f} | {row.b_cell_n:,} | {row.t_cell_n:,} | {row.myeloid_cell_n:,} | {row.blood_cell_n:,} | {row.artifact_n:,} | {row.doublet_n:,} | {row.effector_b_n:,} | {row.median_confidence:.3f} | {row.low_confidence_n:,} | {invalid} |"
-        )
-
-    if not concern_df.empty:
-        report_lines.extend(["", "## Review Concerns", "", "| study | concern | cells |", "| --- | --- | ---: |"])
-        for row in concern_df.itertuples(index=False):
-            report_lines.append(f"| {row.study} | {row.concern} | {row.n_cells:,} |")
-
-    report_lines.extend(["", "## Figures", "", f"![v12 parent or Blood Cell fraction]({asset_link_root}/figure_01_v12_parent_or_blood_fraction.png)", ""])
-    for study in summary_df["study"]:
-        report_lines.extend(
+    for lineage_name in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
+        figure_lines.extend(
             [
-                f"### {study}",
+                f"#### {study} {lineage_name} subcluster UMAP",
                 "",
-                f"![{study} v12 labels]({asset_link_root}/umap_{study}_v12_label.png)",
+                f"![{study} {lineage_name} subcluster labels]({asset_link_root}/umap_{study}_{lineage_name}_v12_subcluster_label.png)",
                 "",
-                f"![{study} v12 lineage and reason]({asset_link_root}/umap_{study}_v12_lineage_reason.png)",
-                "",
-                f"![{study} v12 QC and confidence]({asset_link_root}/umap_{study}_v12_qc_confidence.png)",
-                "",
-                f"![{study} v12 marker dotplot]({asset_link_root}/dotplot_{study}_v12_marker_dotplot.png)",
+                f"![{study} {lineage_name} subcluster QC]({asset_link_root}/umap_{study}_{lineage_name}_v12_subcluster_qc.png)",
                 "",
             ]
         )
-        for lineage_name in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
-            report_lines.extend(
-                [
-                    f"#### {study} {lineage_name} subcluster UMAP",
-                    "",
-                    f"![{study} {lineage_name} subcluster labels]({asset_link_root}/umap_{study}_{lineage_name}_v12_subcluster_label.png)",
-                    "",
-                    f"![{study} {lineage_name} subcluster QC]({asset_link_root}/umap_{study}_{lineage_name}_v12_subcluster_qc.png)",
-                    "",
-                ]
-            )
+figure_blocks = "\n".join(figure_lines)
 
-    report_lines.extend(
-        [
-            "## Files",
-            "",
-            f"- Submission TSVs: `{output_root_display}/submissions/`",
-            f"- cellxgene H5ADs: `{output_root_display}/cellxgene/`",
-            f"- Subcluster evidence: `{output_root_display}/tables/v12_lineage_subcluster_evidence.tsv.gz`",
-            f"- Diagnostics tables: `{output_root_display}/tables/`",
-        ]
-    )
+file_block = "\n".join(
+    [
+        f"- Submission TSVs: `{output_root_display}/submissions/`",
+        f"- cellxgene H5ADs: `{output_root_display}/cellxgene/`",
+        f"- Marker availability table: `{output_root_display}/tables/marker_gene_availability.tsv`",
+        f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
+        f"- Subcluster evidence: `{output_root_display}/tables/v12_lineage_subcluster_evidence.tsv.gz`",
+        f"- Diagnostics tables: `{output_root_display}/tables/`",
+    ]
+)
 
-    (report_dir / f"report_{language}.md").write_text("\n".join(report_lines) + "\n", encoding="utf-8")
+llm_review_prompt = "\n".join(
+    [
+        "Review this dataset-specific HIPC v12 annotation report.",
+        "Focus on marker availability alerts, residual parent/Blood labels, low-confidence regions, doublet calls, and whether marker-expression UMAPs support the submitted labels.",
+        "Do not restate the fixed pipeline workflow from README; provide dataset-specific concerns and suggested next checks only.",
+    ]
+)
+
+template_values = {
+    "REPORT_TITLE": report_title,
+    "REPORT_UPDATED": report_updated,
+    "STUDY_SUMMARY_TABLE": study_summary_table,
+    "INTERPRETATION_NOTES": interpretation_notes,
+    "MARKER_ALERTS": marker_alerts,
+    "REVIEW_CONCERNS": review_concerns,
+    "LABEL_COMPOSITION": label_composition,
+    "FIGURE_BLOCKS": figure_blocks,
+    "FILE_BLOCK": file_block,
+    "LLM_REVIEW_PROMPT": llm_review_prompt,
+}
+
+for language in requested_languages:
+    template_path = project_root / "templates" / f"report_dataset_{language}.md"
+    if not template_path.exists():
+        template_path = project_root / "templates" / "report_dataset_en.md"
+    report_text = render_template(template_path, template_values)
+    (report_dir / f"report_{language}.md").write_text(report_text + "\n", encoding="utf-8")
 
 print(summary_df.to_string(index=False))
 print(f"Wrote v12 independent outputs to {output_root}")

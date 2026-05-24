@@ -18,4 +18,6 @@ Codex skill hipc-annotation-v12 -> bundled helper run_one.sh -> v12 CLI -> valid
 
 Validation result: `VALIDATION_PASSED`.
 
+Report focus: dataset-specific interpretation, marker gene availability alerts, label composition, QC/confidence UMAPs, marker-expression UMAPs, and marker dotplots. Fixed workflow and method details live in the repository README.
+
 Committed contents include Markdown reports and inline figure assets only. Generated H5ADs, submission TSVs, and diagnostic tables remain ignored under `outputs/`.

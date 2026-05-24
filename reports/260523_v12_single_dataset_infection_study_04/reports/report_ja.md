@@ -1,77 +1,68 @@
-# HIPC beta final annotation v12 fully independent calibrated-resolution report
+# HIPC v12 Dataset Annotation Report: infection_study_04
 
 Updated: 2026-05-23 EDT
 
-## Summary
+これは `hipc-annotation-v12` Codex workflow が生成した dataset-specific annotation report です。固定の method と workflow 図は README に置き、この report では dataset 固有の出力、alert、解釈、review item を中心にまとめます。
 
-`v12_recursive_screfmapping` は、前バージョンの submission label、parent lineage、subcluster、confidence を使わずに、broad lineage、lineage-specific subcluster、final label、confidence を作り直す独立 annotation pass です。入力 evidence は CellTypist、Pan-human Azimuth、cluster consensus、top-marker label、raw reference label、marker score、QC、doublet flag です。
+## Dataset Summary
 
-## Main Logic
+| study | cells | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | invalid_labels |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| infection_study_04 | 43,767 | 16 | 0.012 | 529 | 61 | 353 | 0.838 | 751 | none |
 
-- Broad lineage は CellTypist、Pan-human Azimuth、cluster consensus、top marker lineage、raw reference label、marker score から独立に投票して決める。
-- B、T/NK、myeloid lineage は別々に再クラスタリングする。親ラベルだけを取り出して救済する処理ではない。
-- Final label は lineage subcluster ごとの marker/reference consensus から決める。
-- 各 study について B、T/NK、myeloid の subcluster UMAP を出力する。
-- Doublet は override label とし、低 QC または mixed-marker cell は confidence を cap する。
+## Dataset-Specific Interpretation
 
-## Workflow
+- `infection_study_04`: 43,767 cells, 16 submitted labels, parent/Blood residual fraction 0.012, median confidence 0.838.
+  - 751 cells have low confidence and should be inspected on QC/confidence UMAPs.
+  - 61 cells are submitted as `Doublet`; inspect mixed-lineage marker expression before final submission.
+  - 529 cells remain `Blood Cell`; these are residual ambiguous cells rather than filtered cells.
+  - Marker availability alerts are present for: Treg, Plasma_ASC. Fine labels relying on these marker sets should be treated cautiously.
 
-```mermaid
-flowchart TD
-    A[Input H5AD evidence container] --> B[Per-cell evidence extraction]
-    B --> B1[CellTypist labels]
-    B --> B2[Pan-human Azimuth labels]
-    B --> B3[Cluster consensus and top-marker labels]
-    B --> B4[Raw reference labels]
-    B --> B5[Marker gene scores and QC metrics]
-    B1 --> C[Broad lineage vote per cell]
-    B2 --> C
-    B3 --> C
-    B4 --> C
-    B5 --> C
-    C --> D{Broad lineage}
-    D --> E[B lineage subset]
-    D --> F[T/NK lineage subset]
-    D --> G[Myeloid lineage subset]
-    D --> H[Other or ambiguous cells]
-    E --> I[Lineage-specific HVG, PCA, Leiden, UMAP]
-    F --> I
-    G --> I
-    I --> J[Subcluster evidence scoring]
-    J --> J1[Reference fraction]
-    J --> J2[Raw-label fraction]
-    J --> J3[Marker percentile]
-    J --> J4[Best-vs-second score margin]
-    J1 --> K[Final ontology label]
-    J2 --> K
-    J3 --> K
-    J4 --> L[Calibrated confidence]
-    H --> M[Ambiguous fallback or direct artifact call]
-    K --> N[Doublet override and QC/mixed-marker confidence cap]
-    L --> N
-    M --> N
-    N --> O[Submission TSV, cellxgene H5AD, diagnostics, report figures]
-```
+## Marker Gene Availability Alerts
 
-## Study Summary
+| study | marker_set | alert | present_fraction | missing_critical_markers | missing_genes |
+| --- | --- | --- | --- | --- | --- |
+| infection_study_04 | Treg | critical | 0.286 | FOXP3;IL2RA;CTLA4 | FOXP3;IL2RA;CTLA4;TNFRSF18;CCR8 |
+| infection_study_04 | Plasma_ASC | warning | 0.667 | JCHAIN | JCHAIN;SDC1;TNFRSF17 |
 
-| study | cells | v12 labels | parent/Blood fraction | B Cell | T Cell | Myeloid Cell | Blood Cell | artifact-like | Doublet | Effector B | median confidence | low confidence | invalid labels |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| infection_study_04 | 43,767 | 16 | 0.012 | 0 | 0 | 0 | 529 | 353 | 61 | 0 | 0.838 | 751 | none |
+## Review Concerns
+
+None.
+
+## Label Composition
+
+| study | predicted_cell_type | cells |
+| --- | --- | --- |
+| infection_study_04 | Classical Monocyte | 11,755 |
+| infection_study_04 | CD8 Cytotoxic / T Effector Memory | 8,696 |
+| infection_study_04 | CD4 Naive / T Central Memory | 7,824 |
+| infection_study_04 | NK Cell | 6,007 |
+| infection_study_04 | Plasma Cell | 3,145 |
+| infection_study_04 | Naive B Cell | 2,070 |
+| infection_study_04 | Memory B Cell | 1,136 |
+| infection_study_04 | Non-Classical Monocyte | 1,102 |
+| infection_study_04 | Treg | 554 |
+| infection_study_04 | Blood Cell | 529 |
+| infection_study_04 | Conventional DC 2 | 306 |
+| infection_study_04 | Plasmacytoid DC | 229 |
+| infection_study_04 | Platelet | 148 |
+| infection_study_04 | RBC | 132 |
+| infection_study_04 | HSC | 73 |
+| infection_study_04 | Doublet | 61 |
 
 ## Figures
 
-![v12 parent or Blood Cell fraction](../report_assets/figure_01_v12_parent_or_blood_fraction.png)
-
 ### infection_study_04
 
-![infection_study_04 v12 labels](../report_assets/umap_infection_study_04_v12_label.png)
+![infection_study_04 final labels](../report_assets/umap_infection_study_04_v12_label.png)
 
-![infection_study_04 v12 lineage and reason](../report_assets/umap_infection_study_04_v12_lineage_reason.png)
+![infection_study_04 lineage and annotation reason](../report_assets/umap_infection_study_04_v12_lineage_reason.png)
 
-![infection_study_04 v12 QC and confidence](../report_assets/umap_infection_study_04_v12_qc_confidence.png)
+![infection_study_04 QC and confidence](../report_assets/umap_infection_study_04_v12_qc_confidence.png)
 
-![infection_study_04 v12 marker dotplot](../report_assets/dotplot_infection_study_04_v12_marker_dotplot.png)
+![infection_study_04 marker expression UMAPs](../report_assets/umap_infection_study_04_v12_marker_expression.png)
+
+![infection_study_04 submitted-label marker dotplot](../report_assets/dotplot_infection_study_04_v12_marker_dotplot.png)
 
 #### infection_study_04 B_lineage subcluster UMAP
 
@@ -91,9 +82,19 @@ flowchart TD
 
 ![infection_study_04 Myeloid_lineage subcluster QC](../report_assets/umap_infection_study_04_Myeloid_lineage_v12_subcluster_qc.png)
 
+
 ## Files
 
 - Submission TSVs: `outputs/single_dataset_checks/260523_infection_study_04_current/submissions/`
 - cellxgene H5ADs: `outputs/single_dataset_checks/260523_infection_study_04_current/cellxgene/`
+- Marker availability table: `outputs/single_dataset_checks/260523_infection_study_04_current/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `outputs/single_dataset_checks/260523_infection_study_04_current/tables/marker_gene_availability_alerts.tsv`
 - Subcluster evidence: `outputs/single_dataset_checks/260523_infection_study_04_current/tables/v12_lineage_subcluster_evidence.tsv.gz`
 - Diagnostics tables: `outputs/single_dataset_checks/260523_infection_study_04_current/tables/`
+
+## Suggested LLM Review Prompt
+
+Review this dataset-specific HIPC v12 annotation report.
+Focus on marker availability alerts, residual parent/Blood labels, low-confidence regions, doublet calls, and whether marker-expression UMAPs support the submitted labels.
+Do not restate the fixed pipeline workflow from README; provide dataset-specific concerns and suggested next checks only.
+
