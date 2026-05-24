@@ -55,13 +55,12 @@ flowchart TD
     D --> D3[Marker scores]
     D --> D4[QC metrics]
     D --> D5[Doublet flags]
-    D --> D6[scRefMapping evidence]
+    D --> D6[Lineage-scoped scRefMapping evidence]
     C --> E[Marker availability alerts]
     D1 --> F[Broad lineage voting]
     D2 --> F
     D3 --> F
     D4 --> F
-    D6 --> F
     F --> G{Lineage}
     G --> H[B lineage subcluster]
     G --> I[T/NK lineage subcluster]
@@ -71,6 +70,7 @@ flowchart TD
     I --> L
     J --> L
     E --> L
+    D6 --> L
     L --> M[Best label and margin]
     M --> N[Ontology-constrained final label]
     K --> N
@@ -94,7 +94,7 @@ flowchart TD
 2. Assign broad lineage from independent reference, marker, raw-label, and QC evidence.
 3. Recluster B, T/NK, and myeloid lineages separately.
 4. Use marker support and subcluster coherence before accepting fine labels.
-5. Treat scRefMapping as lineage-scoped auxiliary evidence, especially when marker availability is low.
+5. Treat scRefMapping as lineage-scoped auxiliary evidence after broad lineage assignment; it must not vote in broad lineage assignment, especially when marker availability is low.
 6. Submit `Doublet` only when supported; do not filter cells out silently.
 7. Prefer documented uncertainty over hard-coded local fixes.
 8. Reports must expose UMAPs, marker dotplots, disagreement, parent-label residuals, confidence, and validation.

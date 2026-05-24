@@ -92,8 +92,8 @@ The goal is to encode a high-quality manual annotation workflow:
 
 - Do not use prior-version submission labels as the base label.
 - Do not use prior-version parent lineage, subcluster, or confidence columns as starting points.
-- Use CellTypist, Pan-human Azimuth, Azimuth when present, cluster consensus, top-marker labels, raw reference labels, marker scores, QC, doublet flags, and lineage-scoped scRefMapping evidence.
-- scRefMapping is auxiliary and lineage-scoped only. It must not override weak marker availability without independent support.
+- Use CellTypist, Pan-human Azimuth, Azimuth when present, cluster consensus, top-marker labels, raw reference labels, marker scores, QC, and doublet flags for broad lineage assignment.
+- scRefMapping is auxiliary and lineage-scoped only after broad lineage assignment. It must not vote in broad lineage assignment or override weak marker availability without independent support.
 - Avoid study-specific hard-coding. If a rule cannot be explained as a general marker/reference/QC/ontology principle, keep it out of the pipeline and document it as a review concern instead.
 
 ## Output Contract

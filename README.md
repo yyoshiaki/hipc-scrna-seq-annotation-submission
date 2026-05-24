@@ -90,9 +90,9 @@ flowchart TD
     C3 --> D
     C4 --> D
     C5 --> D
-    C6 --> D
     D --> E[Lineage-specific subclustering]
     E --> F[Subcluster evidence scoring]
+    C6 --> F
     F --> G[Ontology-constrained final label]
     G --> H[Confidence calibration]
     H --> I[Doublet and QC overrides]
