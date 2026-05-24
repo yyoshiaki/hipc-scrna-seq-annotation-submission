@@ -7,9 +7,9 @@ from pathlib import Path
 import anndata as ad
 import pandas as pd
 
-parser = argparse.ArgumentParser(description="Validate HIPC v12 annotation outputs")
+parser = argparse.ArgumentParser(description="Validate HIPC annotation outputs")
 parser.add_argument("--out", required=True)
-parser.add_argument("--config", default="configs/v12_pipeline.json")
+parser.add_argument("--config", default="configs/annotation_pipeline.json")
 parser.add_argument("--study-id", default="")
 args = parser.parse_args()
 
@@ -32,7 +32,7 @@ if not submission_paths:
 
 for sub_path in submission_paths:
     study = sub_path.name.replace("_annotation.tsv", "")
-    h5ad_path = output_root / "cellxgene" / f"{study}.final_v12_recursive_screfmapping.cxg.h5ad"
+    h5ad_path = output_root / "cellxgene" / f"{study}.final_annotation.cxg.h5ad"
     if not h5ad_path.exists():
         failures.append(f"missing h5ad: {h5ad_path}")
         continue
@@ -42,11 +42,11 @@ for sub_path in submission_paths:
         continue
     h5 = ad.read_h5ad(h5ad_path, backed="r")
     invalid_labels = sorted(set(sub["predicted_cell_type"].astype(str)) - allowed_labels)
-    obs_label_column = "submission_cell_type_v12_recursive_screfmapping"
+    obs_label_column = "submission_cell_type"
     has_obs_label = obs_label_column in h5.obs.columns
-    h5ad_v12_match = False
+    h5ad_annotation_match = False
     if has_obs_label and len(sub) == h5.n_obs:
-        h5ad_v12_match = bool((h5.obs[obs_label_column].astype(str).values == sub["predicted_cell_type"].astype(str).values).all())
+        h5ad_annotation_match = bool((h5.obs[obs_label_column].astype(str).values == sub["predicted_cell_type"].astype(str).values).all())
     row = {
         "study": study,
         "submission_rows": len(sub),
@@ -55,12 +55,12 @@ for sub_path in submission_paths:
         "missing_label": int(sub["predicted_cell_type"].isna().sum()),
         "invalid_label_n": len(invalid_labels),
         "invalid_labels": ",".join(invalid_labels),
-        "h5ad_v12_match": h5ad_v12_match,
-        "has_confidence": "confidence_score_v12_recursive_screfmapping" in h5.obs.columns,
+        "h5ad_annotation_match": h5ad_annotation_match,
+        "has_confidence": "confidence_score" in h5.obs.columns,
     }
     rows.append(row)
     h5.file.close()
-    for key in ["row_match", "h5ad_v12_match", "has_confidence"]:
+    for key in ["row_match", "h5ad_annotation_match", "has_confidence"]:
         if not row[key]:
             failures.append(f"{study}: {key}=False")
     if row["missing_label"]:

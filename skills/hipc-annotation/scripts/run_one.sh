@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 REPO_ROOT="${HIPC_ANNOTATION_REPO:-$DEFAULT_REPO_ROOT}"
 PYTHON_BIN="${HIPC_SCANPY_PYTHON:-/gpfs/gibbs/project/hafler/yy693/conda_envs/scanpy1.10.2/bin/python}"
-CONFIG="configs/v12_pipeline.json"
+CONFIG="configs/annotation_pipeline.json"
 REPORT_LANGUAGES="en"
 BARCODE_KEY="index"
 RAW_COUNT_LAYER="counts"
@@ -50,4 +50,4 @@ if [[ "$VALIDATE_ONLY" != "1" ]]; then
   "$PYTHON_BIN" scripts/pipeline/hipc_annotate_one.py     --study-id "$STUDY_ID"     --input-h5ad "$INPUT_H5AD"     --out "$OUT"     --config "$CONFIG"     --report-languages "$REPORT_LANGUAGES"     --barcode-key "$BARCODE_KEY"     --raw-count-layer "$RAW_COUNT_LAYER"     --batch-key "$BATCH_KEY"     --sample-key "$SAMPLE_KEY"     --submission-template "$SUBMISSION_TEMPLATE"     --notes "$NOTES"
 fi
 
-"$PYTHON_BIN" skills/hipc-annotation-v12/scripts/validate_v12_outputs.py   --out "$OUT"   --config "$CONFIG"   --study-id "$STUDY_ID"
+"$PYTHON_BIN" skills/hipc-annotation/scripts/validate_outputs.py   --out "$OUT"   --config "$CONFIG"   --study-id "$STUDY_ID"

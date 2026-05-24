@@ -1,4 +1,4 @@
-# HIPC v12 Annotation Decision Contract
+# HIPC Annotation Decision Contract
 
 Updated: 2026-05-23 EDT
 

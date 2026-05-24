@@ -2,7 +2,7 @@
 
 Updated: 2026-05-23 EDT
 
-Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark v12 independent annotation workflow.
+Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
 ## Purpose
 
@@ -16,18 +16,18 @@ The repository is intentionally organized around a Codex skill. The shell script
 - `configs/`: pipeline config, manifest templates, and reference manifests
 - `data/reference/`: small official ontology/reference tables only
 - `skills/`: Codex operating procedure for annotation concept, execution, validation, and reporting contract
-- `templates/`: Markdown templates for dataset-specific reports
+- `skills/hipc-annotation/templates/`: Markdown templates owned by the skill
 - `outputs/`: generated outputs, ignored by git
 - `reports/`: committed report bundles only
 
 ## Standard Codex Use
 
-Ask Codex to apply the `hipc-annotation-v12` skill to one dataset. Codex should inspect the input, run the deterministic helper internally, validate outputs, inspect the report, and return a concise completion summary.
+Ask Codex to apply the `hipc-annotation` skill to one dataset. Codex should inspect the input, run the deterministic helper internally, validate outputs, inspect the report, and return a concise completion summary.
 
 Example request:
 
 ```text
-Use the hipc-annotation-v12 skill on this dataset.
+Use the hipc-annotation skill on this dataset.
 Study ID: infection_study_04
 Input H5AD: /path/to/infection_study_04.h5ad
 Output root: outputs/single_dataset/infection_study_04
@@ -38,13 +38,13 @@ Run end-to-end and report back only after validation passes.
 Validation-only request:
 
 ```text
-Use the hipc-annotation-v12 skill to validate this existing output.
+Use the hipc-annotation skill to validate this existing output.
 Study ID: infection_study_04
 Output root: outputs/single_dataset/infection_study_04
 Inspect the report links and summarize any remaining concerns.
 ```
 
-Developer helper scripts live under `skills/hipc-annotation-v12/scripts/`. They are bundled resources for Codex, not the primary user interface.
+Developer helper scripts live under `skills/hipc-annotation/scripts/`. They are bundled resources for Codex, not the primary user interface.
 
 ## Input Contract
 
@@ -55,7 +55,7 @@ Required task inputs:
 - `study_id`: stable dataset identifier
 - `input_h5ad`: processed H5AD evidence container
 - `output_root`: output directory for this dataset
-- `config`: v12 config, default `configs/v12_pipeline.json`
+- `config`: annotation config, default `configs/annotation_pipeline.json`
 - `report_languages`: usually `en` or `en,ja`
 
 Expected H5AD evidence, when available:
@@ -78,14 +78,14 @@ For one dataset:
 ```text
 <output_root>/
   submissions/<study_id>_annotation.tsv
-  cellxgene/<study_id>.final_v12_recursive_screfmapping.cxg.h5ad
+  cellxgene/<study_id>.final_annotation.cxg.h5ad
   report_en.md
   report_ja.md
   assets/*.png
   figures/*.png
-  tables/final_annotation_summary_v12_recursive_screfmapping.tsv
-  tables/final_annotation_validation_v12_recursive_screfmapping.tsv
-  tables/v12_lineage_subcluster_evidence.tsv.gz
+  tables/final_annotation_summary.tsv
+  tables/final_annotation_validation.tsv
+  tables/lineage_subcluster_evidence.tsv.gz
 ```
 
 The submission TSV contains:
@@ -153,7 +153,7 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 7. **Ontology-constrained labels**: final labels must be official ontology labels after configured exclusions. Known problematic labels such as `Effector B` are excluded by config when appropriate.
 8. **Doublet and QC handling**: doublet evidence is not a filter. Supported doublets are submitted as `Doublet`; low-QC or mixed-marker cells receive confidence caps or review concerns.
 9. **Confidence calibration**: confidence reflects reference agreement, marker support, subcluster coherence, score margin, QC penalties, and doublet/mixed-lineage flags.
-10. **Report generation**: reports are generated from Markdown templates in `templates/` and focus on dataset-specific summary, marker availability alerts, interpretation notes, UMAPs, marker dotplots, lineage-specific subcluster plots, and output files. The fixed workflow is documented in this README and is not repeated in every report.
+10. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, interpretation notes, UMAPs, marker dotplots, lineage-specific subcluster plots, and output files. The fixed workflow is documented in this README and is not repeated in every report.
 11. **Validation**: Codex must confirm submission row counts, official labels, non-missing predictions, H5AD/submission agreement, confidence fields, and report image links.
 12. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
 
@@ -175,7 +175,7 @@ Codex should not mark a run complete unless validation confirms:
 - submission row counts match H5AD observations
 - `predicted_cell_type` has no missing values
 - predicted labels are valid official ontology labels after configured exclusions
-- H5AD v12 labels match submission TSV labels
+- H5AD annotation labels match submission TSV labels
 - confidence columns are present
 - report image links resolve
 
@@ -186,15 +186,15 @@ Batch execution is orchestration, not annotation logic. Keeping the implementati
 ## Current Single-Dataset Report Bundle
 
 - Updated: 2026-05-23 EDT
-- Report bundle: `reports/260523_v12_single_dataset_infection_study_04/`
+- Report bundle: `reports/260523_annotation_single_dataset_infection_study_04/`
 - Dataset: `infection_study_04`
-- Execution path: Codex skill `hipc-annotation-v12` -> bundled helper `run_one.sh` -> v12 CLI -> validator -> report inspection.
-- Validation: `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD v12 labels match submission TSVs, confidence columns are present, and report image links resolve.
+- Execution path: Codex skill `hipc-annotation` -> bundled helper `run_one.sh` -> annotation CLI -> validator -> report inspection.
+- Validation: `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD annotation labels match submission TSVs, confidence columns are present, and report image links resolve.
 - Repository policy: only Markdown reports and inline figure assets are committed; generated H5ADs, submission TSVs, and diagnostics tables remain ignored under `outputs/`.
 
 ## Data Policy
 
-Large input H5ADs and generated outputs are not committed. Team04 shared evidence containers currently live in the working repository output area and are referenced by `configs/v12_manifest.team04.shared.tsv` for reproducibility on the Yale server.
+Large input H5ADs and generated outputs are not committed. Team04 shared evidence containers currently live in the working repository output area and are referenced by `configs/manifest.team04.shared.tsv` for reproducibility on the Yale server.
 
 ## Submission Philosophy
 

@@ -6,8 +6,8 @@ import os
 import re
 from pathlib import Path
 
-os.environ.setdefault("MPLCONFIGDIR", "/tmp/hipc_v12_mplconfig")
-os.environ.setdefault("NUMBA_CACHE_DIR", "/tmp/hipc_v12_numba_cache")
+os.environ.setdefault("MPLCONFIGDIR", "/tmp/hipc_annotation_mplconfig")
+os.environ.setdefault("NUMBA_CACHE_DIR", "/tmp/hipc_annotation_numba_cache")
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -110,7 +110,7 @@ def render_template(path, values):
     return text
 
 
-parser = argparse.ArgumentParser(description="HIPC v12 independent annotation runner")
+parser = argparse.ArgumentParser(description="HIPC independent annotation runner")
 parser.add_argument("--config", required=True)
 parser.add_argument("--manifest", required=True)
 parser.add_argument("--out")
@@ -120,9 +120,9 @@ args = parser.parse_args()
 project_root = Path.cwd()
 config = json.loads(project_path(args.config).read_text())
 manifest = pd.read_csv(project_path(args.manifest), sep="\t").fillna("")
-version = config["version"].replace("pipeline_scaffold", "independent_cli")
+version = config["version"]
 report_updated = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d EDT")
-output_root = project_path(args.out or config["output_root"].replace("pipeline_scaffold", "independent_cli"))
+output_root = project_path(args.out or config["output_root"])
 try:
     output_root_display = str(output_root.relative_to(project_root))
 except ValueError:
@@ -133,6 +133,7 @@ cxg_dir = output_root / "cellxgene"
 figures_dir = output_root / "figures"
 report_dir = output_root
 asset_dir = output_root / "assets"
+template_dir = project_path(config.get("report", {}).get("template_dir", "skills/hipc-annotation/templates"))
 
 for path in [submission_dir, tables_dir, cxg_dir, figures_dir, report_dir, asset_dir]:
     path.mkdir(parents=True, exist_ok=True)
@@ -180,23 +181,23 @@ myeloid_labels = {
 other_direct_labels = {"Platelet", "RBC", "HSC"}
 
 score_gene_sets = {
-    "v12_score_b_naive": ["TCL1A", "IGHM", "IGHD", "FCER2"],
-    "v12_score_b_memory": ["CD27", "TNFRSF13B", "AIM2", "FCRL5", "ITGAX", "TBX21"],
-    "v12_score_b_plasma": ["MZB1", "JCHAIN", "XBP1", "PRDM1", "SDC1"],
-    "v12_score_cd4_naive_tcm": ["CD4", "IL7R", "CCR7", "TCF7", "LEF1", "SELL"],
-    "v12_score_cd4_tem": ["CD4", "IL7R", "GZMK", "CCL5", "ANXA1"],
-    "v12_score_cd8_naive_tcm": ["CD8A", "CD8B", "CCR7", "TCF7", "LEF1"],
-    "v12_score_cd8_cytotoxic": ["CD8A", "CD8B", "NKG7", "GNLY", "PRF1", "GZMB", "GZMH"],
-    "v12_score_treg": ["FOXP3", "IL2RA", "CTLA4", "IKZF2"],
-    "v12_score_mait": ["SLC4A10", "KLRB1", "DPP4", "TRAV1-2"],
-    "v12_score_gdt": ["TRDC", "TRGC1", "TRGC2"],
-    "v12_score_nk": ["NKG7", "GNLY", "KLRD1", "FCGR3A", "PRF1"],
-    "v12_score_classical_mono": ["LYZ", "S100A8", "S100A9", "FCN1", "VCAN"],
-    "v12_score_nonclassical_mono": ["FCGR3A", "MS4A7", "CX3CR1", "LST1"],
-    "v12_score_intermediate_mono": ["FCN1", "MS4A7", "HLA-DRA", "LST1"],
-    "v12_score_pdc": ["LILRA4", "CLEC4C", "IRF7", "TCF4"],
-    "v12_score_cdc1": ["CLEC9A", "XCR1", "BATF3"],
-    "v12_score_cdc2": ["CD1C", "FCER1A", "CLEC10A"],
+    "marker_score_b_naive": ["TCL1A", "IGHM", "IGHD", "FCER2"],
+    "marker_score_b_memory": ["CD27", "TNFRSF13B", "AIM2", "FCRL5", "ITGAX", "TBX21"],
+    "marker_score_b_plasma": ["MZB1", "JCHAIN", "XBP1", "PRDM1", "SDC1"],
+    "marker_score_cd4_naive_tcm": ["CD4", "IL7R", "CCR7", "TCF7", "LEF1", "SELL"],
+    "marker_score_cd4_tem": ["CD4", "IL7R", "GZMK", "CCL5", "ANXA1"],
+    "marker_score_cd8_naive_tcm": ["CD8A", "CD8B", "CCR7", "TCF7", "LEF1"],
+    "marker_score_cd8_cytotoxic": ["CD8A", "CD8B", "NKG7", "GNLY", "PRF1", "GZMB", "GZMH"],
+    "marker_score_treg": ["FOXP3", "IL2RA", "CTLA4", "IKZF2"],
+    "marker_score_mait": ["SLC4A10", "KLRB1", "DPP4", "TRAV1-2"],
+    "marker_score_gdt": ["TRDC", "TRGC1", "TRGC2"],
+    "marker_score_nk": ["NKG7", "GNLY", "KLRD1", "FCGR3A", "PRF1"],
+    "marker_score_classical_mono": ["LYZ", "S100A8", "S100A9", "FCN1", "VCAN"],
+    "marker_score_nonclassical_mono": ["FCGR3A", "MS4A7", "CX3CR1", "LST1"],
+    "marker_score_intermediate_mono": ["FCN1", "MS4A7", "HLA-DRA", "LST1"],
+    "marker_score_pdc": ["LILRA4", "CLEC4C", "IRF7", "TCF4"],
+    "marker_score_cdc1": ["CLEC9A", "XCR1", "BATF3"],
+    "marker_score_cdc2": ["CD1C", "FCER1A", "CLEC10A"],
 }
 
 lineage_configs = {
@@ -204,9 +205,9 @@ lineage_configs = {
         "parent": "B Cell",
         "resolution": 2.2,
         "candidate_scores": {
-            "Naive B Cell": "v12_score_b_naive_pct",
-            "Memory B Cell": "v12_score_b_memory_pct",
-            "Plasma Cell": "v12_score_b_plasma_pct",
+            "Naive B Cell": "marker_score_b_naive_pct",
+            "Memory B Cell": "marker_score_b_memory_pct",
+            "Plasma Cell": "marker_score_b_plasma_pct",
         },
         "raw_bonus": {
             "Naive B Cell": "Naive B",
@@ -218,14 +219,14 @@ lineage_configs = {
         "parent": "T Cell",
         "resolution": 2.6,
         "candidate_scores": {
-            "CD4 Naive / T Central Memory": "v12_score_cd4_naive_tcm_pct",
-            "CD4 T Effector Memory": "v12_score_cd4_tem_pct",
-            "CD8 Naive / T Central Memory": "v12_score_cd8_naive_tcm_pct",
-            "CD8 Cytotoxic / T Effector Memory": "v12_score_cd8_cytotoxic_pct",
-            "Treg": "v12_score_treg_pct",
-            "MAIT Cell": "v12_score_mait_pct",
-            "ydT Cell": "v12_score_gdt_pct",
-            "NK Cell": "v12_score_nk_pct",
+            "CD4 Naive / T Central Memory": "marker_score_cd4_naive_tcm_pct",
+            "CD4 T Effector Memory": "marker_score_cd4_tem_pct",
+            "CD8 Naive / T Central Memory": "marker_score_cd8_naive_tcm_pct",
+            "CD8 Cytotoxic / T Effector Memory": "marker_score_cd8_cytotoxic_pct",
+            "Treg": "marker_score_treg_pct",
+            "MAIT Cell": "marker_score_mait_pct",
+            "ydT Cell": "marker_score_gdt_pct",
+            "NK Cell": "marker_score_nk_pct",
         },
         "raw_bonus": {
             "CD4 Naive / T Central Memory": "Tcm/Naive helper|Tfh|Naive CD4",
@@ -242,12 +243,12 @@ lineage_configs = {
         "parent": "Myeloid Cell",
         "resolution": 1.8,
         "candidate_scores": {
-            "Classical Monocyte": "v12_score_classical_mono_pct",
-            "Non-Classical Monocyte": "v12_score_nonclassical_mono_pct",
-            "Intermediate Monocyte": "v12_score_intermediate_mono_pct",
-            "Plasmacytoid DC": "v12_score_pdc_pct",
-            "Conventional DC 1": "v12_score_cdc1_pct",
-            "Conventional DC 2": "v12_score_cdc2_pct",
+            "Classical Monocyte": "marker_score_classical_mono_pct",
+            "Non-Classical Monocyte": "marker_score_nonclassical_mono_pct",
+            "Intermediate Monocyte": "marker_score_intermediate_mono_pct",
+            "Plasmacytoid DC": "marker_score_pdc_pct",
+            "Conventional DC 1": "marker_score_cdc1_pct",
+            "Conventional DC 2": "marker_score_cdc2_pct",
         },
         "raw_bonus": {
             "Classical Monocyte": "Classical",
@@ -378,9 +379,9 @@ for input_row in manifest.itertuples(index=False):
     mixed = obs["mixed_lineage_marker_monitor_v3_independent"].astype(str).str.lower().eq("true") if "mixed_lineage_marker_monitor_v3_independent" in obs.columns else pd.Series(False, index=obs.index)
     lineage.loc[doublet] = "Ambiguous"
 
-    v12_label = pd.Series("Blood Cell", index=obs.index, dtype="object")
-    v12_conf = pd.Series(0.45, index=obs.index, dtype="float64")
-    v12_reason = pd.Series("ambiguous_default_blood_cell", index=obs.index, dtype="object")
+    annotation_label = pd.Series("Blood Cell", index=obs.index, dtype="object")
+    annotation_conf = pd.Series(0.45, index=obs.index, dtype="float64")
+    annotation_reason = pd.Series("ambiguous_default_blood_cell", index=obs.index, dtype="object")
 
     for direct_label in sorted(other_direct_labels):
         direct_votes = pd.Series(0, index=obs.index, dtype="int64")
@@ -390,14 +391,14 @@ for input_row in manifest.itertuples(index=False):
         for column in raw_cols:
             raw_direct |= obs[column].astype(str).str.contains(direct_label, case=False, regex=False, na=False)
         direct_mask = lineage.eq("Other_lineage") & direct_votes.ge(2) & raw_direct
-        v12_label.loc[direct_mask] = direct_label
-        v12_conf.loc[direct_mask] = 0.72
-        v12_reason.loc[direct_mask] = f"independent_other_direct_{direct_label}"
+        annotation_label.loc[direct_mask] = direct_label
+        annotation_conf.loc[direct_mask] = 0.72
+        annotation_reason.loc[direct_mask] = f"independent_other_direct_{direct_label}"
 
     for lineage_name, lineage_config in lineage_configs.items():
         mask = lineage.eq(lineage_name)
         if int(mask.sum()) < 50:
-            adata.obs[f"v12_{lineage_name}_leiden"] = "not_in_lineage"
+            adata.obs[f"{lineage_name}_leiden"] = "not_in_lineage"
             continue
 
         sub = adata[mask].copy()
@@ -427,18 +428,18 @@ for input_row in manifest.itertuples(index=False):
 
         cluster_values = pd.Series("not_in_lineage", index=adata.obs_names, dtype="object")
         cluster_values.loc[sub.obs_names] = sub.obs[chosen_key].astype(str).map(lambda x: f"{lineage_name}:{x}").values
-        adata.obs[f"v12_{lineage_name}_leiden"] = cluster_values.values
+        adata.obs[f"{lineage_name}_leiden"] = cluster_values.values
 
         lineage_obs = obs.loc[sub.obs_names].copy()
-        lineage_obs["v12_cluster"] = sub.obs[chosen_key].astype(str).values
+        lineage_obs["annotation_cluster"] = sub.obs[chosen_key].astype(str).values
         for score_col in lineage_config["candidate_scores"].values():
             lineage_obs[score_col] = obs.loc[sub.obs_names, score_col]
 
         cluster_to_label = {}
         cluster_to_conf = {}
         cluster_to_reason = {}
-        for cluster_id in sorted(lineage_obs["v12_cluster"].astype(str).unique()):
-            cluster_mask = lineage_obs["v12_cluster"].astype(str).eq(cluster_id)
+        for cluster_id in sorted(lineage_obs["annotation_cluster"].astype(str).unique()):
+            cluster_mask = lineage_obs["annotation_cluster"].astype(str).eq(cluster_id)
             cluster_frame = lineage_obs.loc[cluster_mask]
             candidate_rows = []
             for candidate, score_col in lineage_config["candidate_scores"].items():
@@ -544,32 +545,32 @@ for input_row in manifest.itertuples(index=False):
                 row[f"{item['candidate']}_screfmapping_fraction"] = item["screfmapping_fraction"]
             subcluster_rows.append(row)
 
-        sub.obs["v12_subcluster_label"] = sub.obs[chosen_key].astype(str).map(cluster_to_label).astype(str)
-        sub.obs["v12_subcluster_reason"] = sub.obs[chosen_key].astype(str).map(cluster_to_reason).astype(str)
+        sub.obs["subcluster_label"] = sub.obs[chosen_key].astype(str).map(cluster_to_label).astype(str)
+        sub.obs["subcluster_reason"] = sub.obs[chosen_key].astype(str).map(cluster_to_reason).astype(str)
 
-        sc.pl.umap(sub, color=[chosen_key, "v12_subcluster_label"], frameon=False, show=False, save=f"_{study}_{lineage_name}_v12_subcluster_label.png")
+        sc.pl.umap(sub, color=[chosen_key, "subcluster_label"], frameon=False, show=False, save=f"_{study}_{lineage_name}_subcluster_label.png")
         plt.close("all")
-        sub_qc_colors = [column for column in ["n_genes_by_counts", "pct_counts_mt", "v12_subcluster_reason"] if column in sub.obs.columns]
+        sub_qc_colors = [column for column in ["n_genes_by_counts", "pct_counts_mt", "subcluster_reason"] if column in sub.obs.columns]
         if sub_qc_colors:
-            sc.pl.umap(sub, color=sub_qc_colors, frameon=False, show=False, save=f"_{study}_{lineage_name}_v12_subcluster_qc.png")
+            sc.pl.umap(sub, color=sub_qc_colors, frameon=False, show=False, save=f"_{study}_{lineage_name}_subcluster_qc.png")
             plt.close("all")
 
         for figure_name in [
-            f"umap_{study}_{lineage_name}_v12_subcluster_label.png",
-            f"umap_{study}_{lineage_name}_v12_subcluster_qc.png",
+            f"umap_{study}_{lineage_name}_subcluster_label.png",
+            f"umap_{study}_{lineage_name}_subcluster_qc.png",
         ]:
             source_png = figures_dir / figure_name
             if source_png.exists():
                 asset_dir.joinpath(figure_name).write_bytes(source_png.read_bytes())
 
-        full_cluster = adata.obs.loc[obs.index, f"v12_{lineage_name}_leiden"].astype(str).str.replace(f"{lineage_name}:", "", regex=False)
+        full_cluster = adata.obs.loc[obs.index, f"{lineage_name}_leiden"].astype(str).str.replace(f"{lineage_name}:", "", regex=False)
         in_lineage = lineage.eq(lineage_name)
         proposed = full_cluster.map(cluster_to_label)
         proposed_conf = full_cluster.map(cluster_to_conf)
         proposed_reason = full_cluster.map(cluster_to_reason)
-        v12_label.loc[in_lineage & proposed.notna()] = proposed.loc[in_lineage & proposed.notna()].astype(str)
-        v12_conf.loc[in_lineage & proposed_conf.notna()] = proposed_conf.loc[in_lineage & proposed_conf.notna()].astype(float)
-        v12_reason.loc[in_lineage & proposed_reason.notna()] = proposed_reason.loc[in_lineage & proposed_reason.notna()].astype(str)
+        annotation_label.loc[in_lineage & proposed.notna()] = proposed.loc[in_lineage & proposed.notna()].astype(str)
+        annotation_conf.loc[in_lineage & proposed_conf.notna()] = proposed_conf.loc[in_lineage & proposed_conf.notna()].astype(float)
+        annotation_reason.loc[in_lineage & proposed_reason.notna()] = proposed_reason.loc[in_lineage & proposed_reason.notna()].astype(str)
 
         del sub
 
@@ -582,50 +583,50 @@ for input_row in manifest.itertuples(index=False):
         source_vote_labels.append((label, votes))
     fallback_mask = lineage.eq("Ambiguous") & ~doublet
     for label, votes in source_vote_labels:
-        assign = fallback_mask & votes.ge(3) & v12_label.eq("Blood Cell")
-        v12_label.loc[assign] = label
-        v12_conf.loc[assign] = 0.62
-        v12_reason.loc[assign] = f"independent_ambiguous_exact_source_votes_{label}"
+        assign = fallback_mask & votes.ge(3) & annotation_label.eq("Blood Cell")
+        annotation_label.loc[assign] = label
+        annotation_conf.loc[assign] = 0.62
+        annotation_reason.loc[assign] = f"independent_ambiguous_exact_source_votes_{label}"
 
     low_qc = pd.Series(False, index=obs.index)
     if "n_genes_by_counts" in obs.columns:
         low_qc |= pd.to_numeric(obs["n_genes_by_counts"], errors="coerce").fillna(99999).lt(500)
     if "pct_counts_mt" in obs.columns:
         low_qc |= pd.to_numeric(obs["pct_counts_mt"], errors="coerce").fillna(0).gt(20)
-    v12_conf.loc[(low_qc | mixed) & ~doublet] = v12_conf.loc[(low_qc | mixed) & ~doublet].clip(0.05, 0.65)
+    annotation_conf.loc[(low_qc | mixed) & ~doublet] = annotation_conf.loc[(low_qc | mixed) & ~doublet].clip(0.05, 0.65)
 
-    v12_label.loc[v12_label.eq("Effector B")] = "B Cell"
-    v12_label = v12_label.where(v12_label.isin(submit_allowed), "Blood Cell")
-    v12_label.loc[doublet] = "Doublet"
-    v12_reason.loc[doublet] = "doublet_override"
-    v12_conf.loc[doublet] = v12_conf.loc[doublet].clip(0.05, 0.60)
+    annotation_label.loc[annotation_label.eq("Effector B")] = "B Cell"
+    annotation_label = annotation_label.where(annotation_label.isin(submit_allowed), "Blood Cell")
+    annotation_label.loc[doublet] = "Doublet"
+    annotation_reason.loc[doublet] = "doublet_override"
+    annotation_conf.loc[doublet] = annotation_conf.loc[doublet].clip(0.05, 0.60)
 
     submission = pd.DataFrame(
         {
             "cell_barcode": adata.obs_names.astype(str),
-            "predicted_cell_type": v12_label.astype(str).values,
-            "confidence_score": v12_conf.round(4).values,
+            "predicted_cell_type": annotation_label.astype(str).values,
+            "confidence_score": annotation_conf.round(4).values,
         }
     )
     submission.to_csv(submission_dir / f"{study}_annotation.tsv", sep="\t", index=False)
 
     for column in obs.columns:
-        if column.startswith("v12_score_"):
+        if column.startswith("marker_score_"):
             adata.obs[column] = pd.to_numeric(obs[column], errors="coerce").values
-    adata.obs["submission_cell_type_v12_recursive_screfmapping"] = v12_label.astype(str).values
-    adata.obs["confidence_score_v12_recursive_screfmapping"] = v12_conf.round(4).values
-    adata.obs["v12_parent_lineage"] = lineage.astype(str).values
-    adata.obs["v12_annotation_reason"] = v12_reason.astype(str).values
-    adata.obs["annotation_logic_version_v12_recursive_screfmapping"] = version
+    adata.obs["submission_cell_type"] = annotation_label.astype(str).values
+    adata.obs["confidence_score"] = annotation_conf.round(4).values
+    adata.obs["parent_lineage"] = lineage.astype(str).values
+    adata.obs["annotation_reason"] = annotation_reason.astype(str).values
+    adata.obs["annotation_logic_version"] = version
 
     diagnostics_cols = [
-        "submission_cell_type_v12_recursive_screfmapping",
-        "confidence_score_v12_recursive_screfmapping",
-        "v12_parent_lineage",
-        "v12_annotation_reason",
-        "v12_B_lineage_leiden",
-        "v12_T_NK_lineage_leiden",
-        "v12_Myeloid_lineage_leiden",
+        "submission_cell_type",
+        "confidence_score",
+        "parent_lineage",
+        "annotation_reason",
+        "B_lineage_leiden",
+        "T_NK_lineage_leiden",
+        "Myeloid_lineage_leiden",
         "celltypist_v3_label",
         "panhuman_fine_v3_label",
         "cluster_consensus_v3_label",
@@ -642,13 +643,13 @@ for input_row in manifest.itertuples(index=False):
     diagnostics_cols = [column for column in diagnostics_cols if column in adata.obs.columns]
     diagnostics = adata.obs[diagnostics_cols].copy()
     diagnostics.insert(0, "cell_barcode", adata.obs_names.astype(str))
-    diagnostics.to_csv(tables_dir / f"{study}_v12_recursive_screfmapping_diagnostics.tsv.gz", sep="\t", index=False)
+    diagnostics.to_csv(tables_dir / f"{study}_annotation_diagnostics.tsv.gz", sep="\t", index=False)
 
-    sc.pl.umap(adata, color=["submission_cell_type_v12_recursive_screfmapping"], legend_loc="right margin", frameon=False, show=False, save=f"_{study}_v12_label.png")
+    sc.pl.umap(adata, color=["submission_cell_type"], legend_loc="right margin", frameon=False, show=False, save=f"_{study}_annotation_label.png")
     plt.close("all")
-    sc.pl.umap(adata, color=["v12_parent_lineage", "v12_annotation_reason"], legend_loc="right margin", frameon=False, show=False, save=f"_{study}_v12_lineage_reason.png")
+    sc.pl.umap(adata, color=["parent_lineage", "annotation_reason"], legend_loc="right margin", frameon=False, show=False, save=f"_{study}_annotation_lineage_reason.png")
     plt.close("all")
-    sc.pl.umap(adata, color=["n_genes_by_counts", "pct_counts_mt", "confidence_score_v12_recursive_screfmapping"], frameon=False, show=False, save=f"_{study}_v12_qc_confidence.png")
+    sc.pl.umap(adata, color=["n_genes_by_counts", "pct_counts_mt", "confidence_score"], frameon=False, show=False, save=f"_{study}_annotation_qc_confidence.png")
     plt.close("all")
 
     focus_markers = [
@@ -658,7 +659,7 @@ for input_row in manifest.itertuples(index=False):
         "LYZ", "S100A8", "S100A9", "FCGR3A", "MS4A7", "LILRA4", "CLEC4C", "CD1C", "FCER1A", "CLEC9A", "XCR1",
     ]
     available_markers = [gene for gene in focus_markers if gene in adata.var_names]
-    sc.pl.dotplot(adata, var_names=available_markers, groupby="submission_cell_type_v12_recursive_screfmapping", standard_scale="var", dendrogram=False, show=False, save=f"_{study}_v12_marker_dotplot.png")
+    sc.pl.dotplot(adata, var_names=available_markers, groupby="submission_cell_type", standard_scale="var", dendrogram=False, show=False, save=f"_{study}_annotation_marker_dotplot.png")
     plt.close("all")
 
     feature_markers = [
@@ -667,34 +668,35 @@ for input_row in manifest.itertuples(index=False):
     ]
     available_feature_markers = [gene for gene in feature_markers if gene in adata.var_names]
     if available_feature_markers:
-        sc.pl.umap(adata, color=available_feature_markers, ncols=4, frameon=False, show=False, save=f"_{study}_v12_marker_expression.png")
+        sc.pl.umap(adata, color=available_feature_markers, ncols=4, frameon=False, show=False, save=f"_{study}_annotation_marker_expression.png")
         plt.close("all")
 
     for figure_name in [
-        f"umap_{study}_v12_label.png",
-        f"umap_{study}_v12_lineage_reason.png",
-        f"umap_{study}_v12_qc_confidence.png",
-        f"umap_{study}_v12_marker_expression.png",
+        f"umap_{study}_annotation_label.png",
+        f"umap_{study}_annotation_lineage_reason.png",
+        f"umap_{study}_annotation_qc_confidence.png",
+        f"umap_{study}_annotation_marker_expression.png",
     ]:
         source_png = figures_dir / figure_name
         if source_png.exists():
             asset_dir.joinpath(figure_name).write_bytes(source_png.read_bytes())
-    dotplot_png = figures_dir / f"dotplot__{study}_v12_marker_dotplot.png"
+    dotplot_png = figures_dir / f"dotplot__{study}_annotation_marker_dotplot.png"
     if dotplot_png.exists():
-        asset_dir.joinpath(f"dotplot_{study}_v12_marker_dotplot.png").write_bytes(dotplot_png.read_bytes())
+        asset_dir.joinpath(f"dotplot_{study}_annotation_marker_dotplot.png").write_bytes(dotplot_png.read_bytes())
 
     label_counts = submission["predicted_cell_type"].value_counts()
     for label_name, n_cells in label_counts.items():
         label_rows.append({"study": study, "predicted_cell_type": label_name, "n_cells": int(n_cells)})
-    for reason, n_cells in v12_reason.value_counts().items():
-        reason_rows.append({"study": study, "v12_annotation_reason": reason, "n_cells": int(n_cells)})
+    for reason, n_cells in annotation_reason.value_counts().items():
+        reason_rows.append({"study": study, "annotation_reason": reason, "n_cells": int(n_cells)})
 
     invalid = sorted(set(submission["predicted_cell_type"]) - official_set)
     summary_rows.append(
         {
             "study": study,
             "n_cells": int(adata.n_obs),
-            "n_v12_labels": int(submission["predicted_cell_type"].nunique()),
+            "n_genes": int(adata.n_vars),
+            "n_labels": int(submission["predicted_cell_type"].nunique()),
             "b_cell_n": int(submission["predicted_cell_type"].eq("B Cell").sum()),
             "t_cell_n": int(submission["predicted_cell_type"].eq("T Cell").sum()),
             "myeloid_cell_n": int(submission["predicted_cell_type"].eq("Myeloid Cell").sum()),
@@ -711,13 +713,13 @@ for input_row in manifest.itertuples(index=False):
     )
     validation_rows.append({"study": study, "n_submission_rows": int(submission.shape[0]), "n_h5ad_cells": int(adata.n_obs), "invalid_labels": ",".join(invalid)})
 
-    ambiguous_n = int(v12_label.eq("Blood Cell").sum())
+    ambiguous_n = int(annotation_label.eq("Blood Cell").sum())
     if ambiguous_n > 1000:
         concern_rows.append({"study": study, "concern": "Large Blood Cell/ambiguous residual remains", "n_cells": ambiguous_n})
     if int(submission["confidence_score"].lt(0.60).sum()) > 10000:
         concern_rows.append({"study": study, "concern": "Many low-confidence cells; QC or mixed-marker effects likely remain", "n_cells": int(submission["confidence_score"].lt(0.60).sum())})
 
-    adata.write_h5ad(cxg_dir / f"{study}.final_v12_recursive_screfmapping.cxg.h5ad", compression="gzip")
+    adata.write_h5ad(cxg_dir / f"{study}.final_annotation.cxg.h5ad", compression="gzip")
     del adata
 
 summary_df = pd.DataFrame(summary_rows)
@@ -731,14 +733,14 @@ marker_alert_df = marker_availability_df[marker_availability_df["alert_level"].i
 marker_availability_df.to_csv(tables_dir / "marker_gene_availability.tsv", sep="\t", index=False)
 marker_alert_df.to_csv(tables_dir / "marker_gene_availability_alerts.tsv", sep="\t", index=False)
 
-summary_df.to_csv(tables_dir / "final_annotation_summary_v12_recursive_screfmapping.tsv", sep="\t", index=False)
-label_df.to_csv(tables_dir / "final_annotation_label_counts_v12_recursive_screfmapping.tsv", sep="\t", index=False)
-reason_df.to_csv(tables_dir / "v12_annotation_reason_counts.tsv", sep="\t", index=False)
-subcluster_df.to_csv(tables_dir / "v12_lineage_subcluster_evidence.tsv.gz", sep="\t", index=False)
-validation_df.to_csv(tables_dir / "final_annotation_validation_v12_recursive_screfmapping.tsv", sep="\t", index=False)
-concern_df.to_csv(tables_dir / "v12_review_concerns.tsv", sep="\t", index=False)
+summary_df.to_csv(tables_dir / "final_annotation_summary.tsv", sep="\t", index=False)
+label_df.to_csv(tables_dir / "final_annotation_label_counts.tsv", sep="\t", index=False)
+reason_df.to_csv(tables_dir / "annotation_reason_counts.tsv", sep="\t", index=False)
+subcluster_df.to_csv(tables_dir / "lineage_subcluster_evidence.tsv.gz", sep="\t", index=False)
+validation_df.to_csv(tables_dir / "final_annotation_validation.tsv", sep="\t", index=False)
+concern_df.to_csv(tables_dir / "review_concerns.tsv", sep="\t", index=False)
 
-(output_root / "final_annotation_summary_v12_recursive_screfmapping.json").write_text(
+(output_root / "final_annotation_summary.json").write_text(
     json.dumps({"version": version, "manifest": str(project_path(args.manifest)), "summary": summary_df.to_dict(orient="records")}, indent=2),
     encoding="utf-8",
 )
@@ -749,8 +751,8 @@ ax.set_ylabel("Parent/Blood Cell fraction")
 ax.set_xlabel("")
 plt.xticks(rotation=45, ha="right")
 plt.tight_layout()
-fig.savefig(asset_dir / "figure_01_v12_parent_or_blood_fraction.png", dpi=180)
-fig.savefig(figures_dir / "figure_01_v12_parent_or_blood_fraction.pdf")
+fig.savefig(asset_dir / "figure_01_annotation_parent_or_blood_fraction.png", dpi=180)
+fig.savefig(figures_dir / "figure_01_annotation_parent_or_blood_fraction.pdf")
 plt.close(fig)
 
 asset_link_root = "assets"
@@ -763,7 +765,8 @@ for row in summary_df.itertuples(index=False):
         {
             "study": row.study,
             "cells": f"{row.n_cells:,}",
-            "labels": row.n_v12_labels,
+            "genes": f"{row.n_genes:,}",
+            "labels": row.n_labels,
             "parent_or_blood_fraction": f"{row.parent_or_blood_fraction:.3f}",
             "Blood Cell": f"{row.blood_cell_n:,}",
             "Doublet": f"{row.doublet_n:,}",
@@ -801,15 +804,15 @@ for study in summary_df["study"]:
         [
             f"### {study}",
             "",
-            f"![{study} final labels]({asset_link_root}/umap_{study}_v12_label.png)",
+            f"![{study} final labels]({asset_link_root}/umap_{study}_annotation_label.png)",
             "",
-            f"![{study} lineage and annotation reason]({asset_link_root}/umap_{study}_v12_lineage_reason.png)",
+            f"![{study} lineage and annotation reason]({asset_link_root}/umap_{study}_annotation_lineage_reason.png)",
             "",
-            f"![{study} QC and confidence]({asset_link_root}/umap_{study}_v12_qc_confidence.png)",
+            f"![{study} QC and confidence]({asset_link_root}/umap_{study}_annotation_qc_confidence.png)",
             "",
-            f"![{study} marker expression UMAPs]({asset_link_root}/umap_{study}_v12_marker_expression.png)",
+            f"![{study} marker expression UMAPs]({asset_link_root}/umap_{study}_annotation_marker_expression.png)",
             "",
-            f"![{study} submitted-label marker dotplot]({asset_link_root}/dotplot_{study}_v12_marker_dotplot.png)",
+            f"![{study} submitted-label marker dotplot]({asset_link_root}/dotplot_{study}_annotation_marker_dotplot.png)",
             "",
         ]
     )
@@ -818,9 +821,9 @@ for study in summary_df["study"]:
             [
                 f"#### {study} {lineage_name} subcluster UMAP",
                 "",
-                f"![{study} {lineage_name} subcluster labels]({asset_link_root}/umap_{study}_{lineage_name}_v12_subcluster_label.png)",
+                f"![{study} {lineage_name} subcluster labels]({asset_link_root}/umap_{study}_{lineage_name}_subcluster_label.png)",
                 "",
-                f"![{study} {lineage_name} subcluster QC]({asset_link_root}/umap_{study}_{lineage_name}_v12_subcluster_qc.png)",
+                f"![{study} {lineage_name} subcluster QC]({asset_link_root}/umap_{study}_{lineage_name}_subcluster_qc.png)",
                 "",
             ]
         )
@@ -838,11 +841,11 @@ def table_or_none(rows, columns, language):
 
 def report_values(language):
     if language == "ja":
-        summary_columns = ["study", "cells", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"]
+        summary_columns = ["study", "cells", "genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"]
         interpretation_lines = []
         for row in summary_df.itertuples(index=False):
             interpretation_lines.append(
-                f"- `{row.study}`: {row.n_cells:,} cells、submitted label {row.n_v12_labels} 種、"
+                f"- `{row.study}`: {row.n_cells:,} cells、{row.n_genes:,} genes、submitted label {row.n_labels} 種、"
                 f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}、median confidence {row.median_confidence:.3f}。"
             )
             if row.invalid_labels:
@@ -862,7 +865,7 @@ def report_values(language):
         run_summary = "\n".join(
             [
                 "- 実行単位: one dataset in, one annotated dataset out。",
-                "- 実行経路: Codex skill `hipc-annotation-v12` -> bundled helper `run_one.sh` -> v12 CLI -> validator -> report inspection。",
+                "- 実行経路: Codex skill `hipc-annotation` -> bundled helper `run_one.sh` -> annotation CLI -> validator -> report inspection。",
                 "- 検証: submission row count、H5AD observation count、official label validity、H5AD/submission agreement、confidence column、report image link を確認する。",
                 "- このレポートは workflow の再掲ではなく、このデータセットの marker 欠損、UMAP、label 構成、review concern を読むためのもの。",
             ]
@@ -873,23 +876,23 @@ def report_values(language):
                 f"- cellxgene H5ADs: `{output_root_display}/cellxgene/`",
                 f"- Marker availability table: `{output_root_display}/tables/marker_gene_availability.tsv`",
                 f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
-                f"- Subcluster evidence: `{output_root_display}/tables/v12_lineage_subcluster_evidence.tsv.gz`",
+                f"- Subcluster evidence: `{output_root_display}/tables/lineage_subcluster_evidence.tsv.gz`",
                 f"- Diagnostics tables: `{output_root_display}/tables/`",
             ]
         )
         llm_review_prompt = "\n".join(
             [
-                "このデータセット別 HIPC v12 annotation report をレビューしてください。",
+                "このデータセット別 HIPC annotation report をレビューしてください。",
                 "marker gene 欠損アラート、parent/Blood label の残存、low-confidence 領域、doublet call、marker-expression UMAP が submitted label を支持しているかに注目してください。",
                 "README の固定 workflow は繰り返さず、このデータセット固有の懸念点と次に確認すべき点だけを返してください。",
             ]
         )
     else:
-        summary_columns = ["study", "cells", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"]
+        summary_columns = ["study", "cells", "genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"]
         interpretation_lines = []
         for row in summary_df.itertuples(index=False):
             interpretation_lines.append(
-                f"- `{row.study}`: {row.n_cells:,} cells, {row.n_v12_labels} submitted labels, "
+                f"- `{row.study}`: {row.n_cells:,} cells, {row.n_genes:,} genes, {row.n_labels} submitted labels, "
                 f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}, median confidence {row.median_confidence:.3f}."
             )
             if row.invalid_labels:
@@ -909,7 +912,7 @@ def report_values(language):
         run_summary = "\n".join(
             [
                 "- Execution unit: one dataset in, one annotated dataset out.",
-                "- Execution path: Codex skill `hipc-annotation-v12` -> bundled helper `run_one.sh` -> v12 CLI -> validator -> report inspection.",
+                "- Execution path: Codex skill `hipc-annotation` -> bundled helper `run_one.sh` -> annotation CLI -> validator -> report inspection.",
                 "- Validation checks: submission row count, H5AD observation count, official label validity, H5AD/submission agreement, confidence column, and report image links.",
                 "- This report is for dataset-specific marker availability, UMAPs, label composition, and review concerns rather than repeating the fixed workflow.",
             ]
@@ -920,13 +923,13 @@ def report_values(language):
                 f"- cellxgene H5ADs: `{output_root_display}/cellxgene/`",
                 f"- Marker availability table: `{output_root_display}/tables/marker_gene_availability.tsv`",
                 f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
-                f"- Subcluster evidence: `{output_root_display}/tables/v12_lineage_subcluster_evidence.tsv.gz`",
+                f"- Subcluster evidence: `{output_root_display}/tables/lineage_subcluster_evidence.tsv.gz`",
                 f"- Diagnostics tables: `{output_root_display}/tables/`",
             ]
         )
         llm_review_prompt = "\n".join(
             [
-                "Review this dataset-specific HIPC v12 annotation report.",
+                "Review this dataset-specific HIPC annotation report.",
                 "Focus on marker availability alerts, residual parent/Blood labels, low-confidence regions, doublet calls, and whether marker-expression UMAPs support the submitted labels.",
                 "Do not restate the fixed pipeline workflow from README; provide dataset-specific concerns and suggested next checks only.",
             ]
@@ -946,11 +949,11 @@ def report_values(language):
     }
 
 for language in requested_languages:
-    template_path = project_root / "templates" / f"report_dataset_{language}.md"
+    template_path = template_dir / f"report_dataset_{language}.md"
     if not template_path.exists():
-        template_path = project_root / "templates" / "report_dataset_en.md"
+        template_path = template_dir / "report_dataset_en.md"
     report_text = render_template(template_path, report_values(language))
     (report_dir / f"report_{language}.md").write_text(report_text + "\n", encoding="utf-8")
 
 print(summary_df.to_string(index=False))
-print(f"Wrote v12 independent outputs to {output_root}")
+print(f"Wrote independent outputs to {output_root}")

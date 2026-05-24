@@ -5,11 +5,11 @@ from pathlib import Path
 
 import pandas as pd
 
-parser = argparse.ArgumentParser(description="Run HIPC v12 annotation for one dataset")
+parser = argparse.ArgumentParser(description="Run HIPC annotation for one dataset")
 parser.add_argument("--study-id", required=True)
 parser.add_argument("--input-h5ad", required=True)
 parser.add_argument("--out", required=True)
-parser.add_argument("--config", default="configs/v12_pipeline.json")
+parser.add_argument("--config", default="configs/annotation_pipeline.json")
 parser.add_argument("--report-languages", default="en")
 parser.add_argument("--barcode-key", default="index")
 parser.add_argument("--raw-count-layer", default="counts")
@@ -44,7 +44,7 @@ manifest.to_csv(manifest_path, sep="	", index=False)
 
 cmd = [
     "/gpfs/gibbs/project/hafler/yy693/conda_envs/scanpy1.10.2/bin/python",
-    "scripts/pipeline/hipc_annotate_v12.py",
+    "scripts/pipeline/hipc_annotate.py",
     "--config",
     args.config,
     "--manifest",

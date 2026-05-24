@@ -1,10 +1,11 @@
 {
-  "version": "260522_v12_pipeline_scaffold",
-  "output_root": "outputs/final_annotations/260522_v12_pipeline_scaffold",
+  "version": "hipc_annotation_master",
+  "output_root": "outputs/final_annotations/hipc_annotation_master",
   "report": {
     "default_language": "en",
     "development_languages": ["ja"],
-    "write_languages": ["en", "ja"]
+    "write_languages": ["en", "ja"],
+    "template_dir": "skills/hipc-annotation/templates"
   },
   "ontology": {
     "path": "data/reference/CT_Ontology_Spreadsheet_20260323.tsv",

@@ -1,17 +1,19 @@
 ---
-name: hipc-annotation-v12
-description: Use when Codex must annotate, validate, review, or package one HIPC scRNA-seq Annotation Benchmark dataset using the v12 independent annotation workflow. This skill tells Codex how to inspect the input, apply the evidence hierarchy, run the deterministic helper scripts, validate outputs, and report review concerns without relying on prior-version labels or ad hoc hard-coding.
+name: hipc-annotation
+description: Use when Codex must annotate, validate, review, or package one HIPC scRNA-seq Annotation Benchmark dataset using the independent annotation workflow. This skill tells Codex how to inspect the input, apply the evidence hierarchy, run the deterministic helper scripts, validate outputs, and report review concerns without relying on prior-version labels or ad hoc hard-coding.
 metadata:
-  short-description: Codex workflow for one HIPC v12 dataset
+  short-description: Codex workflow for one HIPC dataset
 ---
 
-# HIPC Annotation v12
+# HIPC Annotation
 
 ## What This Skill Is
 
 This is a Codex operating procedure for one HIPC dataset. The skill is not the shell script. The shell scripts are bundled deterministic helpers that Codex may run to avoid rewriting fragile pipeline commands.
 
 When this skill triggers, Codex should own the workflow end-to-end: inspect inputs, choose an output root, run the helper, validate outputs, inspect the report, and summarize concerns. Do not hand the command back to the user unless blocked.
+
+The report templates are part of this skill at `templates/report_dataset_en.md` and `templates/report_dataset_ja.md`. The deterministic CLI fills evidence-backed tables and figure links; Codex remains responsible for inspecting whether the generated interpretation is adequate for the dataset and editing the report when a dataset needs a more tailored explanation.
 
 ## Core Workflow For Codex
 
@@ -31,13 +33,13 @@ For multiple datasets, Codex should repeat this single-dataset workflow per data
 Codex may run the helper like this after resolving real paths:
 
 ```bash
-skills/hipc-annotation-v12/scripts/run_one.sh   --study-id STUDY   --input-h5ad /path/to/STUDY.h5ad   --out outputs/STUDY   --report-languages en,ja
+skills/hipc-annotation/scripts/run_one.sh   --study-id STUDY   --input-h5ad /path/to/STUDY.h5ad   --out outputs/STUDY   --report-languages en,ja
 ```
 
 For validating an existing single-dataset output, Codex may run:
 
 ```bash
-skills/hipc-annotation-v12/scripts/run_one.sh   --study-id STUDY   --out outputs/STUDY   --validate-only
+skills/hipc-annotation/scripts/run_one.sh   --study-id STUDY   --out outputs/STUDY   --validate-only
 ```
 
 These commands are not user instructions. They are reliable local tools for Codex to execute.
@@ -64,7 +66,7 @@ Required:
 - study ID
 - output directory
 - official ontology TSV from config
-- v12 config
+- annotation config
 
 Expected evidence when available:
 
@@ -101,7 +103,7 @@ The goal is to encode a high-quality manual annotation workflow:
 For one dataset, the output root should include:
 
 - `submissions/<study_id>_annotation.tsv`
-- `cellxgene/<study_id>.final_v12_recursive_screfmapping.cxg.h5ad`
+- `cellxgene/<study_id>.final_annotation.cxg.h5ad`
 - `report_en.md` and optional `report_ja.md`
 - `assets/*.png`
 - diagnostics tables under `tables/`
@@ -113,8 +115,8 @@ A run is not complete unless validation confirms:
 - submission row counts match cellxgene H5AD `n_obs`
 - `predicted_cell_type` has no missing values
 - predicted labels are in the official ontology after configured exclusions
-- submission TSV labels match `submission_cell_type_v12_recursive_screfmapping` in H5AD obs
-- H5AD includes `confidence_score_v12_recursive_screfmapping`
+- submission TSV labels match `submission_cell_type` in H5AD obs
+- H5AD includes `confidence_score`
 - report inline image links resolve
 
 ## Report Review Checklist
@@ -122,6 +124,7 @@ A run is not complete unless validation confirms:
 Before declaring success, Codex should inspect that the report includes:
 
 - summary table with parent-label fraction, invalid labels, doublet counts, low-confidence counts, and median confidence
+- dataset gene count and marker gene availability alerts
 - UMAPs for final labels, lineage/reason, QC/confidence, and lineage-specific subclusters
 - marker dotplots for submitted labels
 - marker availability alerts or concerns when relevant
