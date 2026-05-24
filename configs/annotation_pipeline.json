@@ -58,6 +58,14 @@
   "decision_engine": {
     "screfmapping_single_source_rescue_allowed_when_alert": ["pass"],
     "screfmapping_requires_independent_support_when_alert": ["warning", "critical"],
+    "marker_alert_confidence_caps": {
+      "critical": 0.70,
+      "warning": 0.82
+    },
+    "review_concern_thresholds": {
+      "dataset_source_disagreement_fraction_gt": 0.20,
+      "label_source_disagreement_fraction_gt": 0.50
+    },
     "independent_support_sources": ["CellTypist", "Pan-human", "Azimuth PBMC", "cluster_consensus", "marker_score"]
   }
 }

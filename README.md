@@ -86,6 +86,7 @@ For one dataset:
   tables/final_annotation_summary.tsv
   tables/final_annotation_validation.tsv
   tables/lineage_subcluster_evidence.tsv.gz
+  tables/source_disagreement_summary.tsv
 ```
 
 The submission TSV contains:
@@ -153,9 +154,10 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 7. **Ontology-constrained labels**: final labels must be official ontology labels after configured exclusions. Known problematic labels such as `Effector B` are excluded by config when appropriate.
 8. **Doublet and QC handling**: doublet evidence is not a filter. Supported doublets are submitted as `Doublet`; low-QC or mixed-marker cells receive confidence caps or review concerns.
 9. **Confidence calibration**: confidence reflects reference agreement, marker support, subcluster coherence, score margin, QC penalties, and doublet/mixed-lineage flags.
-10. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, interpretation notes, UMAPs, marker dotplots, lineage-specific subcluster plots, and output files. The fixed workflow is documented in this README and is not repeated in every report.
+10. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, source disagreement, interpretation notes, UMAPs, marker dotplots, lineage-specific subcluster plots, and output files. The fixed workflow is documented in this README and is not repeated in every report.
 11. **Validation**: Codex must confirm submission row counts, official labels, non-missing predictions, H5AD/submission agreement, confidence fields, and report image links.
-12. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
+12. **Codex report assessment**: after generation, Codex reads the report and updates the dataset-specific assessment when the automated text is too generic.
+13. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
 
 ## Core Principles
 
@@ -178,6 +180,7 @@ Codex should not mark a run complete unless validation confirms:
 - H5AD annotation labels match submission TSV labels
 - confidence columns are present
 - report image links resolve
+- source-disagreement diagnostics and dataset-specific assessment are present
 
 ## Why No Batch CLI
 

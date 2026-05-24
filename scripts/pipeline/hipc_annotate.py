@@ -272,7 +272,13 @@ marker_set_to_labels = {marker_set: spec["official_labels"] for marker_set, spec
 label_to_marker_set = {label: marker_set for marker_set, labels in marker_set_to_labels.items() for label in labels}
 critical_threshold = float(config["screfmapping"]["marker_availability_alerts"]["critical_present_fraction_lt"])
 warning_threshold = float(config["screfmapping"]["marker_availability_alerts"]["warning_present_fraction_lt"])
+marker_alert_confidence_caps = config["decision_engine"].get("marker_alert_confidence_caps", {"critical": 0.70, "warning": 0.82})
+review_concern_thresholds = config["decision_engine"].get(
+    "review_concern_thresholds",
+    {"dataset_source_disagreement_fraction_gt": 0.20, "label_source_disagreement_fraction_gt": 0.50},
+)
 marker_availability_rows = []
+source_disagreement_rows = []
 
 for input_row in manifest.itertuples(index=False):
     study = input_row.study_id
@@ -506,10 +512,8 @@ for input_row in manifest.itertuples(index=False):
                 calibrated_conf = min(calibrated_conf, 0.68)
             elif margin < 0.30:
                 calibrated_conf = min(calibrated_conf, 0.78)
-            if accepted and marker_alert == "critical":
-                calibrated_conf = min(calibrated_conf, 0.70)
-            elif accepted and marker_alert == "warning":
-                calibrated_conf = min(calibrated_conf, 0.82)
+            if accepted and marker_alert in marker_alert_confidence_caps:
+                calibrated_conf = min(calibrated_conf, float(marker_alert_confidence_caps[marker_alert]))
             cluster_to_conf[cluster_id] = min(0.93, max(0.35, calibrated_conf))
             marker_suffix = f"_marker_{marker_alert}" if marker_alert in {"critical", "warning"} else ""
             cluster_to_reason[cluster_id] = f"independent_{lineage_name}_subcluster_to_{chosen_label.replace(' ', '_')}{marker_suffix}"
@@ -601,6 +605,24 @@ for input_row in manifest.itertuples(index=False):
     annotation_reason.loc[doublet] = "doublet_override"
     annotation_conf.loc[doublet] = annotation_conf.loc[doublet].clip(0.05, 0.60)
 
+    final_marker_set = annotation_label.map(label_to_marker_set).fillna("not_applicable")
+    final_marker_alert = final_marker_set.map(study_marker_alert).fillna("not_applicable")
+    for alert_level, cap in marker_alert_confidence_caps.items():
+        cap_mask = final_marker_alert.eq(alert_level) & ~doublet
+        annotation_conf.loc[cap_mask] = annotation_conf.loc[cap_mask].clip(0.05, float(cap))
+
+    evidence_cols = [column for column in ref_cols + ["screfmapping_official_label"] if column in obs.columns]
+    source_agreement_n = pd.Series(0, index=obs.index, dtype="int64")
+    source_informative_n = pd.Series(0, index=obs.index, dtype="int64")
+    for column in evidence_cols:
+        values = obs[column].astype(str)
+        informative = values.ne("not_available")
+        source_informative_n += informative.astype(int)
+        source_agreement_n += (informative & values.eq(annotation_label.astype(str))).astype(int)
+    source_disagreement_n = (source_informative_n - source_agreement_n).clip(lower=0)
+    source_agreement_fraction = (source_agreement_n / source_informative_n.replace(0, np.nan)).fillna(0.0)
+    source_disagreement_flag = source_disagreement_n.ge(2) & source_agreement_fraction.lt(0.50)
+
     submission = pd.DataFrame(
         {
             "cell_barcode": adata.obs_names.astype(str),
@@ -618,12 +640,24 @@ for input_row in manifest.itertuples(index=False):
     adata.obs["parent_lineage"] = lineage.astype(str).values
     adata.obs["annotation_reason"] = annotation_reason.astype(str).values
     adata.obs["annotation_logic_version"] = version
+    adata.obs["marker_availability_alert_for_label"] = final_marker_alert.astype(str).values
+    adata.obs["source_agreement_n"] = source_agreement_n.values
+    adata.obs["source_informative_n"] = source_informative_n.values
+    adata.obs["source_disagreement_n"] = source_disagreement_n.values
+    adata.obs["source_agreement_fraction"] = source_agreement_fraction.round(4).values
+    adata.obs["source_disagreement_flag"] = source_disagreement_flag.astype(str).values
 
     diagnostics_cols = [
         "submission_cell_type",
         "confidence_score",
         "parent_lineage",
         "annotation_reason",
+        "marker_availability_alert_for_label",
+        "source_agreement_n",
+        "source_informative_n",
+        "source_disagreement_n",
+        "source_agreement_fraction",
+        "source_disagreement_flag",
         "B_lineage_leiden",
         "T_NK_lineage_leiden",
         "Myeloid_lineage_leiden",
@@ -651,6 +685,8 @@ for input_row in manifest.itertuples(index=False):
     plt.close("all")
     sc.pl.umap(adata, color=["n_genes_by_counts", "pct_counts_mt", "confidence_score"], frameon=False, show=False, save=f"_{study}_annotation_qc_confidence.png")
     plt.close("all")
+    sc.pl.umap(adata, color=["source_agreement_fraction", "source_disagreement_n", "source_disagreement_flag"], frameon=False, show=False, save=f"_{study}_annotation_source_disagreement.png")
+    plt.close("all")
 
     focus_markers = [
         "MS4A1", "CD79A", "TCL1A", "IGHM", "IGHD", "CD27", "TNFRSF13B", "MZB1", "JCHAIN", "XBP1",
@@ -675,6 +711,7 @@ for input_row in manifest.itertuples(index=False):
         f"umap_{study}_annotation_label.png",
         f"umap_{study}_annotation_lineage_reason.png",
         f"umap_{study}_annotation_qc_confidence.png",
+        f"umap_{study}_annotation_source_disagreement.png",
         f"umap_{study}_annotation_marker_expression.png",
     ]:
         source_png = figures_dir / figure_name
@@ -689,6 +726,50 @@ for input_row in manifest.itertuples(index=False):
         label_rows.append({"study": study, "predicted_cell_type": label_name, "n_cells": int(n_cells)})
     for reason, n_cells in annotation_reason.value_counts().items():
         reason_rows.append({"study": study, "annotation_reason": reason, "n_cells": int(n_cells)})
+    for row in (
+        pd.DataFrame(
+            {
+                "predicted_cell_type": annotation_label.astype(str),
+                "source_agreement_fraction": source_agreement_fraction,
+                "source_disagreement_flag": source_disagreement_flag,
+            }
+        )
+        .groupby("predicted_cell_type")
+        .agg(
+            n_cells=("predicted_cell_type", "size"),
+            median_source_agreement_fraction=("source_agreement_fraction", "median"),
+            source_disagreement_flag_n=("source_disagreement_flag", "sum"),
+        )
+        .reset_index()
+        .itertuples(index=False)
+    ):
+        source_disagreement_rows.append(
+            {
+                "study": study,
+                "predicted_cell_type": row.predicted_cell_type,
+                "n_cells": int(row.n_cells),
+                "median_source_agreement_fraction": float(row.median_source_agreement_fraction),
+                "source_disagreement_flag_n": int(row.source_disagreement_flag_n),
+                "source_disagreement_flag_fraction": float(row.source_disagreement_flag_n / row.n_cells),
+            }
+        )
+        if float(row.source_disagreement_flag_n / row.n_cells) > float(review_concern_thresholds["label_source_disagreement_fraction_gt"]):
+            concern_rows.append(
+                {
+                    "study": study,
+                    "concern": f"High source disagreement for {row.predicted_cell_type}",
+                    "n_cells": int(row.source_disagreement_flag_n),
+                }
+            )
+    if float(source_disagreement_flag.mean()) > float(review_concern_thresholds["dataset_source_disagreement_fraction_gt"]):
+        concern_rows.append({"study": study, "concern": "High dataset-level source disagreement", "n_cells": int(source_disagreement_flag.sum())})
+    for marker_set, alert_level in study_marker_alert.items():
+        if alert_level not in {"critical", "warning"}:
+            continue
+        affected_labels = set(marker_set_to_labels.get(marker_set, []))
+        affected_n = int(annotation_label.astype(str).isin(affected_labels).sum())
+        if affected_n:
+            concern_rows.append({"study": study, "concern": f"{alert_level} marker availability for {marker_set}", "n_cells": affected_n})
 
     invalid = sorted(set(submission["predicted_cell_type"]) - official_set)
     summary_rows.append(
@@ -708,6 +789,8 @@ for input_row in manifest.itertuples(index=False):
             "effector_b_n": int(submission["predicted_cell_type"].eq("Effector B").sum()),
             "median_confidence": float(submission["confidence_score"].median()),
             "low_confidence_n": int(submission["confidence_score"].lt(0.60).sum()),
+            "source_disagreement_flag_n": int(source_disagreement_flag.sum()),
+            "source_disagreement_flag_fraction": float(source_disagreement_flag.mean()),
             "invalid_labels": ",".join(invalid),
         }
     )
@@ -728,6 +811,7 @@ reason_df = pd.DataFrame(reason_rows)
 subcluster_df = pd.DataFrame(subcluster_rows)
 validation_df = pd.DataFrame(validation_rows)
 concern_df = pd.DataFrame(concern_rows)
+source_disagreement_df = pd.DataFrame(source_disagreement_rows)
 marker_availability_df = pd.DataFrame(marker_availability_rows)
 marker_alert_df = marker_availability_df[marker_availability_df["alert_level"].isin(["critical", "warning"])].copy()
 marker_availability_df.to_csv(tables_dir / "marker_gene_availability.tsv", sep="\t", index=False)
@@ -739,6 +823,7 @@ reason_df.to_csv(tables_dir / "annotation_reason_counts.tsv", sep="\t", index=Fa
 subcluster_df.to_csv(tables_dir / "lineage_subcluster_evidence.tsv.gz", sep="\t", index=False)
 validation_df.to_csv(tables_dir / "final_annotation_validation.tsv", sep="\t", index=False)
 concern_df.to_csv(tables_dir / "review_concerns.tsv", sep="\t", index=False)
+source_disagreement_df.to_csv(tables_dir / "source_disagreement_summary.tsv", sep="\t", index=False)
 
 (output_root / "final_annotation_summary.json").write_text(
     json.dumps({"version": version, "manifest": str(project_path(args.manifest)), "summary": summary_df.to_dict(orient="records")}, indent=2),
@@ -773,6 +858,7 @@ for row in summary_df.itertuples(index=False):
             "artifact_like": f"{row.artifact_n:,}",
             "median_confidence": f"{row.median_confidence:.3f}",
             "low_confidence": f"{row.low_confidence_n:,}",
+            "source_disagreement": f"{row.source_disagreement_flag_n:,} ({row.source_disagreement_flag_fraction:.3f})",
             "invalid_labels": row.invalid_labels if row.invalid_labels else "none",
         }
     )
@@ -798,6 +884,20 @@ label_rows_for_report = []
 for row in label_df.itertuples(index=False):
     label_rows_for_report.append({"study": row.study, "predicted_cell_type": row.predicted_cell_type, "cells": f"{row.n_cells:,}"})
 
+source_disagreement_rows_for_report = []
+if not source_disagreement_df.empty:
+    for row in source_disagreement_df.sort_values(["source_disagreement_flag_fraction", "source_disagreement_flag_n"], ascending=False).head(12).itertuples(index=False):
+        source_disagreement_rows_for_report.append(
+            {
+                "study": row.study,
+                "predicted_cell_type": row.predicted_cell_type,
+                "cells": f"{row.n_cells:,}",
+                "median_source_agreement": f"{row.median_source_agreement_fraction:.3f}",
+                "disagreement_cells": f"{row.source_disagreement_flag_n:,}",
+                "disagreement_fraction": f"{row.source_disagreement_flag_fraction:.3f}",
+            }
+        )
+
 figure_lines = []
 for study in summary_df["study"]:
     figure_lines.extend(
@@ -809,6 +909,8 @@ for study in summary_df["study"]:
             f"![{study} lineage and annotation reason]({asset_link_root}/umap_{study}_annotation_lineage_reason.png)",
             "",
             f"![{study} QC and confidence]({asset_link_root}/umap_{study}_annotation_qc_confidence.png)",
+            "",
+            f"![{study} source agreement and disagreement]({asset_link_root}/umap_{study}_annotation_source_disagreement.png)",
             "",
             f"![{study} marker expression UMAPs]({asset_link_root}/umap_{study}_annotation_marker_expression.png)",
             "",
@@ -841,27 +943,37 @@ def table_or_none(rows, columns, language):
 
 def report_values(language):
     if language == "ja":
-        summary_columns = ["study", "cells", "genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"]
+        summary_columns = ["study", "cells", "genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "source_disagreement", "invalid_labels"]
         interpretation_lines = []
+        assessment_lines = []
         for row in summary_df.itertuples(index=False):
             interpretation_lines.append(
                 f"- `{row.study}`: {row.n_cells:,} cells、{row.n_genes:,} genes、submitted label {row.n_labels} 種、"
                 f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}、median confidence {row.median_confidence:.3f}。"
             )
+            assessment_lines.append(
+                f"- 全体像: {row.n_cells:,} cells / {row.n_genes:,} genes。parent/Blood residual は {row.parent_or_blood_fraction:.3f}、"
+                f"low-confidence は {row.low_confidence_n:,} cells、source disagreement flag は {row.source_disagreement_flag_n:,} cells ({row.source_disagreement_flag_fraction:.3f})。"
+            )
             if row.invalid_labels:
                 interpretation_lines.append(f"  - Invalid label があるため即時確認が必要: {row.invalid_labels}。")
             if row.low_confidence_n:
                 interpretation_lines.append(f"  - {row.low_confidence_n:,} cells は low confidence。QC / confidence UMAP 上で局在を確認する。")
+                assessment_lines.append("- 優先確認: low-confidence 領域が QC UMAP と source-disagreement UMAP で同じ場所に集まるかを確認する。")
             if row.doublet_n:
                 interpretation_lines.append(f"  - {row.doublet_n:,} cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。")
             if row.blood_cell_n:
                 interpretation_lines.append(f"  - {row.blood_cell_n:,} cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。")
+                assessment_lines.append("- 優先確認: `Blood Cell` 残存が孤立 cluster なのか、複数 lineage に分散した曖昧領域なのかを UMAP で確認する。")
             study_alerts = marker_alert_df[marker_alert_df["study"].astype(str).eq(str(row.study))]
             if not study_alerts.empty:
                 alert_labels = ", ".join(study_alerts["marker_set"].astype(str).tolist())
                 interpretation_lines.append(f"  - Marker gene 欠損アラート: {alert_labels}。該当 marker set に依存する fine label は慎重に見る。")
+                assessment_lines.append(f"- Marker gene 欠損: {alert_labels} は confidence cap 対象。該当 label は marker expression UMAP と dotplot で妥当性を確認する。")
         if not interpretation_lines:
             interpretation_lines.append("- データセット固有の解釈メモは生成されていない。")
+        if not assessment_lines:
+            assessment_lines.append("- 自動 assessment では大きな警告は検出されていない。UMAP と dotplot の目視確認は必要。")
         run_summary = "\n".join(
             [
                 "- 実行単位: one dataset in, one annotated dataset out。",
@@ -877,6 +989,7 @@ def report_values(language):
                 f"- Marker availability table: `{output_root_display}/tables/marker_gene_availability.tsv`",
                 f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
                 f"- Subcluster evidence: `{output_root_display}/tables/lineage_subcluster_evidence.tsv.gz`",
+                f"- Source disagreement summary: `{output_root_display}/tables/source_disagreement_summary.tsv`",
                 f"- Diagnostics tables: `{output_root_display}/tables/`",
             ]
         )
@@ -888,27 +1001,37 @@ def report_values(language):
             ]
         )
     else:
-        summary_columns = ["study", "cells", "genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "invalid_labels"]
+        summary_columns = ["study", "cells", "genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "source_disagreement", "invalid_labels"]
         interpretation_lines = []
+        assessment_lines = []
         for row in summary_df.itertuples(index=False):
             interpretation_lines.append(
                 f"- `{row.study}`: {row.n_cells:,} cells, {row.n_genes:,} genes, {row.n_labels} submitted labels, "
                 f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}, median confidence {row.median_confidence:.3f}."
             )
+            assessment_lines.append(
+                f"- Overall: {row.n_cells:,} cells / {row.n_genes:,} genes. Parent/Blood residual fraction is {row.parent_or_blood_fraction:.3f}; "
+                f"low-confidence cells are {row.low_confidence_n:,}; source-disagreement flags affect {row.source_disagreement_flag_n:,} cells ({row.source_disagreement_flag_fraction:.3f})."
+            )
             if row.invalid_labels:
                 interpretation_lines.append(f"  - Invalid labels require immediate review: {row.invalid_labels}.")
             if row.low_confidence_n:
                 interpretation_lines.append(f"  - {row.low_confidence_n:,} cells have low confidence and should be inspected on QC/confidence UMAPs.")
+                assessment_lines.append("- Review priority: check whether low-confidence regions co-localize with QC artifacts or source-disagreement regions on UMAP.")
             if row.doublet_n:
                 interpretation_lines.append(f"  - {row.doublet_n:,} cells are submitted as `Doublet`; inspect mixed-lineage marker expression before final submission.")
             if row.blood_cell_n:
                 interpretation_lines.append(f"  - {row.blood_cell_n:,} cells remain `Blood Cell`; these are residual ambiguous cells rather than filtered cells.")
+                assessment_lines.append("- Review priority: inspect whether residual `Blood Cell` cells form isolated clusters or dispersed ambiguous zones across lineages.")
             study_alerts = marker_alert_df[marker_alert_df["study"].astype(str).eq(str(row.study))]
             if not study_alerts.empty:
                 alert_labels = ", ".join(study_alerts["marker_set"].astype(str).tolist())
                 interpretation_lines.append(f"  - Marker availability alerts are present for: {alert_labels}. Fine labels relying on these marker sets should be treated cautiously.")
+                assessment_lines.append(f"- Marker availability: {alert_labels} are confidence-capped; validate affected labels on marker-expression UMAPs and dotplots.")
         if not interpretation_lines:
             interpretation_lines.append("- No dataset-specific interpretation notes were generated.")
+        if not assessment_lines:
+            assessment_lines.append("- No major automated assessment warnings were detected, but UMAP and dotplot review is still required.")
         run_summary = "\n".join(
             [
                 "- Execution unit: one dataset in, one annotated dataset out.",
@@ -924,6 +1047,7 @@ def report_values(language):
                 f"- Marker availability table: `{output_root_display}/tables/marker_gene_availability.tsv`",
                 f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
                 f"- Subcluster evidence: `{output_root_display}/tables/lineage_subcluster_evidence.tsv.gz`",
+                f"- Source disagreement summary: `{output_root_display}/tables/source_disagreement_summary.tsv`",
                 f"- Diagnostics tables: `{output_root_display}/tables/`",
             ]
         )
@@ -939,8 +1063,10 @@ def report_values(language):
         "REPORT_UPDATED": report_updated,
         "STUDY_SUMMARY_TABLE": table_or_none(summary_rows, summary_columns, language),
         "RUN_SUMMARY": run_summary,
+        "DATASET_ASSESSMENT": "\n".join(assessment_lines),
         "INTERPRETATION_NOTES": "\n".join(interpretation_lines),
         "MARKER_ALERTS": table_or_none(marker_alert_rows, ["study", "marker_set", "alert", "present_fraction", "missing_critical_markers", "missing_genes"], language),
+        "SOURCE_DISAGREEMENT": table_or_none(source_disagreement_rows_for_report, ["study", "predicted_cell_type", "cells", "median_source_agreement", "disagreement_cells", "disagreement_fraction"], language),
         "REVIEW_CONCERNS": table_or_none(concern_rows_for_report, ["study", "concern", "cells"], language),
         "LABEL_COMPOSITION": table_or_none(label_rows_for_report, ["study", "predicted_cell_type", "cells"], language),
         "FIGURE_BLOCKS": figure_blocks,

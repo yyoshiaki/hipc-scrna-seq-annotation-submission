@@ -23,8 +23,9 @@ The report templates are part of this skill at `templates/report_dataset_en.md` 
 4. If changing annotation logic, read `references/annotation_decision_contract.md` first.
 5. Run the bundled helper `scripts/run_one.sh` from the repository root.
 6. Let `run_one.sh` call the deterministic CLI and validator. Do not skip validation.
-7. Inspect the generated report for obvious broken paths, stale metadata, missing UMAPs/dotplots, or misleading file paths.
-8. Report completion only after validation passes, or report the exact failing validation item.
+7. Read `references/report_authoring_contract.md`, inspect the generated report, and revise the `Dataset-Specific Assessment` section when the automated assessment is too generic.
+8. Inspect the generated report for obvious broken paths, stale metadata, missing UMAPs/dotplots, misleading file paths, or generic interpretation text.
+9. Report completion only after validation passes, or report the exact failing validation item.
 
 For multiple datasets, Codex should repeat this single-dataset workflow per dataset. Do not add a batch CLI unless explicitly requested.
 
@@ -96,6 +97,7 @@ The goal is to encode a high-quality manual annotation workflow:
 - Do not use prior-version parent lineage, subcluster, or confidence columns as starting points.
 - Use CellTypist, Pan-human Azimuth, Azimuth when present, cluster consensus, top-marker labels, raw reference labels, marker scores, QC, and doublet flags for broad lineage assignment.
 - scRefMapping is auxiliary and lineage-scoped only after broad lineage assignment. It must not vote in broad lineage assignment or override weak marker availability without independent support.
+- If scRefMapping reference files are missing or internal-only, read `references/screfmapping_reference_distribution.md` and report that limitation instead of fabricating evidence.
 - Avoid study-specific hard-coding. If a rule cannot be explained as a general marker/reference/QC/ontology principle, keep it out of the pipeline and document it as a review concern instead.
 
 ## Output Contract
@@ -125,6 +127,8 @@ Before declaring success, Codex should inspect that the report includes:
 
 - summary table with parent-label fraction, invalid labels, doublet counts, low-confidence counts, and median confidence
 - dataset gene count and marker gene availability alerts
+- dataset-specific assessment that has been read and, if needed, edited by Codex after generation
+- source-disagreement table and UMAP
 - UMAPs for final labels, lineage/reason, QC/confidence, and lineage-specific subclusters
 - marker dotplots for submitted labels
 - marker availability alerts or concerns when relevant

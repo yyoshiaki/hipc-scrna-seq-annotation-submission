@@ -16,9 +16,17 @@
 
 {{INTERPRETATION_NOTES}}
 
+## データセット固有の評価
+
+{{DATASET_ASSESSMENT}}
+
 ## Marker Gene 欠損アラート
 
 {{MARKER_ALERTS}}
+
+## ソース間不一致
+
+{{SOURCE_DISAGREEMENT}}
 
 ## レビュー優先事項
 
