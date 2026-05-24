@@ -1,60 +1,59 @@
 ---
 name: hipc-annotation-v12
-description: Use when running, reviewing, designing, or packaging the HIPC scRNA-seq Annotation Benchmark v12 independent annotation workflow. This skill defines the single-dataset annotation interface, evidence hierarchy, hard-code guardrails, reporting contract, and execution/validation wrapper around the v12 CLI.
+description: Use when Codex must annotate, validate, review, or package one HIPC scRNA-seq Annotation Benchmark dataset using the v12 independent annotation workflow. This skill tells Codex how to inspect the input, apply the evidence hierarchy, run the deterministic helper scripts, validate outputs, and report review concerns without relying on prior-version labels or ad hoc hard-coding.
 metadata:
-  short-description: HIPC v12 one-dataset annotation and validation
+  short-description: Codex workflow for one HIPC v12 dataset
 ---
 
 # HIPC Annotation v12
 
-## Purpose
+## What This Skill Is
 
-Use this skill for HIPC scRNA-seq Annotation Benchmark work when the task involves annotation strategy, running v12, validating outputs, making reports, or preparing a clean submission implementation.
+This is a Codex operating procedure for one HIPC dataset. The skill is not the shell script. The shell scripts are bundled deterministic helpers that Codex may run to avoid rewriting fragile pipeline commands.
 
-The primary interface is one dataset in, one annotated dataset out:
+When this skill triggers, Codex should own the workflow end-to-end: inspect inputs, choose an output root, run the helper, validate outputs, inspect the report, and summarize concerns. Do not hand the command back to the user unless blocked.
+
+## Core Workflow For Codex
+
+1. Confirm the task is one dataset unless the user explicitly asks for multi-dataset orchestration.
+2. Identify `study_id`, `input_h5ad`, and output root. Use a dated output root if none is given.
+3. Inspect or infer whether the H5AD is an evidence container with reference labels, marker/QC fields, and doublet evidence.
+4. If changing annotation logic, read `references/annotation_decision_contract.md` first.
+5. Run the bundled helper `scripts/run_one.sh` from the repository root.
+6. Let `run_one.sh` call the deterministic CLI and validator. Do not skip validation.
+7. Inspect the generated report for obvious broken paths, stale metadata, missing UMAPs/dotplots, or misleading file paths.
+8. Report completion only after validation passes, or report the exact failing validation item.
+
+For multiple datasets, Codex should repeat this single-dataset workflow per dataset. Do not add a batch CLI unless explicitly requested.
+
+## Helper Invocation Pattern
+
+Codex may run the helper like this after resolving real paths:
 
 ```bash
 skills/hipc-annotation-v12/scripts/run_one.sh   --study-id STUDY   --input-h5ad /path/to/STUDY.h5ad   --out outputs/STUDY   --report-languages en,ja
 ```
 
-Do not introduce a batch CLI unless explicitly requested. For multiple datasets, repeat `run_one.sh` per dataset.
+For validating an existing single-dataset output, Codex may run:
 
-## Core Concept
+```bash
+skills/hipc-annotation-v12/scripts/run_one.sh   --study-id STUDY   --out outputs/STUDY   --validate-only
+```
 
-The goal is not just to run reference mapping. The goal is to encode a high-quality manual annotation workflow:
-
-- assign broad lineage from independent evidence, not from prior submission labels
-- recluster within broad lineages to expose B, T/NK, and myeloid structure
-- adjudicate fine labels from marker support, cluster coherence, independent references, QC, and ontology constraints
-- keep doublet and low-quality states explicit rather than silently filtering cells
-- report enough UMAPs, dotplots, disagreement summaries, and validation tables for a human reviewer to audit the logic
-
-For detailed decision rules, read `references/annotation_decision_contract.md` when modifying logic, reviewing label choices, or designing a new version.
+These commands are not user instructions. They are reliable local tools for Codex to execute.
 
 ## Required Environment
 
-Run from the repository root unless the user gives another checkout:
+Default repository root:
 
-```bash
-cd /vast/palmer/pi/hafler/yy693/hipc-scrna-seq-annotation-submission
+```text
+/vast/palmer/pi/hafler/yy693/hipc-scrna-seq-annotation-submission
 ```
 
-Use the single-cell environment:
+Default Python:
 
-```bash
+```text
 /gpfs/gibbs/project/hafler/yy693/conda_envs/scanpy1.10.2/bin/python
-```
-
-## Standard Single-Dataset Run
-
-```bash
-skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --input-h5ad /path/to/infection_study_04.h5ad   --out outputs/single_dataset/infection_study_04   --report-languages en,ja
-```
-
-Validation-only check on existing outputs:
-
-```bash
-skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --out outputs/single_dataset/infection_study_04   --validate-only
 ```
 
 ## Input Contract
@@ -62,18 +61,40 @@ skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   
 Required:
 
 - one processed H5AD evidence container
+- study ID
+- output directory
 - official ontology TSV from config
 - v12 config
-- study ID and output directory
 
 Expected evidence when available:
 
 - CellTypist labels
 - Pan-human Azimuth labels
+- Azimuth labels when present
 - cluster consensus and top-marker labels
 - marker scores or marker genes
 - QC and doublet fields
 - lineage-scoped scRefMapping evidence
+
+If evidence fields are missing, Codex should treat that as an input limitation, not silently invent labels.
+
+## Annotation Logic Contract
+
+The goal is to encode a high-quality manual annotation workflow:
+
+- assign broad lineage from independent evidence, not from prior submission labels
+- recluster within broad lineages to expose B, T/NK, and myeloid structure
+- adjudicate fine labels from marker support, cluster coherence, independent references, QC, and ontology constraints
+- keep doublet and low-quality states explicit rather than silently filtering cells
+- report enough UMAPs, dotplots, disagreement summaries, and validation tables for a human reviewer to audit the logic
+
+## Independence Rules
+
+- Do not use prior-version submission labels as the base label.
+- Do not use prior-version parent lineage, subcluster, or confidence columns as starting points.
+- Use CellTypist, Pan-human Azimuth, Azimuth when present, cluster consensus, top-marker labels, raw reference labels, marker scores, QC, doublet flags, and lineage-scoped scRefMapping evidence.
+- scRefMapping is auxiliary and lineage-scoped only. It must not override weak marker availability without independent support.
+- Avoid study-specific hard-coding. If a rule cannot be explained as a general marker/reference/QC/ontology principle, keep it out of the pipeline and document it as a review concern instead.
 
 ## Output Contract
 
@@ -85,17 +106,9 @@ For one dataset, the output root should include:
 - `report_assets/*.png`
 - diagnostics tables under `tables/`
 
-## Independence Rules
-
-- Do not use prior-version submission labels as the base label.
-- Do not use prior-version parent lineage, subcluster, or confidence columns as starting points.
-- Use CellTypist, Pan-human Azimuth, Azimuth when present, cluster consensus, top-marker labels, raw reference labels, marker scores, QC, doublet flags, and lineage-scoped scRefMapping evidence.
-- scRefMapping is auxiliary and lineage-scoped only. It must not override weak marker availability without independent support.
-- Avoid study-specific hard-coding. If a rule cannot be explained as a general marker/reference/QC/ontology principle, keep it out of the pipeline and document it as a review concern instead.
-
 ## Required Validation
 
-A run is not complete unless validation reports all of the following:
+A run is not complete unless validation confirms:
 
 - submission row counts match cellxgene H5AD `n_obs`
 - `predicted_cell_type` has no missing values
@@ -104,24 +117,24 @@ A run is not complete unless validation reports all of the following:
 - H5AD includes `confidence_score_v12_recursive_screfmapping`
 - report inline image links resolve
 
-## Rich Report Contract
+## Report Review Checklist
 
-A useful report should include:
+Before declaring success, Codex should inspect that the report includes:
 
 - workflow Mermaid diagram
-- per-study summary table with parent-label fraction, invalid labels, doublet counts, low-confidence counts, and median confidence
+- summary table with parent-label fraction, invalid labels, doublet counts, low-confidence counts, and median confidence
 - UMAPs for final labels, lineage/reason, QC/confidence, and lineage-specific subclusters
 - marker dotplots for submitted labels
-- marker availability alerts, especially for scRefMapping-sensitive labels
-- evidence-source disagreement summaries by lineage or cell type
+- marker availability alerts or concerns when relevant
 - explicit review concerns rather than hidden hard-coded fixes
 
-## Completion Criteria
+## Completion Response
 
-Before reporting completion to the user, state:
+Codex should report:
 
-- exact `run_one.sh` command used
+- input H5AD and study ID
 - output root
-- validation pass/fail summary
+- validation result
 - report paths
-- whether the clean submission repo was updated
+- notable warnings or review concerns
+- commit/push status if repository files changed

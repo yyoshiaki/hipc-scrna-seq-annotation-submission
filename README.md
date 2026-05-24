@@ -13,7 +13,7 @@ This repository holds the portable submission implementation. The primary interf
 - `scripts/pipeline/`: deterministic annotation CLIs
 - `configs/`: pipeline config, manifest templates, and reference manifests
 - `data/reference/`: small official ontology/reference tables only
-- `skills/`: Codex skill describing annotation concept, execution, validation, and reporting contract
+- `skills/`: Codex operating procedure for annotation concept, execution, validation, and reporting contract
 - `docs/`: design notes for submission strategy
 - `outputs/`: generated outputs, ignored by git
 - `reports/`: committed report bundles only
@@ -49,11 +49,13 @@ The submission TSV contains `cell_barcode`, `predicted_cell_type`, and `confiden
 
 ## Standard Single-Dataset Run
 
+The skill is Codex-facing. In normal use, ask Codex to apply `hipc-annotation-v12` to one H5AD and let Codex run the helper, validate outputs, inspect the report, and summarize concerns. The command below documents the deterministic helper that Codex uses internally.
+
 ```bash
 skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --input-h5ad /path/to/infection_study_04.h5ad   --out outputs/single_dataset/infection_study_04   --report-languages en,ja
 ```
 
-Validation-only check for existing output:
+Validation-only helper for existing output:
 
 ```bash
 skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --out outputs/single_dataset/infection_study_04   --validate-only
@@ -104,4 +106,4 @@ Large input H5ADs and generated outputs are not committed. Team04 shared evidenc
 
 ## Submission Philosophy
 
-The implementation should remain independent of prior-version submission labels. The skill decision contract defines the annotation principles: broad lineage assignment from independent evidence, lineage-specific subclustering, marker/reference/QC/ontology adjudication, explicit doublet handling, and rich report diagnostics.
+The implementation should remain independent of prior-version submission labels. The skill decision contract defines the annotation principles: broad lineage assignment from independent evidence, lineage-specific subclustering, marker/reference/QC/ontology adjudication, explicit doublet handling, and rich report diagnostics. The shell helpers are bundled resources for Codex to execute; they are not the skill itself.
