@@ -6,36 +6,88 @@ Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark v12 
 
 ## Purpose
 
-This repository is intended to hold the portable submission implementation, not exploratory runs or large derived files. The working repository remains the place for experiments, large outputs, and review artifacts.
+This repository holds the portable submission implementation. The primary interface is **one dataset in, one annotated dataset out**. Multi-dataset runs should be handled by an agent or external scheduler by repeating the single-dataset command.
 
 ## Directory Map
 
-- `scripts/pipeline/`: deterministic annotation CLI
+- `scripts/pipeline/`: deterministic annotation CLIs
 - `configs/`: pipeline config, manifest templates, and reference manifests
 - `data/reference/`: small official ontology/reference tables only
 - `skills/`: Codex skill describing annotation concept, execution, validation, and reporting contract
 - `docs/`: design notes for submission strategy
 - `outputs/`: generated outputs, ignored by git
-- `reports/`: generated reports, mostly ignored by git
+- `reports/`: committed report bundles only
 
-## Standard Run
+## Primary Input
 
-From this repository root:
+A single processed H5AD evidence container with per-cell reference and QC evidence. The current v12 implementation expects columns such as CellTypist labels, Pan-human Azimuth labels, cluster consensus labels, marker scores, QC metrics, and doublet flags when available.
 
-```bash
-skills/hipc-annotation-v12/scripts/run_v12.sh
+Required command-level inputs:
+
+- `--study-id`: stable dataset identifier
+- `--input-h5ad`: processed H5AD evidence container
+- `--out`: output directory for this dataset
+- `--config`: v12 config, default `configs/v12_pipeline.json`
+- `--report-languages`: comma-separated report languages, e.g. `en,ja`
+
+## Primary Output
+
+For one dataset:
+
+```text
+<out>/
+  submissions/<study_id>_annotation.tsv
+  cellxgene/<study_id>.final_v12_recursive_screfmapping.cxg.h5ad
+  reports/report_en.md
+  reports/report_ja.md
+  report_assets/*.png
+  figures/*.png
+  tables/*
 ```
 
-For the Team04 shared evidence containers on the Yale server:
+The submission TSV contains `cell_barcode`, `predicted_cell_type`, and `confidence_score`.
+
+## Standard Single-Dataset Run
 
 ```bash
-HIPC_V12_OUT=outputs/final_annotations/260523_v12_submission_check REPORT_LANGUAGES=en,ja /gpfs/gibbs/project/hafler/yy693/conda_envs/scanpy1.10.2/bin/python scripts/pipeline/hipc_annotate_v12.py   --config configs/v12_pipeline.json   --manifest configs/v12_manifest.team04.shared.tsv   --out outputs/final_annotations/260523_v12_submission_check   --report-languages en,ja
+skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --input-h5ad /path/to/infection_study_04.h5ad   --out outputs/single_dataset/infection_study_04   --report-languages en,ja
 ```
 
-Validate outputs:
+Validation-only check for existing output:
 
 ```bash
-/gpfs/gibbs/project/hafler/yy693/conda_envs/scanpy1.10.2/bin/python skills/hipc-annotation-v12/scripts/validate_v12_outputs.py   --out outputs/final_annotations/260523_v12_submission_check
+skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --out outputs/single_dataset/infection_study_04   --validate-only
+```
+
+## Workflow
+
+```mermaid
+flowchart TD
+    A[One processed H5AD evidence container] --> B[Input and feature audit]
+    B --> C[Evidence extraction]
+    C --> C1[CellTypist labels]
+    C --> C2[Pan-human Azimuth labels]
+    C --> C3[Cluster consensus and top-marker labels]
+    C --> C4[Marker scores]
+    C --> C5[QC and doublet flags]
+    C --> C6[Lineage-scoped scRefMapping evidence when available]
+    C1 --> D[Broad lineage assignment]
+    C2 --> D
+    C3 --> D
+    C4 --> D
+    C5 --> D
+    C6 --> D
+    D --> E[Lineage-specific subclustering]
+    E --> F[Subcluster evidence scoring]
+    F --> G[Ontology-constrained final label]
+    G --> H[Confidence calibration]
+    H --> I[Doublet and QC overrides]
+    I --> J[Submission TSV]
+    I --> K[Annotated H5AD]
+    I --> L[Markdown report and inline figures]
+    J --> M[Validation]
+    K --> M
+    L --> M
 ```
 
 ## Full Run Report Bundle
@@ -48,7 +100,7 @@ Validate outputs:
 
 ## Data Policy
 
-Large input H5ADs and generated outputs are not committed. Team04 shared evidence containers currently live in the working repository output area and are referenced by `configs/v12_manifest.team04.shared.tsv`.
+Large input H5ADs and generated outputs are not committed. Team04 shared evidence containers currently live in the working repository output area and are referenced by `configs/v12_manifest.team04.shared.tsv` for reproducibility on the Yale server.
 
 ## Submission Philosophy
 

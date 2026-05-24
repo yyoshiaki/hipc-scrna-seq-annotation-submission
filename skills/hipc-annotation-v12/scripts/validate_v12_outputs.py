@@ -10,6 +10,7 @@ import pandas as pd
 parser = argparse.ArgumentParser(description="Validate HIPC v12 annotation outputs")
 parser.add_argument("--out", required=True)
 parser.add_argument("--config", default="configs/v12_pipeline.json")
+parser.add_argument("--study-id", default="")
 args = parser.parse_args()
 
 project_root = Path.cwd()
@@ -23,7 +24,13 @@ allowed_labels = set(ontology[config["ontology"]["label_column"]].astype(str)) -
 
 rows = []
 failures = []
-for sub_path in sorted((output_root / "submissions").glob("*_annotation.tsv")):
+submission_paths = sorted((output_root / "submissions").glob("*_annotation.tsv"))
+if args.study_id:
+    submission_paths = [path for path in submission_paths if path.name == f"{args.study_id}_annotation.tsv"]
+if not submission_paths:
+    raise SystemExit(f"No submission TSV found for study_id={args.study_id or 'ALL'} in {output_root / 'submissions'}")
+
+for sub_path in submission_paths:
     study = sub_path.name.replace("_annotation.tsv", "")
     h5ad_path = output_root / "cellxgene" / f"{study}.final_v12_recursive_screfmapping.cxg.h5ad"
     if not h5ad_path.exists():

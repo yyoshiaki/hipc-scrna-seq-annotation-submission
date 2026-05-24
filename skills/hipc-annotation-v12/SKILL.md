@@ -1,8 +1,8 @@
 ---
 name: hipc-annotation-v12
-description: Use when running, reviewing, designing, or packaging the HIPC scRNA-seq Annotation Benchmark v12 independent annotation workflow. This skill defines the annotation philosophy, evidence hierarchy, hard-code guardrails, reporting contract, and execution/validation wrapper around the v12 CLI.
+description: Use when running, reviewing, designing, or packaging the HIPC scRNA-seq Annotation Benchmark v12 independent annotation workflow. This skill defines the single-dataset annotation interface, evidence hierarchy, hard-code guardrails, reporting contract, and execution/validation wrapper around the v12 CLI.
 metadata:
-  short-description: HIPC v12 annotation concept, run, and validation
+  short-description: HIPC v12 one-dataset annotation and validation
 ---
 
 # HIPC Annotation v12
@@ -11,13 +11,13 @@ metadata:
 
 Use this skill for HIPC scRNA-seq Annotation Benchmark work when the task involves annotation strategy, running v12, validating outputs, making reports, or preparing a clean submission implementation.
 
-The CLI is the deterministic engine:
+The primary interface is one dataset in, one annotated dataset out:
 
 ```bash
-scripts/pipeline/hipc_annotate_v12.py
+skills/hipc-annotation-v12/scripts/run_one.sh   --study-id STUDY   --input-h5ad /path/to/STUDY.h5ad   --out outputs/STUDY   --report-languages en,ja
 ```
 
-The skill is the concept and operating contract around that engine. It should prevent ad hoc relabeling and preserve the manual-annotation logic we want to generalize.
+Do not introduce a batch CLI unless explicitly requested. For multiple datasets, repeat `run_one.sh` per dataset.
 
 ## Core Concept
 
@@ -36,7 +36,7 @@ For detailed decision rules, read `references/annotation_decision_contract.md` w
 Run from the repository root unless the user gives another checkout:
 
 ```bash
-cd /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation
+cd /vast/palmer/pi/hafler/yy693/hipc-scrna-seq-annotation-submission
 ```
 
 Use the single-cell environment:
@@ -45,25 +45,45 @@ Use the single-cell environment:
 /gpfs/gibbs/project/hafler/yy693/conda_envs/scanpy1.10.2/bin/python
 ```
 
-## Standard Run
-
-Use the wrapper unless custom paths are required:
+## Standard Single-Dataset Run
 
 ```bash
-skills/hipc-annotation-v12/scripts/run_v12.sh
+skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --input-h5ad /path/to/infection_study_04.h5ad   --out outputs/single_dataset/infection_study_04   --report-languages en,ja
 ```
 
-For custom output:
+Validation-only check on existing outputs:
 
 ```bash
-HIPC_V12_OUT=outputs/final_annotations/YYMMDD_v12_independent_cli REPORT_LANGUAGES=en,ja skills/hipc-annotation-v12/scripts/run_v12.sh
+skills/hipc-annotation-v12/scripts/run_one.sh   --study-id infection_study_04   --out outputs/single_dataset/infection_study_04   --validate-only
 ```
 
-Validation-only execution check on existing outputs:
+## Input Contract
 
-```bash
-HIPC_V12_VALIDATE_ONLY=1 HIPC_V12_OUT=outputs/final_annotations/260522_v12_independent_cli skills/hipc-annotation-v12/scripts/run_v12.sh
-```
+Required:
+
+- one processed H5AD evidence container
+- official ontology TSV from config
+- v12 config
+- study ID and output directory
+
+Expected evidence when available:
+
+- CellTypist labels
+- Pan-human Azimuth labels
+- cluster consensus and top-marker labels
+- marker scores or marker genes
+- QC and doublet fields
+- lineage-scoped scRefMapping evidence
+
+## Output Contract
+
+For one dataset, the output root should include:
+
+- `submissions/<study_id>_annotation.tsv`
+- `cellxgene/<study_id>.final_v12_recursive_screfmapping.cxg.h5ad`
+- `reports/report_en.md` and optional `reports/report_ja.md`
+- `report_assets/*.png`
+- diagnostics tables under `tables/`
 
 ## Independence Rules
 
@@ -75,15 +95,9 @@ HIPC_V12_VALIDATE_ONLY=1 HIPC_V12_OUT=outputs/final_annotations/260522_v12_indep
 
 ## Required Validation
 
-After every real run, execute:
-
-```bash
-skills/hipc-annotation-v12/scripts/validate_v12_outputs.py --out "$HIPC_V12_OUT"
-```
-
 A run is not complete unless validation reports all of the following:
 
-- submission row counts match cellxgene H5AD `n_obs` for every study
+- submission row counts match cellxgene H5AD `n_obs`
 - `predicted_cell_type` has no missing values
 - predicted labels are in the official ontology after configured exclusions
 - submission TSV labels match `submission_cell_type_v12_recursive_screfmapping` in H5AD obs
@@ -106,9 +120,8 @@ A useful report should include:
 
 Before reporting completion to the user, state:
 
-- exact CLI command or wrapper used
+- exact `run_one.sh` command used
 - output root
-- studies processed
 - validation pass/fail summary
-- whether outputs were published to cellxgene, if requested
-- whether the clean submission repo was updated, if requested
+- report paths
+- whether the clean submission repo was updated

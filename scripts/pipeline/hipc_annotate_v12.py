@@ -107,6 +107,10 @@ manifest = pd.read_csv(project_path(args.manifest), sep="\t").fillna("")
 version = config["version"].replace("pipeline_scaffold", "independent_cli")
 report_updated = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d EDT")
 output_root = project_path(args.out or config["output_root"].replace("pipeline_scaffold", "independent_cli"))
+try:
+    output_root_display = str(output_root.relative_to(project_root))
+except ValueError:
+    output_root_display = str(output_root)
 submission_dir = output_root / "submissions"
 tables_dir = output_root / "tables"
 cxg_dir = output_root / "cellxgene"
@@ -855,10 +859,10 @@ for language in requested_languages:
         [
             "## Files",
             "",
-            f"- Submission TSVs: `outputs/final_annotations/{version}/submissions/`",
-            f"- cellxgene H5ADs: `outputs/final_annotations/{version}/cellxgene/`",
-            f"- Subcluster evidence: `outputs/final_annotations/{version}/tables/v12_lineage_subcluster_evidence.tsv.gz`",
-            f"- Diagnostics tables: `outputs/final_annotations/{version}/tables/`",
+            f"- Submission TSVs: `{output_root_display}/submissions/`",
+            f"- cellxgene H5ADs: `{output_root_display}/cellxgene/`",
+            f"- Subcluster evidence: `{output_root_display}/tables/v12_lineage_subcluster_evidence.tsv.gz`",
+            f"- Diagnostics tables: `{output_root_display}/tables/`",
         ]
     )
 

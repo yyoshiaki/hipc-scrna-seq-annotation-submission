@@ -209,7 +209,7 @@ flowchart TD
 
 ## Files
 
-- Submission TSVs: `outputs/final_annotations/260522_v12_independent_cli/submissions/`
-- cellxgene H5ADs: `outputs/final_annotations/260522_v12_independent_cli/cellxgene/`
-- Subcluster evidence: `outputs/final_annotations/260522_v12_independent_cli/tables/v12_lineage_subcluster_evidence.tsv.gz`
-- Diagnostics tables: `outputs/final_annotations/260522_v12_independent_cli/tables/`
+- Submission TSVs: `outputs/final_annotations/260523_v12_full_run/submissions/`
+- cellxgene H5ADs: `outputs/final_annotations/260523_v12_full_run/cellxgene/`
+- Subcluster evidence: `outputs/final_annotations/260523_v12_full_run/tables/v12_lineage_subcluster_evidence.tsv.gz`
+- Diagnostics tables: `outputs/final_annotations/260523_v12_full_run/tables/`
