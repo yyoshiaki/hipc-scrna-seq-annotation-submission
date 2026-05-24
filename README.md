@@ -182,11 +182,12 @@ Codex should not mark a run complete unless validation confirms:
 
 Batch execution is orchestration, not annotation logic. Keeping the implementation single-dataset first reduces failure surface, simplifies validation, and lets Codex or a scheduler parallelize datasets independently by repeating the same single-dataset skill workflow.
 
-## Full Run Report Bundle
+## Current Single-Dataset Report Bundle
 
 - Updated: 2026-05-23 EDT
-- Report bundle: `reports/260523_v12_full_run/`
-- Execution command used for the committed demonstration run: `HIPC_V12_OUT=outputs/final_annotations/260523_v12_full_run HIPC_V12_MANIFEST=configs/v12_manifest.team04.shared.tsv REPORT_LANGUAGES=en,ja skills/hipc-annotation-v12/scripts/run_v12.sh`
+- Report bundle: `reports/260523_v12_single_dataset_infection_study_04/`
+- Dataset: `infection_study_04`
+- Execution path: Codex skill `hipc-annotation-v12` -> bundled helper `run_one.sh` -> v12 CLI -> validator -> report inspection.
 - Validation: `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD v12 labels match submission TSVs, confidence columns are present, and report image links resolve.
 - Repository policy: only Markdown reports and inline figure assets are committed; generated H5ADs, submission TSVs, and diagnostics tables remain ignored under `outputs/`.
 
