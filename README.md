@@ -203,6 +203,14 @@ Batch execution is orchestration, not annotation logic. Keeping the implementati
 
 Large input H5ADs and generated outputs are not committed. Team04 shared evidence containers currently live in the working repository output area and are referenced by `configs/manifest.team04.shared.tsv` for reproducibility on the Yale server.
 
+## Current Limitation
+
+- Updated: 2026-05-26 EDT
+- The current 260526 report bundles were generated from v11 evidence containers, not directly from the original all-gene Team04 H5AD files.
+- For four datasets, the upstream v11 containers are feature-restricted: original processed gene space -> 8,000-gene pre-HVG space -> approximately 4,000-gene analysis X space.
+- CellTypist and marker-availability diagnostics inherited this restricted feature space in the older upstream workflow. Therefore, marker-missing alerts in the 260526 reports describe absence from the analysis container, not necessarily absence from the original data.
+- Before final submission-quality interpretation, CellTypist, marker scoring, marker availability, and reference evidence should be regenerated from the original all-gene processed/count input, while HVG restriction should be used only for PCA/UMAP/neighborhood construction.
+
 ## Submission Philosophy
 
 The implementation should remain independent of prior-version submission labels. The skill decision contract defines the annotation principles: broad lineage assignment from independent evidence, lineage-specific subclustering, marker/reference/QC/ontology adjudication, explicit doublet handling, and rich report diagnostics. The shell helpers are bundled resources for Codex to execute; they are not the skill itself.
