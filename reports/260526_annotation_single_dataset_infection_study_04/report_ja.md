@@ -6,9 +6,9 @@
 
 ## データセット概要
 
-| study | cells | X_genes | raw_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_04 | 43,767 | 3,933 | 8,000 | 3,933 | 16 | 0.012 | 529 | 61 | 353 | 0.838 | 751 | 11,680 (0.267) | none |
+| study | cells | original_processed_genes | pre_hvg_genes | analysis_X_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| infection_study_04 | 43,767 | 26,361 | 8,000 | 3,933 | 3,933 | 16 | 0.012 | 529 | 61 | 353 | 0.838 | 751 | 11,680 (0.267) | none |
 
 ## 実行概要
 
@@ -19,7 +19,7 @@
 
 ## データセット固有の解釈
 
-- `infection_study_04`: 43,767 cells、X/var 3,933 genes、raw 8,000 genes、submitted label 16 種、parent/Blood residual fraction 0.012、median confidence 0.838。
+- `infection_study_04`: 43,767 cells、original processed 26,361 genes、pre-HVG 8,000 genes、analysis X/var 3,933 genes、submitted label 16 種、parent/Blood residual fraction 0.012、median confidence 0.838。
   - 751 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
   - 61 cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。
   - 529 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
@@ -27,7 +27,7 @@
 
 ## データセット固有の評価
 
-- 全体像: 43,767 cells / X/var 3,933 genes / raw 8,000 genes。parent/Blood residual は 529 cells (0.012) で大きくはない一方、source disagreement は 11,680 cells (0.267) と高めです。
+- 全体像: 43,767 cells / original processed 26,361 genes / pre-HVG 8,000 genes / analysis X/var 3,933 genes。parent/Blood residual は 529 cells (0.012) で大きくはない一方、source disagreement は 11,680 cells (0.267) と高めです。
 - 信頼しやすい領域: Classical Monocyte、NK Cell、Plasma Cell、Non-Classical Monocyte、pDC、Platelet/RBC は比較的まとまっています。Plasma Cell は JCHAIN 欠損がありますが MZB1/XBP1/PRDM1/IRF4/IGHG1/IGHA1 が残り、完全に弱い label ではありません。
 - 主要な弱点: Memory B Cell は disagreement 0.724、Naive B Cell は 0.392 で、B-cell 内部の naive/memory 境界が最大の review point です。UMAP と dotplot で CD27, ITGAX, TBX21, BANK1 などの残存 marker support を見る必要があります。
 - T cell 側: CD4 Naive/Tcm と CD8 Cytotoxic/Tem は disagreement が 0.37/0.34。Treg は 554 cells ありますが FOXP3/IL2RA/CTLA4 欠損で disagreement 0.702 のため、Treg は provisional fine label として confidence cap をかけて読むべきです。

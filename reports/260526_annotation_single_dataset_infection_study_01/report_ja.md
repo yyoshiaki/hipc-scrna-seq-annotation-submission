@@ -6,9 +6,9 @@
 
 ## データセット概要
 
-| study | cells | X_genes | raw_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_01 | 54,924 | 3,961 | 8,000 | 3,961 | 16 | 0.004 | 193 | 981 | 1,340 | 0.819 | 2,030 | 7,791 (0.142) | none |
+| study | cells | original_processed_genes | pre_hvg_genes | analysis_X_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| infection_study_01 | 54,924 | 33,538 | 8,000 | 3,961 | 3,961 | 16 | 0.004 | 193 | 981 | 1,340 | 0.819 | 2,030 | 7,791 (0.142) | none |
 
 ## 実行概要
 
@@ -19,7 +19,7 @@
 
 ## データセット固有の解釈
 
-- `infection_study_01`: 54,924 cells、X/var 3,961 genes、raw 8,000 genes、submitted label 16 種、parent/Blood residual fraction 0.004、median confidence 0.819。
+- `infection_study_01`: 54,924 cells、original processed 33,538 genes、pre-HVG 8,000 genes、analysis X/var 3,961 genes、submitted label 16 種、parent/Blood residual fraction 0.004、median confidence 0.819。
   - 2,030 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
   - 981 cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。
   - 193 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
@@ -27,7 +27,7 @@
 
 ## データセット固有の評価
 
-- 全体像: 54,924 cells / X/var 3,961 genes / raw 8,000 genes。parent/Blood residual は 193 cells (0.004) と低く、median confidence は 0.819。source disagreement は 7,791 cells (0.142) で、5 dataset の中では中等度です。
+- 全体像: 54,924 cells / original processed 33,538 genes / pre-HVG 8,000 genes / analysis X/var 3,961 genes。parent/Blood residual は 193 cells (0.004) と低く、median confidence は 0.819。source disagreement は 7,791 cells (0.142) で、5 dataset の中では中等度です。
 - 信頼しやすい領域: Classical Monocyte、NK Cell、Naive B Cell、Non-Classical Monocyte、Platelet は source agreement が比較的高く、UMAP 上でも主要 lineage として解釈しやすいです。
 - 注意点: `Doublet` は 981 cells、artifact-like は 1,340 cells と少なくありません。これは filter-out ではなく提出 label として残しているため、mixed-lineage marker UMAP と scrublet evidence を確認する価値があります。
 - Marker gene 欠損: Treg は FOXP3/IL2RA/CTLA4 が欠損し TIGIT のみで、Treg fine label を強く主張できない入力です。Memory B/ABC と Plasma/ASC も marker availability が半分以下なので、B-cell fine boundary は confidence-capped として扱います。

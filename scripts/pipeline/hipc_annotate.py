@@ -777,7 +777,7 @@ for input_row in manifest.itertuples(index=False):
             "study": study,
             "n_cells": int(adata.n_obs),
             "n_genes": int(adata.n_vars),
-            "raw_n_genes": int(adata.raw.n_vars) if adata.raw is not None else int(adata.n_vars),
+            "pre_hvg_n_genes": int(adata.raw.n_vars) if adata.raw is not None else int(adata.n_vars),
             "counts_layer_n_genes": int(adata.layers["counts"].shape[1]) if "counts" in adata.layers else int(adata.n_vars),
             "n_labels": int(submission["predicted_cell_type"].nunique()),
             "b_cell_n": int(submission["predicted_cell_type"].eq("B Cell").sum()),
@@ -852,8 +852,8 @@ for row in summary_df.itertuples(index=False):
         {
             "study": row.study,
             "cells": f"{row.n_cells:,}",
-            "X_genes": f"{row.n_genes:,}",
-            "raw_genes": f"{row.raw_n_genes:,}",
+            "analysis_X_genes": f"{row.n_genes:,}",
+            "pre_hvg_genes": f"{row.pre_hvg_n_genes:,}",
             "counts_layer_genes": f"{row.counts_layer_n_genes:,}",
             "labels": row.n_labels,
             "parent_or_blood_fraction": f"{row.parent_or_blood_fraction:.3f}",
@@ -947,16 +947,16 @@ def table_or_none(rows, columns, language):
 
 def report_values(language):
     if language == "ja":
-        summary_columns = ["study", "cells", "X_genes", "raw_genes", "counts_layer_genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "source_disagreement", "invalid_labels"]
+        summary_columns = ["study", "cells", "analysis_X_genes", "pre_hvg_genes", "counts_layer_genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "source_disagreement", "invalid_labels"]
         interpretation_lines = []
         assessment_lines = []
         for row in summary_df.itertuples(index=False):
             interpretation_lines.append(
-                f"- `{row.study}`: {row.n_cells:,} cells、X/var {row.n_genes:,} genes、raw {row.raw_n_genes:,} genes、submitted label {row.n_labels} 種、"
+                f"- `{row.study}`: {row.n_cells:,} cells、analysis X/var {row.n_genes:,} genes、pre-HVG slot {row.pre_hvg_n_genes:,} genes、submitted label {row.n_labels} 種、"
                 f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}、median confidence {row.median_confidence:.3f}。"
             )
             assessment_lines.append(
-                f"- 全体像: {row.n_cells:,} cells / X/var {row.n_genes:,} genes / raw {row.raw_n_genes:,} genes。parent/Blood residual は {row.parent_or_blood_fraction:.3f}、"
+                f"- 全体像: {row.n_cells:,} cells / analysis X/var {row.n_genes:,} genes / pre-HVG slot {row.pre_hvg_n_genes:,} genes。parent/Blood residual は {row.parent_or_blood_fraction:.3f}、"
                 f"low-confidence は {row.low_confidence_n:,} cells、source disagreement flag は {row.source_disagreement_flag_n:,} cells ({row.source_disagreement_flag_fraction:.3f})。"
             )
             if row.invalid_labels:
@@ -1005,16 +1005,16 @@ def report_values(language):
             ]
         )
     else:
-        summary_columns = ["study", "cells", "X_genes", "raw_genes", "counts_layer_genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "source_disagreement", "invalid_labels"]
+        summary_columns = ["study", "cells", "analysis_X_genes", "pre_hvg_genes", "counts_layer_genes", "labels", "parent_or_blood_fraction", "Blood Cell", "Doublet", "artifact_like", "median_confidence", "low_confidence", "source_disagreement", "invalid_labels"]
         interpretation_lines = []
         assessment_lines = []
         for row in summary_df.itertuples(index=False):
             interpretation_lines.append(
-                f"- `{row.study}`: {row.n_cells:,} cells, {row.n_genes:,} X/var genes, {row.raw_n_genes:,} raw genes, {row.n_labels} submitted labels, "
+                f"- `{row.study}`: {row.n_cells:,} cells, {row.n_genes:,} analysis X/var genes, {row.pre_hvg_n_genes:,} pre-HVG slot genes, {row.n_labels} submitted labels, "
                 f"parent/Blood residual fraction {row.parent_or_blood_fraction:.3f}, median confidence {row.median_confidence:.3f}."
             )
             assessment_lines.append(
-                f"- Overall: {row.n_cells:,} cells / {row.n_genes:,} X/var genes / {row.raw_n_genes:,} raw genes. Parent/Blood residual fraction is {row.parent_or_blood_fraction:.3f}; "
+                f"- Overall: {row.n_cells:,} cells / {row.n_genes:,} analysis X/var genes / {row.pre_hvg_n_genes:,} pre-HVG slot genes. Parent/Blood residual fraction is {row.parent_or_blood_fraction:.3f}; "
                 f"low-confidence cells are {row.low_confidence_n:,}; source-disagreement flags affect {row.source_disagreement_flag_n:,} cells ({row.source_disagreement_flag_fraction:.3f})."
             )
             if row.invalid_labels:

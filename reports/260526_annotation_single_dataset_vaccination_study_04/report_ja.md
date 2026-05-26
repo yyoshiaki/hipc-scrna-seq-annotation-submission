@@ -6,9 +6,9 @@
 
 ## データセット概要
 
-| study | cells | X_genes | raw_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_04 | 66,065 | 3,971 | 8,000 | 3,971 | 11 | 0.008 | 531 | 1,249 | 111 | 0.845 | 1,782 | 4,236 (0.064) | none |
+| study | cells | original_processed_genes | pre_hvg_genes | analysis_X_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| vaccination_study_04 | 66,065 | 16,983 | 8,000 | 3,971 | 3,971 | 11 | 0.008 | 531 | 1,249 | 111 | 0.845 | 1,782 | 4,236 (0.064) | none |
 
 ## 実行概要
 
@@ -19,7 +19,7 @@
 
 ## データセット固有の解釈
 
-- `vaccination_study_04`: 66,065 cells、X/var 3,971 genes、raw 8,000 genes、submitted label 11 種、parent/Blood residual fraction 0.008、median confidence 0.845。
+- `vaccination_study_04`: 66,065 cells、original processed 16,983 genes、pre-HVG 8,000 genes、analysis X/var 3,971 genes、submitted label 11 種、parent/Blood residual fraction 0.008、median confidence 0.845。
   - 1,782 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
   - 1,249 cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。
   - 531 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
@@ -27,7 +27,7 @@
 
 ## データセット固有の評価
 
-- 全体像: 66,065 cells / X/var 3,971 genes / raw 8,000 genes。label 構成は monocyte/DC 系に強く偏り、Classical Monocyte 34,105 cells、Non-Classical Monocyte 15,314 cells、cDC2 7,694 cells、pDC 5,447 cells が主体です。whole PBMC というより myeloid/DC-enriched dataset として読むべきです。
+- 全体像: 66,065 cells / original processed 16,983 genes / pre-HVG 8,000 genes / analysis X/var 3,971 genes。label 構成は monocyte/DC 系に強く偏り、Classical Monocyte 34,105 cells、Non-Classical Monocyte 15,314 cells、cDC2 7,694 cells、pDC 5,447 cells が主体です。whole PBMC というより myeloid/DC-enriched dataset として読むべきです。
 - 信頼しやすい領域: Myeloid/DC 系の source disagreement は低く、Classical Monocyte 0.031、Non-Classical Monocyte 0.008、cDC1 0.003、pDC 0.019 です。myeloid/DC annotation は今回の pipeline でかなり安定しています。
 - 注意点: T/B 系 marker の欠損が広く、CD4_naive_tcm、CD4_effector_memory、Treg、B_naive、B_memory_ABC、Plasma_ASC が alert 対象です。実際の T/B cell はごく少なく、B Cell 2 cells、Plasma Cell 93 cells、NK Cell 493 cells なので、これらの fine label は過度に解釈しない方がよいです。
 - Doublet/parent residual: Doublet は 1,249 cells、Blood Cell は 531 cells。parent/Blood residual fraction は 0.008 で許容範囲ですが、myeloid-dominant 構成の中で ambiguous cells が残るため、review では UMAP 上の局在を確認します。

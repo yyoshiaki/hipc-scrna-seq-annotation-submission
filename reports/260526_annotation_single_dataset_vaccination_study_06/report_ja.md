@@ -6,9 +6,9 @@
 
 ## データセット概要
 
-| study | cells | X_genes | raw_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_06 | 57,419 | 11,878 | 11,878 | 11,878 | 11 | 0.003 | 121 | 2,162 | 0 | 0.767 | 2,582 | 22,047 (0.384) | none |
+| study | cells | original_processed_genes | pre_hvg_genes | analysis_X_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| vaccination_study_06 | 57,419 | 11,878 | 11,878 | 11,878 | 11,878 | 11 | 0.003 | 121 | 2,162 | 0 | 0.767 | 2,582 | 22,047 (0.384) | none |
 
 ## 実行概要
 
@@ -19,7 +19,7 @@
 
 ## データセット固有の解釈
 
-- `vaccination_study_06`: 57,419 cells、X/var 11,878 genes、raw 11,878 genes、submitted label 11 種、parent/Blood residual fraction 0.003、median confidence 0.767。
+- `vaccination_study_06`: 57,419 cells、original processed 11,878 genes、pre-HVG 11,878 genes、analysis X/var 11,878 genes、submitted label 11 種、parent/Blood residual fraction 0.003、median confidence 0.767。
   - 2,582 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
   - 2,162 cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。
   - 121 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
@@ -27,7 +27,7 @@
 
 ## データセット固有の評価
 
-- 全体像: 57,419 cells / X/var 11,878 genes / raw 11,878 genes。gene coverage は最も高い一方、source disagreement は 22,047 cells (0.384) と最大で、median confidence も 0.767 と低めです。
+- 全体像: 57,419 cells / original processed 11,878 genes / pre-HVG 11,878 genes / analysis X/var 11,878 genes。gene coverage は最も高い一方、source disagreement は 22,047 cells (0.384) と最大で、median confidence も 0.767 と低めです。
 - 構成: CD4 Naive/Tcm 30,218 cells、CD8 Cytotoxic/Tem 10,674 cells、NK Cell 9,440 cells、Memory B Cell 3,212 cells が主体です。myeloid 系は非常に少なく、monocyte/DC label は小数細胞のため強く解釈しません。
 - 主な弱点: Memory B Cell の disagreement は 0.792 と高く、B-cell fine label は CellTypist/Pan-human/marker の不一致が強い領域です。CD4/CD8 T label も disagreement が約 0.39 で、T-cell 内部の naive/effector 境界を UMAP と marker expression で確認すべきです。
 - Marker gene 欠損: Treg は FOXP3 欠損、Plasma_ASC は JCHAIN などが欠損です。gene coverage は多いものの、key marker の有無は label ごとに異なるため、単純な総遺伝子数だけでは信頼性を判断できません。

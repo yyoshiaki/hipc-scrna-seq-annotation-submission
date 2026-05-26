@@ -6,9 +6,9 @@
 
 ## データセット概要
 
-| study | cells | X_genes | raw_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_09 | 139,960 | 3,985 | 8,000 | 3,985 | 17 | 0.001 | 120 | 323 | 104 | 0.838 | 443 | 29,879 (0.213) | none |
+| study | cells | original_processed_genes | pre_hvg_genes | analysis_X_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| vaccination_study_09 | 139,960 | 19,141 | 8,000 | 3,985 | 3,985 | 17 | 0.001 | 120 | 323 | 104 | 0.838 | 443 | 29,879 (0.213) | none |
 
 ## 実行概要
 
@@ -19,7 +19,7 @@
 
 ## データセット固有の解釈
 
-- `vaccination_study_09`: 139,960 cells、X/var 3,985 genes、raw 8,000 genes、submitted label 17 種、parent/Blood residual fraction 0.001、median confidence 0.838。
+- `vaccination_study_09`: 139,960 cells、original processed 19,141 genes、pre-HVG 8,000 genes、analysis X/var 3,985 genes、submitted label 17 種、parent/Blood residual fraction 0.001、median confidence 0.838。
   - 443 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
   - 323 cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。
   - 120 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
@@ -27,7 +27,7 @@
 
 ## データセット固有の評価
 
-- 全体像: 139,960 cells / X/var 3,985 genes / raw 8,000 genes。最大 dataset で、parent/Blood residual は 120 cells (0.001) と非常に低いです。median confidence は 0.838 で良好ですが、source disagreement は 29,879 cells (0.213) と無視できません。
+- 全体像: 139,960 cells / original processed 19,141 genes / pre-HVG 8,000 genes / analysis X/var 3,985 genes。最大 dataset で、parent/Blood residual は 120 cells (0.001) と非常に低いです。median confidence は 0.838 で良好ですが、source disagreement は 29,879 cells (0.213) と無視できません。
 - 信頼しやすい領域: NK Cell、Plasma Cell、pDC、Platelet、Non-Classical Monocyte は source agreement が高く、UMAP/dotplot での確認優先度は低めです。Naive B Cell と Memory B Cell も vaccination_study_06 より安定しています。
 - T cell 側の弱点: CD8 Naive/Tcm は disagreement 0.591、Treg は 0.564 で目立ちます。Treg は FOXP3/IL2RA/CTLA4 欠損のため、Treg 1,823 cells は provisional fine label として読む必要があります。
 - Marker gene 欠損: B_memory_ABC と Plasma_ASC も warning ですが、B-cell labels の source disagreement は中等度以下です。したがって、この dataset の主な review point は B cell より T-cell fine-state assignment です。
