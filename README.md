@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-05-23 EDT
+Updated: 2026-05-26 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -186,13 +186,17 @@ Codex should not mark a run complete unless validation confirms:
 
 Batch execution is orchestration, not annotation logic. Keeping the implementation single-dataset first reduces failure surface, simplifies validation, and lets Codex or a scheduler parallelize datasets independently by repeating the same single-dataset skill workflow.
 
-## Current Single-Dataset Report Bundle
+## Current Single-Dataset Report Bundles
 
-- Updated: 2026-05-23 EDT
-- Report bundle: `reports/260523_annotation_single_dataset_infection_study_04/`
-- Dataset: `infection_study_04`
+- Updated: 2026-05-26 EDT
+- Report bundles:
+  - `reports/260526_annotation_single_dataset_infection_study_01/`
+  - `reports/260526_annotation_single_dataset_infection_study_04/`
+  - `reports/260526_annotation_single_dataset_vaccination_study_04/`
+  - `reports/260526_annotation_single_dataset_vaccination_study_06/`
+  - `reports/260526_annotation_single_dataset_vaccination_study_09/`
 - Execution path: Codex skill `hipc-annotation` -> bundled helper `run_one.sh` -> annotation CLI -> validator -> report inspection.
-- Validation: `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD annotation labels match submission TSVs, confidence columns are present, and report image links resolve.
+- Validation: all five datasets reached `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD annotation labels match submission TSVs, confidence columns are present, and report image links resolve.
 - Repository policy: only Markdown reports and inline figure assets are committed; generated H5ADs, submission TSVs, and diagnostics tables remain ignored under `outputs/`.
 
 ## Data Policy

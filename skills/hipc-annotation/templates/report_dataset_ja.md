@@ -43,7 +43,3 @@
 ## 出力ファイル
 
 {{FILE_BLOCK}}
-
-## 追加レビュー用プロンプト
-
-{{LLM_REVIEW_PROMPT}}

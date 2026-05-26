@@ -1,6 +1,6 @@
 # HIPC データセットアノテーションレポート: infection_study_04
 
-更新日: 2026-05-23 EDT
+更新日: 2026-05-26 EDT
 
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
@@ -27,15 +27,11 @@
 
 ## データセット固有の評価
 
-- 全体像: 43,767 cells / 3,933 genes。parent/Blood residual は 0.012、low-confidence は 751 cells、source disagreement flag は 11,680 cells (0.267)。
-- 優先確認: low-confidence 領域が QC UMAP と source-disagreement UMAP で同じ場所に集まるかを確認する。
-- 優先確認: `Blood Cell` 残存が孤立 cluster なのか、複数 lineage に分散した曖昧領域なのかを UMAP で確認する。
-- Marker gene 欠損: Treg, Plasma_ASC は confidence cap 対象。該当 label は marker expression UMAP と dotplot で妥当性を確認する。
-- Codex review: source disagreement は全体の 26.7% で無視できない。特に `Memory B Cell` は 72.4%、`Treg` は 70.2% が disagreement flag で、reference label と marker/cluster-based final label のずれが大きい。B memory/naive 境界と Treg は最優先の目視確認対象。
-- Codex review: `Treg` は FOXP3/IL2RA/CTLA4 が var に無く、IKZF2/TIGIT など限られた marker での判定になる。提出 label としては残しているが、confidence cap 済みの provisional fine label として扱う。
-- Codex review: `Plasma Cell` は JCHAIN が欠損している一方で MZB1/XBP1/PRDM1/IRF4 が存在し、source disagreement fraction も 9.2% と低い。Treg よりは robust だが、JCHAIN 欠損は report 上に残す。
-- Codex review: `Blood Cell` と `Doublet` は disagreement fraction 1.0 だが、これは parent/override label の性質上 expected。問題は数ではなく UMAP 上で孤立した ambiguous region か、複数 lineage に散る QC/mixed artifact かを確認すること。
-- Codex review: CD4/CD8 T cell は disagreement cells が多いが、fraction は 33-37% 程度で、細胞数が多いことの影響もある。source-disagreement UMAP で特定 cluster に濃縮する場合は T subtype rule の再調整候補。
+- 全体像: 43,767 cells / 3,933 genes。parent/Blood residual は 529 cells (0.012) で大きくはない一方、source disagreement は 11,680 cells (0.267) と高めです。
+- 信頼しやすい領域: Classical Monocyte、NK Cell、Plasma Cell、Non-Classical Monocyte、pDC、Platelet/RBC は比較的まとまっています。Plasma Cell は JCHAIN 欠損がありますが MZB1/XBP1/PRDM1/IRF4/IGHG1/IGHA1 が残り、完全に弱い label ではありません。
+- 主要な弱点: Memory B Cell は disagreement 0.724、Naive B Cell は 0.392 で、B-cell 内部の naive/memory 境界が最大の review point です。UMAP と dotplot で CD27, ITGAX, TBX21, BANK1 などの残存 marker support を見る必要があります。
+- T cell 側: CD4 Naive/Tcm と CD8 Cytotoxic/Tem は disagreement が 0.37/0.34。Treg は 554 cells ありますが FOXP3/IL2RA/CTLA4 欠損で disagreement 0.702 のため、Treg は provisional fine label として confidence cap をかけて読むべきです。
+- 解釈: この dataset は broad lineage よりも fine B/T label の reference disagreement が問題です。局所ハードコードではなく、marker availability、subcluster coherence、source disagreement を使って confidence を抑える方針が妥当です。
 
 ## Marker Gene 欠損アラート
 
@@ -131,16 +127,10 @@
 
 ## 出力ファイル
 
-- Submission TSVs: `outputs/single_dataset_checks/260523_infection_study_04_assessment_v2/submissions/`
-- cellxgene H5ADs: `outputs/single_dataset_checks/260523_infection_study_04_assessment_v2/cellxgene/`
-- Marker availability table: `outputs/single_dataset_checks/260523_infection_study_04_assessment_v2/tables/marker_gene_availability.tsv`
-- Marker availability alerts: `outputs/single_dataset_checks/260523_infection_study_04_assessment_v2/tables/marker_gene_availability_alerts.tsv`
-- Subcluster evidence: `outputs/single_dataset_checks/260523_infection_study_04_assessment_v2/tables/lineage_subcluster_evidence.tsv.gz`
-- Source disagreement summary: `outputs/single_dataset_checks/260523_infection_study_04_assessment_v2/tables/source_disagreement_summary.tsv`
-- Diagnostics tables: `outputs/single_dataset_checks/260523_infection_study_04_assessment_v2/tables/`
-
-## 追加レビュー用プロンプト
-
-このデータセット別 HIPC annotation report をレビューしてください。
-marker gene 欠損アラート、parent/Blood label の残存、low-confidence 領域、doublet call、marker-expression UMAP が submitted label を支持しているかに注目してください。
-README の固定 workflow は繰り返さず、このデータセット固有の懸念点と次に確認すべき点だけを返してください。
+- Submission TSVs: `outputs/single_dataset_checks/260526_infection_study_04_assessment_all/submissions/`
+- cellxgene H5ADs: `outputs/single_dataset_checks/260526_infection_study_04_assessment_all/cellxgene/`
+- Marker availability table: `outputs/single_dataset_checks/260526_infection_study_04_assessment_all/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `outputs/single_dataset_checks/260526_infection_study_04_assessment_all/tables/marker_gene_availability_alerts.tsv`
+- Subcluster evidence: `outputs/single_dataset_checks/260526_infection_study_04_assessment_all/tables/lineage_subcluster_evidence.tsv.gz`
+- Source disagreement summary: `outputs/single_dataset_checks/260526_infection_study_04_assessment_all/tables/source_disagreement_summary.tsv`
+- Diagnostics tables: `outputs/single_dataset_checks/260526_infection_study_04_assessment_all/tables/`
