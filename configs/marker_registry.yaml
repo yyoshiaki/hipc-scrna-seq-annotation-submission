@@ -1,0 +1,407 @@
+version: 260527_v14_marker_registry
+description: >
+  Ontology-aware marker registry for HIPC single-cell annotation.
+  LLM-assisted marker proposals are fixed here before deterministic scoring.
+  Runtime annotation must use this registry as static input rather than asking
+  the LLM to make per-cell decisions.
+
+scoring:
+  positive_weight: 1.0
+  negative_weight: 0.7
+  confound_weight: 0.8
+  min_present_fraction_warning: 0.6
+  min_present_fraction_critical: 0.3
+  margin_warning: 0.08
+  margin_confident: 0.18
+
+labels:
+  Blood Cell:
+    broad_lineage: Artifact/Other
+    applicable_lineage: Any
+    marker_role: fallback_parent
+    positive: []
+    key: []
+    negative: []
+    confound: []
+    notes: fallback for unresolved or ambiguous hematopoietic cells
+    provenance: ontology_parent
+  Platelet:
+    broad_lineage: Artifact/Other
+    applicable_lineage: Any
+    marker_role: artifact
+    positive: [PPBP, PF4, NRGN, GP9, GNG11, TUBB1]
+    key: [PPBP, PF4]
+    negative: [PTPRC, CD3D, MS4A1]
+    confound: [HBB, HBA1, HBA2]
+    notes: platelet or platelet-contaminated droplets
+    provenance: curated
+  RBC:
+    broad_lineage: Artifact/Other
+    applicable_lineage: Any
+    marker_role: artifact
+    positive: [HBB, HBA1, HBA2, HBD, ALAS2, SLC4A1]
+    key: [HBB, HBA1, HBA2]
+    negative: [PTPRC, CD3D, MS4A1]
+    confound: [PPBP, PF4]
+    notes: erythroid or red-cell contaminated droplets
+    provenance: curated
+  HSC:
+    broad_lineage: Artifact/Other
+    applicable_lineage: Any
+    marker_role: rare_parent
+    positive: [CD34, SPINK2, AVP, PROM1, HLF, CRHBP]
+    key: [CD34, SPINK2]
+    negative: [CD3D, CD79A, LST1, NKG7]
+    confound: [PPBP, HBB]
+    notes: rare stem/progenitor-like label; require strong marker support
+    provenance: curated
+  Doublet:
+    broad_lineage: Artifact/Other
+    applicable_lineage: Any
+    marker_role: artifact
+    positive: []
+    key: []
+    negative: []
+    confound: []
+    notes: assigned from scrublet or mixed-lineage marker evidence, not from one marker set
+    provenance: pipeline_rule
+  Leukocyte:
+    broad_lineage: Leukocyte
+    applicable_lineage: Any
+    marker_role: parent
+    positive: [PTPRC]
+    key: [PTPRC]
+    negative: [PPBP, HBB]
+    confound: []
+    notes: parent label; avoid terminal submission when finer lineage is supported
+    provenance: ontology_parent
+  Lymphoid Cell:
+    broad_lineage: Lymphoid
+    applicable_lineage: Any
+    marker_role: parent
+    positive: [CD3D, CD3E, CD79A, MS4A1, NKG7]
+    key: []
+    negative: [LYZ, S100A8, PPBP, HBB]
+    confound: []
+    notes: parent label for unresolved lymphoid cells
+    provenance: ontology_parent
+  NK Cell:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: terminal
+    positive: [NKG7, GNLY, KLRD1, FCGR3A, PRF1, GZMB, GZMH, TYROBP]
+    key: [NKG7, GNLY, KLRD1]
+    negative: [CD3D, CD3E, TRAC, MS4A1, LST1]
+    confound: [CD8A, CD8B]
+    notes: distinguish from cytotoxic CD8 T cells by low TCR/CD3 program
+    provenance: curated
+  T Cell:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: parent
+    positive: [CD3D, CD3E, CD247, TRAC, LCK]
+    key: [CD3D, CD3E, TRAC]
+    negative: [MS4A1, CD79A, LST1, S100A8]
+    confound: [NKG7, GNLY]
+    notes: parent label; avoid when CD4/CD8/MAIT/gdT/Treg subtype is supported
+    provenance: curated
+  CD4 T Cell (ab):
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: parent
+    positive: [CD3D, CD3E, TRAC, CD4, IL7R]
+    key: [CD3D, CD3E, CD4]
+    negative: [CD8A, CD8B, MS4A1, LST1]
+    confound: [FOXP3, NKG7, GNLY]
+    notes: parent label for unresolved CD4 alpha-beta T cells
+    provenance: curated
+  CD4 Naive / T Central Memory:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: terminal
+    positive: [CD3D, CD3E, CD4, IL7R, CCR7, SELL, TCF7, LEF1, LTB, MAL]
+    key: [CD4, CCR7, TCF7]
+    negative: [NKG7, GNLY, GZMB, PRF1, FOXP3]
+    confound: [CD8A, CD8B]
+    notes: merged naive/central memory label in official ontology
+    provenance: curated
+  CD4 T Effector Memory:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: terminal
+    positive: [CD3D, CD3E, CD4, IL7R, GZMK, CCL5, ANXA1, CXCR3, KLRB1]
+    key: [CD4, GZMK, CCL5]
+    negative: [CCR7, TCF7, LEF1, FOXP3]
+    confound: [NKG7, GNLY, GZMB, PRF1]
+    notes: includes cytotoxic/activated CD4-like states when official labels are limited
+    provenance: curated
+  Treg:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: terminal
+    positive: [CD3D, CD3E, CD4, FOXP3, IL2RA, CTLA4, IKZF2, TIGIT, TNFRSF18, CCR8]
+    key: [FOXP3, IL2RA, CTLA4]
+    negative: [NKG7, GNLY, GZMB, CD8A]
+    confound: [CCR7, TCF7]
+    notes: confidence must be capped when FOXP3/IL2RA/CTLA4 are unavailable
+    provenance: curated
+  CD8 T Cell (ab):
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: parent
+    positive: [CD3D, CD3E, TRAC, CD8A, CD8B]
+    key: [CD3D, CD3E, CD8A]
+    negative: [CD4, MS4A1, LST1]
+    confound: [NKG7, GNLY]
+    notes: parent label for unresolved CD8 alpha-beta T cells
+    provenance: curated
+  CD8 Naive / T Central Memory:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: terminal
+    positive: [CD3D, CD3E, CD8A, CD8B, CCR7, TCF7, LEF1, SELL, IL7R]
+    key: [CD8A, CCR7, TCF7]
+    negative: [NKG7, GNLY, GZMB, PRF1]
+    confound: [CD4]
+    notes: merged naive/central memory CD8 label
+    provenance: curated
+  CD8 Cytotoxic / T Effector Memory:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: terminal
+    positive: [CD3D, CD3E, CD8A, CD8B, NKG7, GNLY, PRF1, GZMB, GZMH, CCL5, CST7]
+    key: [CD8A, NKG7, GNLY]
+    negative: [CCR7, TCF7, LEF1, MS4A1]
+    confound: [KLRD1, FCGR3A]
+    notes: distinguish from NK by retaining TCR/CD3 program
+    provenance: curated
+  ydT Cell:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: terminal
+    positive: [CD3D, CD3E, TRDC, TRGC1, TRGC2, TRDV2]
+    key: [TRDC, TRGC1, TRGC2]
+    negative: [MS4A1, LST1]
+    confound: [NKG7, GNLY]
+    notes: official file says ydT; interpret as gamma-delta T cell
+    provenance: curated_with_ontology_note
+  MAIT Cell:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: terminal
+    positive: [CD3D, CD3E, TRAV1-2, SLC4A10, KLRB1, DPP4, IL7R]
+    key: [SLC4A10, KLRB1]
+    negative: [MS4A1, LST1]
+    confound: [NKG7, GNLY, GZMB]
+    notes: TRAV1-2 often unavailable in gene-count matrices, use SLC4A10/KLRB1 support
+    provenance: curated
+  NKT Cell:
+    broad_lineage: T/NK
+    applicable_lineage: T_NK_lineage
+    marker_role: terminal
+    positive: [CD3D, CD3E, TRAC, NKG7, GNLY, KLRD1, ZBTB16]
+    key: [CD3D, NKG7, ZBTB16]
+    negative: [MS4A1, LST1]
+    confound: [CD8A, CD8B]
+    notes: difficult in gene-only PBMC data; require both T and NK programs
+    provenance: curated
+  B Cell:
+    broad_lineage: B
+    applicable_lineage: B_lineage
+    marker_role: parent
+    positive: [MS4A1, CD79A, CD79B, CD74, HLA-DRA, BANK1, CD37]
+    key: [CD79A, CD79B]
+    negative: [CD3D, CD3E, LST1, NKG7]
+    confound: [MZB1, JCHAIN]
+    notes: parent label; avoid when naive/memory/plasma evidence is strong
+    provenance: curated
+  Effector B:
+    broad_lineage: B
+    applicable_lineage: B_lineage
+    marker_role: excluded_parent
+    positive: [MZB1, XBP1, PRDM1, JCHAIN]
+    key: []
+    negative: []
+    confound: []
+    notes: official ontology parent is internally inconsistent; excluded from submission config
+    provenance: ontology_issue
+  Plasma Cell:
+    broad_lineage: B
+    applicable_lineage: B_lineage
+    marker_role: terminal
+    positive: [MZB1, XBP1, PRDM1, JCHAIN, IRF4, TNFRSF17, SDC1, IGHA1, IGHG1]
+    key: [MZB1, XBP1, PRDM1, JCHAIN]
+    negative: [MS4A1, CD79A, CD3D, LST1]
+    confound: [LILRA4, CLEC4C, IRF7, TCF4]
+    notes: distinguish from pDC by antibody-secreting program and lack of pDC program
+    provenance: curated
+  Plasmablast:
+    broad_lineage: B
+    applicable_lineage: B_lineage
+    marker_role: terminal
+    positive: [MZB1, XBP1, PRDM1, JCHAIN, IRF4, TNFRSF17, CD27, MKI67]
+    key: [MZB1, XBP1, JCHAIN]
+    negative: [MS4A1, LST1, CD3D]
+    confound: [LILRA4, CLEC4C, IRF7]
+    notes: official distinction from plasma cells can be weak without proliferation/surface markers
+    provenance: curated
+  Naive B Cell:
+    broad_lineage: B
+    applicable_lineage: B_lineage
+    marker_role: terminal
+    positive: [MS4A1, CD79A, CD79B, TCL1A, IGHD, IGHM, FCER2, IL4R, BANK1]
+    key: [TCL1A, IGHD, IGHM]
+    negative: [CD27, TNFRSF13B, MZB1, JCHAIN]
+    confound: [FCRL5, ITGAX, TBX21]
+    notes: IGHD/IGHM loss limits naive-vs-memory confidence
+    provenance: curated
+  Memory B Cell:
+    broad_lineage: B
+    applicable_lineage: B_lineage
+    marker_role: terminal
+    positive: [MS4A1, CD79A, CD79B, CD27, TNFRSF13B, FCRL5, ITGAX, TBX21, AIM2, BANK1, CD86]
+    key: [CD27, TNFRSF13B, FCRL5]
+    negative: [TCL1A, IGHD, IGHM, MZB1, JCHAIN]
+    confound: [ITGAX, TBX21]
+    notes: ABC-like cells are mapped here unless official ontology gains an ABC label
+    provenance: curated
+  Myeloid Cell:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: parent
+    positive: [LYZ, LST1, TYROBP, CST3, FCER1G]
+    key: [LYZ, LST1]
+    negative: [CD3D, CD79A, MS4A1, NKG7]
+    confound: []
+    notes: parent label; avoid when monocyte/DC subtype is supported
+    provenance: curated
+  Monocyte:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: parent
+    positive: [LYZ, LST1, FCN1, S100A8, S100A9, MS4A7, FCGR3A]
+    key: [LYZ, LST1]
+    negative: [CD3D, MS4A1, CLEC4C]
+    confound: [CD1C, FCER1A]
+    notes: parent label for unresolved monocytes
+    provenance: curated
+  Classical Monocyte:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [LYZ, LST1, FCN1, VCAN, S100A8, S100A9, CTSS, LGALS3]
+    key: [FCN1, VCAN, S100A8]
+    negative: [FCGR3A, MS4A7, CD1C, CLEC4C]
+    confound: [HLA-DRA]
+    notes: CD14 classical monocyte program
+    provenance: curated
+  Non-Classical Monocyte:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [FCGR3A, MS4A7, CX3CR1, LST1, IFITM3, RHOC]
+    key: [FCGR3A, MS4A7, CX3CR1]
+    negative: [S100A8, S100A9, VCAN, CD1C]
+    confound: [NKG7, GNLY]
+    notes: CD16 non-classical monocyte program
+    provenance: curated
+  Intermediate Monocyte:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [FCN1, LST1, MS4A7, HLA-DRA, CD74, S100A8]
+    key: [FCN1, MS4A7, HLA-DRA]
+    negative: [CD1C, CLEC4C, NKG7]
+    confound: [VCAN, FCGR3A]
+    notes: intermediate monocyte can overlap classical/non-classical programs
+    provenance: curated
+  Granulocyte:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: parent
+    positive: [S100A8, S100A9, CSF3R, FCGR3B]
+    key: [S100A8, S100A9]
+    negative: [CD3D, MS4A1]
+    confound: [LYZ]
+    notes: parent label for granulocytes
+    provenance: curated
+  Neutrophil:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [S100A8, S100A9, FCGR3B, CSF3R, CXCR2, NAMPT]
+    key: [S100A8, S100A9, FCGR3B]
+    negative: [CD3D, MS4A1, CD79A]
+    confound: [FCN1, LST1]
+    notes: often low RNA quality in PBMC scRNA-seq
+    provenance: curated
+  Eosinophil:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [CLC, RNASE2, RNASE3, PRG2, SIGLEC8, IL5RA]
+    key: [CLC, RNASE2, RNASE3]
+    negative: [S100A8, CD3D, MS4A1]
+    confound: []
+    notes: rare in PBMC challenge data
+    provenance: curated
+  Basophil:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [MS4A2, CPA3, HDC, GATA2, IL3RA, KIT]
+    key: [MS4A2, CPA3, HDC]
+    negative: [CD3D, MS4A1, LST1]
+    confound: [CLEC4C, FCER1A]
+    notes: distinguish from pDC and mast cells with MS4A2/CPA3/HDC pattern
+    provenance: curated
+  Mast Cell:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [TPSAB1, TPSB2, CPA3, KIT, MS4A2, HDC]
+    key: [TPSAB1, TPSB2, CPA3]
+    negative: [CD3D, MS4A1, LST1]
+    confound: [KIT]
+    notes: rare in PBMC challenge data
+    provenance: curated
+  DC:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: parent
+    positive: [HLA-DRA, CD74, CST3, FCER1A, CD1C, CLEC4C]
+    key: [HLA-DRA, CD74]
+    negative: [CD3D, MS4A1, S100A8]
+    confound: [FCN1, LST1]
+    notes: parent label for unresolved dendritic cells
+    provenance: curated
+  Plasmacytoid DC:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [LILRA4, CLEC4C, IL3RA, TCF4, IRF7, GZMB, JCHAIN, SPIB]
+    key: [LILRA4, CLEC4C, IL3RA, TCF4]
+    negative: [CD3D, MS4A1, CD1C, FCN1, S100A8]
+    confound: [MZB1, XBP1, PRDM1, JCHAIN]
+    notes: JCHAIN alone is insufficient; require pDC program over plasma/ASC program
+    provenance: curated
+  Conventional DC 1:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [CLEC9A, XCR1, BATF3, CADM1, IRF8, C1orf54]
+    key: [CLEC9A, XCR1, BATF3]
+    negative: [CD1C, FCER1A, CLEC4C, S100A8]
+    confound: [HLA-DRA]
+    notes: XCR1/CLEC9A loss limits confidence
+    provenance: curated
+  Conventional DC 2:
+    broad_lineage: Myeloid/DC
+    applicable_lineage: Myeloid_lineage
+    marker_role: terminal
+    positive: [CD1C, FCER1A, CLEC10A, CST3, HLA-DRA, CD74]
+    key: [CD1C, FCER1A, CLEC10A]
+    negative: [CLEC4C, LILRA4, S100A8, S100A9]
+    confound: [FCN1, LST1]
+    notes: distinguish from monocytes using CD1C/FCER1A/CLEC10A
+    provenance: curated

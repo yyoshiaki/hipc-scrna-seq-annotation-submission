@@ -14,6 +14,19 @@ The CLI guarantees reproducible execution. The skill preserves the reasoning con
 4. QC and doublet evidence can cap confidence or override the cell type to `Doublet`.
 5. Ontology constraints define the allowed submitted label space.
 
+## Marker registry gate
+
+Marker genes are treated as a curated reference, not as ad hoc prompt output. The pipeline should use `configs/marker_registry.yaml` as the static marker source. If the registry is missing or does not cover the official labels being considered, Codex should ask whether to build or revise the registry before producing final labels.
+
+The registry must separate:
+
+- broad lineage markers used to support lineage assignment
+- fine-label markers used only after broad lineage is assigned
+- key markers required for accepting rare or fine labels
+- negative and confound markers used to prevent misleading assignments, such as pDC versus plasma/ASC or NK versus cytotoxic CD8 T
+
+Runtime scoring should first assign broad lineage, then score candidate labels within the applicable lineage. Rare labels, artifact labels, and labels with poor key-marker availability require stronger support and should trigger confidence caps or report alerts when weak.
+
 ## Manual annotation loop to encode
 
 1. Build broad lineage without prior-version labels.

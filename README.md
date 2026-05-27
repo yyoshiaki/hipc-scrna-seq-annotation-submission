@@ -13,7 +13,7 @@ The repository is intentionally organized around a Codex skill. The shell script
 ## Directory Map
 
 - `scripts/pipeline/`: deterministic annotation CLIs
-- `configs/`: pipeline config, manifest templates, and reference manifests
+- `configs/`: pipeline config, manifest templates, marker registry, and reference manifests
 - `data/reference/`: small official ontology/reference tables only
 - `skills/`: Codex operating procedure for annotation concept, execution, validation, and reporting contract
 - `skills/hipc-annotation/templates/`: Markdown templates owned by the skill
@@ -71,6 +71,12 @@ Expected H5AD evidence, when available:
 
 If expected evidence is missing, Codex should report it as an input limitation rather than silently inventing labels.
 
+Marker registry input:
+
+- `configs/marker_registry.yaml` is the static marker-reference registry used for marker scoring.
+- If this registry is missing, incomplete for the ontology labels under consideration, or inappropriate for the tissue/context, Codex should ask to build or revise the registry before producing final labels.
+- LLM-assisted marker curation is allowed only before deterministic scoring. The final run must use a frozen registry, not runtime per-cell LLM decisions.
+
 ## Output Contract
 
 For one dataset:
@@ -121,9 +127,10 @@ flowchart TD
     E2 --> B
     E3 --> B
     E4 --> B
+    E3 --> G[Pipeline CLI: marker registry availability and key-marker gates]
     B --> S[Pipeline CLI: lineage-specific subclustering]
     S --> C[Pipeline CLI: subcluster candidate scoring]
-    E3 --> C
+    G --> C
     E5 --> C
     C --> L[Pipeline CLI: ontology-constrained final label]
     L --> Q[Pipeline CLI: confidence calibration]
@@ -147,17 +154,18 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 
 1. **Codex input audit**: Codex resolves the dataset identity, checks the requested output location, and verifies that the H5AD path and config are available.
 2. **Evidence extraction**: the deterministic CLI reads reference labels, raw labels, marker information, QC metrics, doublet flags, and optional lineage-scoped scRefMapping evidence.
-3. **Broad lineage assignment**: broad lineage is assigned from CellTypist, Azimuth/Pan-human, cluster/top-marker labels, marker scores, raw labels, and QC context. Prior-version submitted labels are not used as the base annotation.
-4. **Lineage-specific subclustering**: B, T/NK, and myeloid lineages are reclustered separately so fine labels are judged inside the relevant local structure.
-5. **Candidate scoring**: candidate official labels are scored from subcluster marker support, reference-label fractions, raw-label fractions, marker availability, and best-vs-second margins.
-6. **scRefMapping use**: scRefMapping is allowed only after broad lineage assignment and only inside the appropriate lineage. B references can support B subtype adjudication; CD4T references can support CD4/T subtype adjudication. It cannot vote in broad lineage assignment.
-7. **Ontology-constrained labels**: final labels must be official ontology labels after configured exclusions. Known problematic labels such as `Effector B` are excluded by config when appropriate.
-8. **Doublet and QC handling**: doublet evidence is not a filter. Supported doublets are submitted as `Doublet`; low-QC or mixed-marker cells receive confidence caps or review concerns.
-9. **Confidence calibration**: confidence reflects reference agreement, marker support, subcluster coherence, score margin, QC penalties, and doublet/mixed-lineage flags.
-10. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, source disagreement, interpretation notes, UMAPs, marker dotplots, lineage-specific subcluster plots, and output files. The fixed workflow is documented in this README and is not repeated in every report.
-11. **Validation**: Codex must confirm submission row counts, official labels, non-missing predictions, H5AD/submission agreement, confidence fields, and report image links.
-12. **Codex report assessment**: after generation, Codex reads the report and updates the dataset-specific assessment when the automated text is too generic.
-13. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
+3. **Marker registry audit**: `configs/marker_registry.yaml` defines positive, key, negative, and confound markers for candidate ontology labels. Marker availability and key-marker gates are audited before fine labels are accepted.
+4. **Broad lineage assignment**: broad lineage is assigned from CellTypist, Azimuth/Pan-human, cluster/top-marker labels, marker scores, raw labels, and QC context. Prior-version submitted labels are not used as the base annotation.
+5. **Lineage-specific subclustering**: B, T/NK, and myeloid lineages are reclustered separately so fine labels are judged inside the relevant local structure.
+6. **Candidate scoring**: candidate official labels are scored from subcluster marker support, reference-label fractions, raw-label fractions, marker availability, key-marker gates, and best-vs-second margins.
+7. **scRefMapping use**: scRefMapping is allowed only after broad lineage assignment and only inside the appropriate lineage. B references can support B subtype adjudication; CD4T references can support CD4/T subtype adjudication. It cannot vote in broad lineage assignment.
+8. **Ontology-constrained labels**: final labels must be official ontology labels after configured exclusions. Known problematic labels such as `Effector B` are excluded by config when appropriate.
+9. **Doublet and QC handling**: doublet evidence is not a filter. Supported doublets are submitted as `Doublet`; low-QC or mixed-marker cells receive confidence caps or review concerns.
+10. **Confidence calibration**: confidence reflects reference agreement, marker support, subcluster coherence, score margin, QC penalties, and doublet/mixed-lineage flags.
+11. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, source disagreement, interpretation notes, UMAPs, marker dotplots, lineage-specific subcluster plots, and output files. The fixed workflow is documented in this README and is not repeated in every report.
+12. **Validation**: Codex must confirm submission row counts, official labels, non-missing predictions, H5AD/submission agreement, confidence fields, and report image links.
+13. **Codex report assessment**: after generation, Codex reads the report and updates the dataset-specific assessment when the automated text is too generic.
+14. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
 
 ## Core Principles
 

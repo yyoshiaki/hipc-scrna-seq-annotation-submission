@@ -12,6 +12,13 @@
     "label_column": "Celltype",
     "excluded_submission_labels": ["Effector B"]
   },
+  "marker_registry": {
+    "path": "configs/marker_registry.yaml",
+    "required": true,
+    "missing_action": "codex_must_build_or_request_marker_registry_before_final_annotation",
+    "scoring_space": "all_available_input_genes_after_normalize_total_log1p",
+    "use_policy": "broad_lineage_then_lineage_scoped_key_marker_gating"
+  },
   "screfmapping": {
     "enabled": true,
     "scope_policy": "lineage_scoped_only",

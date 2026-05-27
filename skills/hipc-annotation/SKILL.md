@@ -21,11 +21,12 @@ The report templates are part of this skill at `templates/report_dataset_en.md` 
 2. Identify `study_id`, `input_h5ad`, and output root. Use a dated output root if none is given.
 3. Inspect or infer whether the H5AD is an evidence container with reference labels, marker/QC fields, and doublet evidence.
 4. If changing annotation logic, read `references/annotation_decision_contract.md` first.
-5. Run the bundled helper `scripts/run_one.sh` from the repository root.
-6. Let `run_one.sh` call the deterministic CLI and validator. Do not skip validation.
-7. Read `references/report_authoring_contract.md`, inspect the generated report, and revise the `Dataset-Specific Assessment` section when the automated assessment is too generic.
-8. Inspect the generated report for obvious broken paths, stale metadata, missing UMAPs/dotplots, misleading file paths, or generic interpretation text.
-9. Report completion only after validation passes, or report the exact failing validation item.
+5. Confirm `configs/marker_registry.yaml` exists and covers the official ontology labels needed for the dataset. If it is missing or inadequate, pause final annotation and build or request a marker registry first.
+6. Run the bundled helper `scripts/run_one.sh` from the repository root.
+7. Let `run_one.sh` call the deterministic CLI and validator. Do not skip validation.
+8. Read `references/report_authoring_contract.md`, inspect the generated report, and revise the `Dataset-Specific Assessment` section when the automated assessment is too generic.
+9. Inspect the generated report for obvious broken paths, stale metadata, missing UMAPs/dotplots, misleading file paths, or generic interpretation text.
+10. Report completion only after validation passes, or report the exact failing validation item.
 
 For multiple datasets, Codex should repeat this single-dataset workflow per dataset. Do not add a batch CLI unless explicitly requested.
 
@@ -80,6 +81,19 @@ Expected evidence when available:
 - lineage-scoped scRefMapping evidence
 
 If evidence fields are missing, Codex should treat that as an input limitation, not silently invent labels.
+
+## Marker Registry Contract
+
+`configs/marker_registry.yaml` is the static marker-reference input for marker scoring. It should contain broad lineage, applicable lineage, positive markers, key markers, negative markers, confound markers, marker role, notes, and provenance for each candidate ontology label.
+
+Codex should use this ask-first rule:
+
+- If a suitable registry exists, audit marker availability and use it as deterministic input.
+- If the registry is missing, incomplete for the requested ontology labels, or inconsistent with the dataset context, ask whether to create or revise the registry before final annotation.
+- Do not ask the LLM to choose per-cell labels at runtime. LLM-assisted marker curation must be frozen into the registry first.
+- Marker evidence is applied after broad lineage assignment. Candidate labels compete only within the applicable lineage and must pass key-marker availability/support gates.
+- Rare or artifact-like labels require stronger key-marker support and should not override normal lineage labels without QC or lineage-consistent evidence.
+- If key marker availability is weak, cap confidence and surface a report alert rather than silently trusting reference mapping.
 
 ## Annotation Logic Contract
 
