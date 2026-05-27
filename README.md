@@ -48,12 +48,12 @@ Developer helper scripts live under `skills/hipc-annotation/scripts/`. They are 
 
 ## Input Contract
 
-Primary input is one processed H5AD evidence container.
+Primary input is one processed H5AD dataset.
 
 Required task inputs:
 
 - `study_id`: stable dataset identifier
-- `input_h5ad`: processed H5AD evidence container
+- `input_h5ad`: processed H5AD dataset
 - `output_root`: output directory for this dataset
 - `config`: annotation config, default `configs/annotation_pipeline.json`
 - `report_languages`: usually `en` or `en,ja`
@@ -186,30 +186,21 @@ Codex should not mark a run complete unless validation confirms:
 
 Batch execution is orchestration, not annotation logic. Keeping the implementation single-dataset first reduces failure surface, simplifies validation, and lets Codex or a scheduler parallelize datasets independently by repeating the same single-dataset skill workflow.
 
-## Current Single-Dataset Report Bundles
+## Current Team04 Report Bundle
 
 - Updated: 2026-05-26 EDT
-- Report bundles:
-  - `reports/260526_annotation_single_dataset_infection_study_01/`
-  - `reports/260526_annotation_single_dataset_infection_study_04/`
-  - `reports/260526_annotation_single_dataset_vaccination_study_04/`
-  - `reports/260526_annotation_single_dataset_vaccination_study_06/`
-  - `reports/260526_annotation_single_dataset_vaccination_study_09/`
-- Execution path: Codex skill `hipc-annotation` -> bundled helper `run_one.sh` -> annotation CLI -> validator -> report inspection.
-- Validation: all five datasets reached `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD annotation labels match submission TSVs, confidence columns are present, and report image links resolve.
-- Repository policy: only Markdown reports and inline figure assets are committed; generated H5ADs, submission TSVs, and diagnostics tables remain ignored under `outputs/`.
+- Report bundle: `reports/260526_v13_dataset_review/`
+- Inline assets: `reports/report_assets/`
+- Validation: all five Team04 datasets reached `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD annotation labels match submission TSVs, confidence columns are present, scRefMapping evidence is loaded where applicable, and report image links resolve.
+- Repository policy: Markdown reports and inline figure assets are committed for review. Large generated H5ADs, submission TSVs, and diagnostics tables remain outside the public repository and are available on the Yale server working path.
 
 ## Data Policy
 
-Large input H5ADs and generated outputs are not committed. Team04 shared evidence containers currently live in the working repository output area and are referenced by `configs/manifest.team04.shared.tsv` for reproducibility on the Yale server.
+Large input H5ADs and generated outputs are not committed. Team04 shared input data, generated submission TSVs, annotated cellxgene H5ADs, and diagnostics tables are available on the Yale server working path:
 
-## Current Limitation
-
-- Updated: 2026-05-26 EDT
-- The current 260526 report bundles were generated from v11 evidence containers, not directly from the original all-gene Team04 H5AD files.
-- For four datasets, the upstream v11 containers are feature-restricted: original processed gene space -> 8,000-gene pre-HVG space -> approximately 4,000-gene analysis X space.
-- CellTypist and marker-availability diagnostics inherited this restricted feature space in the older upstream workflow. Therefore, marker-missing alerts in the 260526 reports describe absence from the analysis container, not necessarily absence from the original data.
-- Before final submission-quality interpretation, CellTypist, marker scoring, marker availability, and reference evidence should be regenerated from the original all-gene processed/count input, while HVG restriction should be used only for PCA/UMAP/neighborhood construction.
+```text
+/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/260526_v13_input_contract_repair/
+```
 
 ## Submission Philosophy
 
