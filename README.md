@@ -186,11 +186,16 @@ Codex should not mark a run complete unless validation confirms:
 
 Batch execution is orchestration, not annotation logic. Keeping the implementation single-dataset first reduces failure surface, simplifies validation, and lets Codex or a scheduler parallelize datasets independently by repeating the same single-dataset skill workflow.
 
-## Current Team04 Report Bundle
+## Current Team04 Per-Dataset Reports
 
 - Updated: 2026-05-26 EDT
-- Report bundle: `reports/260526_v13_dataset_review/`
-- Inline assets: `reports/report_assets/`
+- Reports:
+  - `reports/260526_annotation_single_dataset_infection_study_01/`
+  - `reports/260526_annotation_single_dataset_infection_study_04/`
+  - `reports/260526_annotation_single_dataset_vaccination_study_04/`
+  - `reports/260526_annotation_single_dataset_vaccination_study_06/`
+  - `reports/260526_annotation_single_dataset_vaccination_study_09/`
+- Each dataset directory contains `report_en.md`, `report_ja.md`, and dataset-specific inline figures under `assets/`.
 - Validation: all five Team04 datasets reached `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD annotation labels match submission TSVs, confidence columns are present, scRefMapping evidence is loaded where applicable, and report image links resolve.
 - Repository policy: Markdown reports and inline figure assets are committed for review. Large generated H5ADs, submission TSVs, and diagnostics tables remain outside the public repository and are available on the Yale server working path.
 
