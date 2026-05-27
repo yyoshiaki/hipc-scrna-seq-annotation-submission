@@ -6,7 +6,7 @@
     "raw_count_source": "layers[counts]",
     "count_like_fraction": 1.0,
     "available_marker_umap_genes": 37,
-    "missing_marker_umap_genes": "CD27;CD3D;CD8A;FOXP3;GZMK;IL2RA;MS4A1;SDC1;TBX21;TNFRSF13B;XCR1",
+    "missing_marker_umap_genes": "CD27;CD3D;CD8A;FOXP3;GZMK;IL2RA;MS4A1;SDC1;SLC4A10;TBX21;TNFRSF13B;TRDC;XCR1",
     "parent_or_blood_fraction": 0.0070233860591841,
     "median_confidence": 0.8455,
     "low_confidence_n": 1111,

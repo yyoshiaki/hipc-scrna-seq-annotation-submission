@@ -14,7 +14,7 @@ This report cross-checks the portal count-like gene space, CellTypist, Azimuth P
 
 | cells | portal_genes | raw_count_source | count_like_fraction | available_marker_umap_genes | missing_marker_umap_genes | parent_or_blood_fraction | median_confidence | low_confidence_n | doublet_n |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 54,924 | 33,538 | layers[counts] | 1.000 | 48 | none | 0.003 | 0.846 | 2,209 | 1,278 |
+| 54,924 | 33,538 | layers[counts] | 1.000 | 50 | none | 0.003 | 0.846 | 2,209 | 1,278 |
 
 ### QC and annotation UMAPs
 
@@ -30,21 +30,13 @@ This report cross-checks the portal count-like gene space, CellTypist, Azimuth P
 
 ![lineage_core marker expression](assets/umap_infection_study_01_lineage_core_marker_expression.png)
 
-### b_t_fine
-
-![b_t_fine marker expression](assets/umap_infection_study_01_b_t_fine_marker_expression.png)
-
-### myeloid_dc
-
-![myeloid_dc marker expression](assets/umap_infection_study_01_myeloid_dc_marker_expression.png)
-
 ## Annotation source assessment
 
 ![Annotation source UMAPs](assets/umap_infection_study_01_annotation_source_labels.png)
 
 ![Tool concordance](assets/bar_infection_study_01_tool_concordance.png)
 
-Because each source has a different scope, coverage and concordance should be interpreted separately. screfmap is evaluated only within B/CD4T-scoped cells.
+Because each source has a different scope, coverage and concordance should be interpreted separately. `exact_final_concordance` is exact final-label agreement, whereas `broad_final_concordance` is broad-lineage agreement. Marker score is a coarse marker-set direction, so exact agreement can be low for pairs such as `Monocyte` vs `Classical Monocyte` or `B Cell` vs `Memory B Cell`. screfmap is evaluated only within B/CD4T-scoped cells.
 
 | tool | covered_n | coverage_fraction | exact_final_concordance | broad_final_concordance | top_supported_labels | top_disagreements |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -58,6 +50,8 @@ Because each source has a different scope, coverage and concordance should be in
 | screfmap scoped | 12,525 | 0.228 | 0.783 | 0.977 | CD4 Naive / T Central Memory: 4,753; Naive B Cell: 4,145; Memory B Cell: 2,382; CD4 T Effector Memory: 847; Treg: 262 | CD4 T Effector Memory vs CD4 Naive / T Central Memory: 930; CD8 Cytotoxic / T Effector Memory vs CD4 Naive / T Central Memory: 332; Naive B Cell vs Memory B Cell: 208; CD8 Cytotoxic / T Effector Memory vs CD4 T Effector Memory: 180; CD4 Naive / T Central Memory vs CD4 T Effector Memory: 179 |
 
 ### Lineage-scoped source support
+
+This table stratifies cells by final broad lineage and asks whether each source supports the same broad lineage or exact fine label within that scope. It is a diagnostic for where each source helps or fails, not a ground-truth accuracy estimate.
 
 | final_broad_lineage | tool | covered_n | exact_final_concordance | broad_final_concordance |
 | --- | --- | --- | --- | --- |
@@ -90,6 +84,10 @@ Because each source has a different scope, coverage and concordance should be in
 
 ![B_lineage subcluster QC](assets/umap_infection_study_01_B_lineage_v13_subcluster_qc.png)
 
+Lineage-restricted marker expression UMAP. This is placed here because fine-label decisions are made within the lineage/subcluster context.
+
+![B_lineage marker expression](assets/umap_infection_study_01_B_lineage_marker_expression.png)
+
 | cluster | n_cells | chosen_label | accepted | score_margin | calibrated_cluster_confidence | marker_availability_alert | top_celltypist | top_panhuman_fine | top_marker | top_screfmapping |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 0 | 475 | Naive B Cell | True | 4.230 | 0.850 | pass | Naive B Cell:473; Memory B Cell:2 | Naive B Cell:450; Memory B Cell:21; Blood Cell:4 | B Cell:475 | Naive B Cell:473; Plasma Cell:2 |
@@ -109,6 +107,10 @@ Because each source has a different scope, coverage and concordance should be in
 
 ![T_NK_lineage subcluster QC](assets/umap_infection_study_01_T_NK_lineage_v13_subcluster_qc.png)
 
+Lineage-restricted marker expression UMAP. This is placed here because fine-label decisions are made within the lineage/subcluster context.
+
+![T_NK_lineage marker expression](assets/umap_infection_study_01_T_NK_lineage_marker_expression.png)
+
 | cluster | n_cells | chosen_label | accepted | score_margin | calibrated_cluster_confidence | marker_availability_alert | top_celltypist | top_panhuman_fine | top_marker | top_screfmapping |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 0 | 1,634 | CD4 Naive / T Central Memory | True | 2.985 | 0.850 | pass | CD4 Naive / T Central Memory:1336; CD8 Naive / T Central Memory:268; Treg:15; CD8 Cytotoxic / T Effector Memory:10; CD4 T Effector Memory:3 | CD4 Naive / T Central Memory:1188; CD8 Naive / T Central Memory:321; CD4 T Effector Memory:59; Blood Cell:35; Treg:22 | CD4 T Cell (ab):1058; T Cell:514; CD8 T Cell (ab):50; Monocyte:5; RBC:4 | CD4 Naive / T Central Memory:1397; not_available:205; Treg:27; CD4 T Effector Memory:5 |
@@ -127,6 +129,10 @@ Because each source has a different scope, coverage and concordance should be in
 ![Myeloid_lineage subcluster labels](assets/umap_infection_study_01_Myeloid_lineage_v13_subcluster_label.png)
 
 ![Myeloid_lineage subcluster QC](assets/umap_infection_study_01_Myeloid_lineage_v13_subcluster_qc.png)
+
+Lineage-restricted marker expression UMAP. This is placed here because fine-label decisions are made within the lineage/subcluster context.
+
+![Myeloid_lineage marker expression](assets/umap_infection_study_01_Myeloid_lineage_marker_expression.png)
 
 | cluster | n_cells | chosen_label | accepted | score_margin | calibrated_cluster_confidence | marker_availability_alert | top_celltypist | top_panhuman_fine | top_marker | top_screfmapping |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |

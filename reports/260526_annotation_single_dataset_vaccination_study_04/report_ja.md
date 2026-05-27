@@ -14,7 +14,7 @@ vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です�
 
 | cells | portal_genes | raw_count_source | count_like_fraction | available_marker_umap_genes | missing_marker_umap_genes | parent_or_blood_fraction | median_confidence | low_confidence_n | doublet_n |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 66,065 | 16,983 | layers[counts] | 1.000 | 37 | CD27;CD3D;CD8A;FOXP3;GZMK;IL2RA;MS4A1;SDC1;TBX21;TNFRSF13B;XCR1 | 0.007 | 0.846 | 1,111 | 647 |
+| 66,065 | 16,983 | layers[counts] | 1.000 | 37 | CD27;CD3D;CD8A;FOXP3;GZMK;IL2RA;MS4A1;SDC1;SLC4A10;TBX21;TNFRSF13B;TRDC;XCR1 | 0.007 | 0.846 | 1,111 | 647 |
 
 ### Marker gene availability alerts
 
@@ -36,21 +36,13 @@ vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です�
 
 ![lineage_core marker expression](assets/umap_vaccination_study_04_lineage_core_marker_expression.png)
 
-### b_t_fine
-
-![b_t_fine marker expression](assets/umap_vaccination_study_04_b_t_fine_marker_expression.png)
-
-### myeloid_dc
-
-![myeloid_dc marker expression](assets/umap_vaccination_study_04_myeloid_dc_marker_expression.png)
-
 ## Annotation source assessment
 
 ![Annotation source UMAPs](assets/umap_vaccination_study_04_annotation_source_labels.png)
 
 ![Tool concordance](assets/bar_vaccination_study_04_tool_concordance.png)
 
-各 source は適用範囲が異なるため、coverage と concordance を分けて読んでください。screfmap は B/CD4T scoped cells だけで評価しています。
+各 source は適用範囲が異なるため、coverage と concordance を分けて読んでください。`exact_final_concordance` は最終ラベルとの完全一致、`broad_final_concordance` は B/T-NK/Myeloid などの broad lineage 一致です。Marker score は marker set 由来の粗い方向付けなので、`Monocyte` vs `Classical Monocyte` や `B Cell` vs `Memory B Cell` のように exact は低くなり得ます。screfmap は B/CD4T scoped cells だけで評価しています。
 
 | tool | covered_n | coverage_fraction | exact_final_concordance | broad_final_concordance | top_supported_labels | top_disagreements |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -64,6 +56,8 @@ vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です�
 | screfmap scoped | 170 | 0.003 | 0.288 | 0.900 | CD4 Naive / T Central Memory: 47; Memory B Cell: 46; Naive B Cell: 44; Plasma Cell: 24; CD4 T Effector Memory: 7 | Plasma Cell vs Memory B Cell: 46; Plasma Cell vs Naive B Cell: 38; NK Cell vs CD4 Naive / T Central Memory: 14; NK Cell vs CD4 T Effector Memory: 6; Blood Cell vs CD4 Naive / T Central Memory: 5 |
 
 ### Lineage-scoped source support
+
+この表は、最終ラベルで定義した broad lineage ごとに、その範囲内で各 source が同じ lineage / fine label を支持しているかを見ます。fine label の正解率ではなく、どの source がどの lineage で役に立つか、または外しやすいかを見るための診断です。
 
 | final_broad_lineage | tool | covered_n | exact_final_concordance | broad_final_concordance |
 | --- | --- | --- | --- | --- |
@@ -96,6 +90,10 @@ vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です�
 
 ![B_lineage subcluster QC](assets/umap_vaccination_study_04_B_lineage_v13_subcluster_qc.png)
 
+lineage 内に絞った marker expression UMAP です。fine label の判断は subcluster 文脈で行うため、この section に置いています。
+
+![B_lineage marker expression](assets/umap_vaccination_study_04_B_lineage_marker_expression.png)
+
 | cluster | n_cells | chosen_label | accepted | score_margin | calibrated_cluster_confidence | marker_availability_alert | top_celltypist | top_panhuman_fine | top_marker | top_screfmapping |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 0 | 12 | Plasma Cell | True | 2.748 | 0.771 | pass | Plasma Cell:9; Plasmacytoid DC:2; Blood Cell:1 | Plasma Cell:11; Blood Cell:1 | Plasma Cell:10; B Cell:2 | Memory B Cell:5; Naive B Cell:3; Plasma Cell:2; not_available:2 |
@@ -115,6 +113,10 @@ vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です�
 
 ![T_NK_lineage subcluster QC](assets/umap_vaccination_study_04_T_NK_lineage_v13_subcluster_qc.png)
 
+lineage 内に絞った marker expression UMAP です。fine label の判断は subcluster 文脈で行うため、この section に置いています。
+
+![T_NK_lineage marker expression](assets/umap_vaccination_study_04_T_NK_lineage_marker_expression.png)
+
 | cluster | n_cells | chosen_label | accepted | score_margin | calibrated_cluster_confidence | marker_availability_alert | top_celltypist | top_panhuman_fine | top_marker | top_screfmapping |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 0 | 26 | NK Cell | True | 1.100 | 0.850 | pass | CD8 Cytotoxic / T Effector Memory:15; NK Cell:11 | NK Cell:17; Blood Cell:5; Lymphoid Cell:2; CD8 Cytotoxic / T Effector Memory:2 | NK Cell:15; CD8 T Cell (ab):11 | not_available:26 |
@@ -133,6 +135,10 @@ vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です�
 ![Myeloid_lineage subcluster labels](assets/umap_vaccination_study_04_Myeloid_lineage_v13_subcluster_label.png)
 
 ![Myeloid_lineage subcluster QC](assets/umap_vaccination_study_04_Myeloid_lineage_v13_subcluster_qc.png)
+
+lineage 内に絞った marker expression UMAP です。fine label の判断は subcluster 文脈で行うため、この section に置いています。
+
+![Myeloid_lineage marker expression](assets/umap_vaccination_study_04_Myeloid_lineage_marker_expression.png)
 
 | cluster | n_cells | chosen_label | accepted | score_margin | calibrated_cluster_confidence | marker_availability_alert | top_celltypist | top_panhuman_fine | top_marker | top_screfmapping |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
