@@ -14,7 +14,7 @@ vaccination_study_09 は 139,960 cells / 19,141 portal genes の dataset です�
 
 | cells | portal_genes | raw_count_source | count_like_fraction | available_marker_umap_genes | missing_marker_umap_genes | parent_or_blood_fraction | median_confidence | low_confidence_n | doublet_n |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 139,960 | 19,141 | layers[counts] | 1.000 | 46 | IGHD;IGHM;JCHAIN;TRDC | 0.005 | 0.822 | 1,286 | 579 |
+| 139,960 | 19,141 | layers[counts] | 1.000 | 49 | IGHD;IGHM;JCHAIN;TRDC | 0.005 | 0.822 | 1,286 | 579 |
 
 ### Marker gene availability alerts
 

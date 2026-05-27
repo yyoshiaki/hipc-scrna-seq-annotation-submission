@@ -4,7 +4,7 @@ Updated: 2026-05-27 EDT
 
 ## Dataset-specific assessment
 
-vaccination_study_04 contains 66,065 cells and 16,983 portal genes. The residual parent/Blood Cell fraction is 0.7%, with 647 doublets and 1,111 low-confidence cells. Marker-gene availability alerts are Treg(critical: FOXP3;IL2RA). This dataset should be interpreted as myeloid/DC enriched, and B/T fine-label assessment is limited. The dominant subcluster-supported labels are Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells. Among near-global sources, the strongest broad-lineage source is Cluster consensus (broad concordance 98.9%), whereas Azimuth PBMC L3 shows the most disagreement (88.2%). Within the B/CD4T scope, screfmap covers 0.3% of cells and reaches 90.0% broad concordance.
+vaccination_study_04 contains 66,065 cells and 16,983 portal genes. The residual parent/Blood Cell fraction is 0.7%, with 647 doublets and 1,111 low-confidence cells. Marker-gene availability alerts are Treg(critical: FOXP3;IL2RA). This dataset should be interpreted as myeloid/DC enriched, and B/T fine-label assessment is limited. pDC calls are not based on JCHAIN alone; the major pDC clusters are supported concordantly by CellTypist, Azimuth, Pan-human Azimuth, cluster consensus, and pDC marker scores. However, pDC and plasma/ASC programs can partially overlap through JCHAIN/MZB1, so smaller mixed clusters should be checked against LILRA4/CLEC4C/IRF7/TCF4/IL3RA and plasma markers. The dominant subcluster-supported labels are Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells. Among near-global sources, the strongest broad-lineage source is Cluster consensus (broad concordance 98.9%), whereas Azimuth PBMC L3 shows the most disagreement (88.2%). Within the B/CD4T scope, screfmap covers 0.3% of cells and reaches 90.0% broad concordance.
 
 ## Methods
 
@@ -14,7 +14,7 @@ This report cross-checks the portal count-like gene space, CellTypist, Azimuth P
 
 | cells | portal_genes | raw_count_source | count_like_fraction | available_marker_umap_genes | missing_marker_umap_genes | parent_or_blood_fraction | median_confidence | low_confidence_n | doublet_n |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 66,065 | 16,983 | layers[counts] | 1.000 | 37 | CD27;CD3D;CD8A;FOXP3;GZMK;IL2RA;MS4A1;SDC1;SLC4A10;TBX21;TNFRSF13B;TRDC;XCR1 | 0.007 | 0.846 | 1,111 | 647 |
+| 66,065 | 16,983 | layers[counts] | 1.000 | 40 | CD27;CD3D;CD8A;FOXP3;GZMK;IL2RA;MS4A1;SDC1;SLC4A10;TBX21;TNFRSF13B;TRDC;XCR1 | 0.007 | 0.846 | 1,111 | 647 |
 
 ### Marker gene availability alerts
 

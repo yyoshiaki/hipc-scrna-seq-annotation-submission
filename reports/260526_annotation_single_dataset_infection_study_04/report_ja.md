@@ -14,7 +14,7 @@ infection_study_04 は 43,767 cells / 26,361 portal genes の dataset です。�
 
 | cells | portal_genes | raw_count_source | count_like_fraction | available_marker_umap_genes | missing_marker_umap_genes | parent_or_blood_fraction | median_confidence | low_confidence_n | doublet_n |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 43,767 | 26,361 | layers[counts] | 1.000 | 49 | JCHAIN | 0.013 | 0.740 | 1,011 | 132 |
+| 43,767 | 26,361 | layers[counts] | 1.000 | 52 | JCHAIN | 0.013 | 0.740 | 1,011 | 132 |
 
 ### Marker gene availability alerts
 

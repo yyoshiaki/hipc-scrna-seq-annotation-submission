@@ -5,7 +5,7 @@
     "portal_genes": 19141,
     "raw_count_source": "layers[counts]",
     "count_like_fraction": 1.0,
-    "available_marker_umap_genes": 46,
+    "available_marker_umap_genes": 49,
     "missing_marker_umap_genes": "IGHD;IGHM;JCHAIN;TRDC",
     "parent_or_blood_fraction": 0.0049657044869962,
     "median_confidence": 0.822,

@@ -4,7 +4,7 @@ Updated: 2026-05-27 EDT
 
 ## Dataset-specific assessment
 
-vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です。親ラベルまたは Blood Cell に残った割合は 0.7%、doublet は 647 cells、低 confidence は 1,111 cells でした。注意すべき marker gene 欠損は Treg(critical: FOXP3;IL2RA) です。 myeloid/DC enriched dataset として読むべきで、B/T 系の細分類評価には向きません。 subcluster evidence では Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells が主要な構造です。全細胞に近い coverage で最も broad lineage に沿った source は Cluster consensus (broad concordance 98.9%) で、相対的に不一致が目立つ source は Azimuth PBMC L3 (88.2%) です。 screfmap は適用範囲を B/CD4T に限定すると coverage 0.3%、broad concordance 90.0% でした。
+vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です。親ラベルまたは Blood Cell に残った割合は 0.7%、doublet は 647 cells、低 confidence は 1,111 cells でした。注意すべき marker gene 欠損は Treg(critical: FOXP3;IL2RA) です。 myeloid/DC enriched dataset として読むべきで、B/T 系の細分類評価には向きません。pDC は JCHAIN 単独ではなく、主要 cluster で CellTypist/Azimuth/Pan-human/cluster consensus と pDC marker score が揃って支持しています。ただし pDC と plasma/ASC は JCHAIN/MZB1 で部分的に重なるため、小さい mixed cluster は LILRA4/CLEC4C/IRF7/TCF4/IL3RA と plasma marker を並べて確認する必要があります。 subcluster evidence では Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells が主要な構造です。全細胞に近い coverage で最も broad lineage に沿った source は Cluster consensus (broad concordance 98.9%) で、相対的に不一致が目立つ source は Azimuth PBMC L3 (88.2%) です。 screfmap は適用範囲を B/CD4T に限定すると coverage 0.3%、broad concordance 90.0% でした。
 
 ## Methods
 
@@ -14,7 +14,7 @@ vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です�
 
 | cells | portal_genes | raw_count_source | count_like_fraction | available_marker_umap_genes | missing_marker_umap_genes | parent_or_blood_fraction | median_confidence | low_confidence_n | doublet_n |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 66,065 | 16,983 | layers[counts] | 1.000 | 37 | CD27;CD3D;CD8A;FOXP3;GZMK;IL2RA;MS4A1;SDC1;SLC4A10;TBX21;TNFRSF13B;TRDC;XCR1 | 0.007 | 0.846 | 1,111 | 647 |
+| 66,065 | 16,983 | layers[counts] | 1.000 | 40 | CD27;CD3D;CD8A;FOXP3;GZMK;IL2RA;MS4A1;SDC1;SLC4A10;TBX21;TNFRSF13B;TRDC;XCR1 | 0.007 | 0.846 | 1,111 | 647 |
 
 ### Marker gene availability alerts
 

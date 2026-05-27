@@ -14,7 +14,7 @@ infection_study_01 は 54,924 cells / 33,538 portal genes の dataset です。�
 
 | cells | portal_genes | raw_count_source | count_like_fraction | available_marker_umap_genes | missing_marker_umap_genes | parent_or_blood_fraction | median_confidence | low_confidence_n | doublet_n |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 54,924 | 33,538 | layers[counts] | 1.000 | 50 | none | 0.003 | 0.846 | 2,209 | 1,278 |
+| 54,924 | 33,538 | layers[counts] | 1.000 | 53 | none | 0.003 | 0.846 | 2,209 | 1,278 |
 
 ### QC and annotation UMAPs
 

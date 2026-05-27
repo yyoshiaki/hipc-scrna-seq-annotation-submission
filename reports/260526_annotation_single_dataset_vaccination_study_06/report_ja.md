@@ -14,7 +14,7 @@ vaccination_study_06 は 57,419 cells / 11,878 portal genes の dataset です�
 
 | cells | portal_genes | raw_count_source | count_like_fraction | available_marker_umap_genes | missing_marker_umap_genes | parent_or_blood_fraction | median_confidence | low_confidence_n | doublet_n |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 57,419 | 11,878 | layers[counts] | 1.000 | 29 | CD1C;CLEC10A;CLEC4C;CLEC9A;FCER1A;FCN1;FCRL5;FOXP3;IGHD;JCHAIN;LYZ;MS4A7;PF4;PPBP;S100A8;S100A9;SDC1;SLC4A10;TNFRSF13B;VCAN;XCR1 | 0.004 | 0.820 | 1,771 | 1,502 |
+| 57,419 | 11,878 | layers[counts] | 1.000 | 31 | CD1C;CLEC10A;CLEC4C;CLEC9A;FCER1A;FCN1;FCRL5;FOXP3;IGHD;IL3RA;JCHAIN;LYZ;MS4A7;PF4;PPBP;S100A8;S100A9;SDC1;SLC4A10;TNFRSF13B;VCAN;XCR1 | 0.004 | 0.820 | 1,771 | 1,502 |
 
 ### Marker gene availability alerts
 
