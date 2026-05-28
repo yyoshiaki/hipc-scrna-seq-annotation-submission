@@ -1528,10 +1528,312 @@
       "top_screfmapping": "CD4 Naive / T Central Memory:13; not_available:6; CD4 T Effector Memory:1"
     }
   ],
-  "assessment_ja": "vaccination_study_09 は 139,960 cells / 19,141 portal genes の dataset です。親ラベルまたは Blood Cell に残った割合は 0.5%、doublet は 579 cells、低 confidence は 1,286 cells でした。注意すべき marker gene 欠損は Plasma_ASC(warning: JCHAIN) です。 大規模な T/B dataset で、screfmap は B/CD4T の補助として広く利用できます。 subcluster evidence では CD4 Naive / T Central Memory: 64,895 cells; Classical Monocyte: 25,752 cells; Naive B Cell: 11,614 cells; CD8 Cytotoxic / T Effector Memory: 10,513 cells; NK Cell: 10,322 cells; Non-Classical Monocyte: 4,365 cells が主要な構造です。全細胞に近い coverage で最も broad lineage に沿った source は Marker score (broad concordance 97.8%) で、相対的に不一致が目立つ source は Azimuth PBMC L3 (36.5%) です。 screfmap は適用範囲を B/CD4T に限定すると coverage 40.0%、broad concordance 98.9% でした。",
-  "assessment_en": "vaccination_study_09 contains 139,960 cells and 19,141 portal genes. The residual parent/Blood Cell fraction is 0.5%, with 579 doublets and 1,286 low-confidence cells. Marker-gene availability alerts are Plasma_ASC(warning: JCHAIN). This is a large T/B dataset, and screfmap provides broad scoped support for B/CD4T cells. The dominant subcluster-supported labels are CD4 Naive / T Central Memory: 64,895 cells; Classical Monocyte: 25,752 cells; Naive B Cell: 11,614 cells; CD8 Cytotoxic / T Effector Memory: 10,513 cells; NK Cell: 10,322 cells; Non-Classical Monocyte: 4,365 cells. Among near-global sources, the strongest broad-lineage source is Marker score (broad concordance 97.8%), whereas Azimuth PBMC L3 shows the most disagreement (36.5%). Within the B/CD4T scope, screfmap covers 40.0% of cells and reaches 98.9% broad concordance.",
+  "marker_gate": {
+    "availability_alerts": [
+      {
+        "study": "vaccination_study_09",
+        "label": "ydT Cell",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated_with_ontology_note",
+        "n_expected_markers": 10,
+        "n_present_markers": 6,
+        "present_fraction": 0.6,
+        "n_key_markers": 3,
+        "n_key_present": 0,
+        "key_present_fraction": 0.0,
+        "availability_alert": "critical",
+        "missing_key_markers": "TRDC;TRGC1;TRGC2",
+        "missing_markers": "TRDC;TRDV2;TRGC1;TRGC2"
+      },
+      {
+        "study": "vaccination_study_09",
+        "label": "Naive B Cell",
+        "broad_lineage": "B",
+        "applicable_lineage": "B_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 16,
+        "n_present_markers": 13,
+        "present_fraction": 0.8125,
+        "n_key_markers": 3,
+        "n_key_present": 1,
+        "key_present_fraction": 0.3333333333333333,
+        "availability_alert": "warning",
+        "missing_key_markers": "IGHD;IGHM",
+        "missing_markers": "IGHD;IGHM;JCHAIN"
+      }
+    ],
+    "gate_effect": [
+      {
+        "label": "Basophil",
+        "ungated_n": 0,
+        "gated_n": 0,
+        "delta_after_gate": 0
+      },
+      {
+        "label": "CD4 Naive / T Central Memory",
+        "ungated_n": 457,
+        "gated_n": 18598,
+        "delta_after_gate": 18141
+      },
+      {
+        "label": "CD4 T Effector Memory",
+        "ungated_n": 184,
+        "gated_n": 7667,
+        "delta_after_gate": 7483
+      },
+      {
+        "label": "CD8 Cytotoxic / T Effector Memory",
+        "ungated_n": 739,
+        "gated_n": 11965,
+        "delta_after_gate": 11226
+      },
+      {
+        "label": "CD8 Naive / T Central Memory",
+        "ungated_n": 1040,
+        "gated_n": 22625,
+        "delta_after_gate": 21585
+      },
+      {
+        "label": "Classical Monocyte",
+        "ungated_n": 2399,
+        "gated_n": 14307,
+        "delta_after_gate": 11908
+      },
+      {
+        "label": "Eosinophil",
+        "ungated_n": 101081,
+        "gated_n": 40,
+        "delta_after_gate": -101041
+      },
+      {
+        "label": "HSC",
+        "ungated_n": 3,
+        "gated_n": 36,
+        "delta_after_gate": 33
+      },
+      {
+        "label": "Intermediate Monocyte",
+        "ungated_n": 1142,
+        "gated_n": 10858,
+        "delta_after_gate": 9716
+      },
+      {
+        "label": "Mast Cell",
+        "ungated_n": 0,
+        "gated_n": 4,
+        "delta_after_gate": 4
+      },
+      {
+        "label": "NK Cell",
+        "ungated_n": 3521,
+        "gated_n": 15106,
+        "delta_after_gate": 11585
+      },
+      {
+        "label": "NKT Cell",
+        "ungated_n": 732,
+        "gated_n": 528,
+        "delta_after_gate": -204
+      },
+      {
+        "label": "Naive B Cell",
+        "ungated_n": 2648,
+        "gated_n": 8956,
+        "delta_after_gate": 6308
+      },
+      {
+        "label": "Non-Classical Monocyte",
+        "ungated_n": 1404,
+        "gated_n": 4766,
+        "delta_after_gate": 3362
+      },
+      {
+        "label": "Platelet",
+        "ungated_n": 166,
+        "gated_n": 87,
+        "delta_after_gate": -79
+      },
+      {
+        "label": "RBC",
+        "ungated_n": 65,
+        "gated_n": 59,
+        "delta_after_gate": -6
+      },
+      {
+        "label": "Unassigned",
+        "ungated_n": 0,
+        "gated_n": 16939,
+        "delta_after_gate": 16939
+      },
+      {
+        "label": "ydT Cell",
+        "ungated_n": 23290,
+        "gated_n": 0,
+        "delta_after_gate": -23290
+      }
+    ],
+    "lineage_gate": [
+      {
+        "audit_lineage_gate": "Ambiguous",
+        "n_cells": 1187,
+        "unassigned_n": 6,
+        "unassigned_fraction": 0.005054759898904802,
+        "top_gated_marker_labels": "Classical Monocyte: 426; Intermediate Monocyte: 251; Neutrophil: 123; NK Cell: 85; Naive B Cell: 78"
+      },
+      {
+        "audit_lineage_gate": "B_lineage",
+        "n_cells": 15543,
+        "unassigned_n": 3018,
+        "unassigned_fraction": 0.19417100945763366,
+        "top_gated_marker_labels": "Naive B Cell: 8,878; Unassigned: 3,018; Memory B Cell: 2,448; Plasmablast: 1,014; Plasma Cell: 185"
+      },
+      {
+        "audit_lineage_gate": "Myeloid_lineage",
+        "n_cells": 32336,
+        "unassigned_n": 22,
+        "unassigned_fraction": 0.0006803562592775853,
+        "top_gated_marker_labels": "Classical Monocyte: 13,881; Intermediate Monocyte: 10,607; Non-Classical Monocyte: 4,738; Neutrophil: 1,476; Conventional DC 2: 954"
+      },
+      {
+        "audit_lineage_gate": "Other_lineage",
+        "n_cells": 233,
+        "unassigned_n": 68,
+        "unassigned_fraction": 0.2918454935622318,
+        "top_gated_marker_labels": "Platelet: 85; Unassigned: 68; RBC: 48; HSC: 32"
+      },
+      {
+        "audit_lineage_gate": "T_NK_lineage",
+        "n_cells": 90661,
+        "unassigned_n": 13825,
+        "unassigned_fraction": 0.15249114834383032,
+        "top_gated_marker_labels": "CD8 Naive / T Central Memory: 22,594; CD4 Naive / T Central Memory: 18,577; NK Cell: 15,021; Unassigned: 13,825; CD8 Cytotoxic / T Effector Memory: 11,939"
+      }
+    ],
+    "by_final_label": [
+      {
+        "final_label": "CD4 Naive / T Central Memory",
+        "n_cells": 64896,
+        "marker_exact_fraction": 0.0069033530571992,
+        "marker_exact_fraction_gated": 0.2810034516765286,
+        "unassigned_fraction_gated": 0.202292899408284,
+        "top_marker_best_labels_gated": "CD8 Naive / T Central Memory:21863; CD4 Naive / T Central Memory:18236; Unassigned:13128; CD4 T Effector Memory:5555; CD8 Cytotoxic / T Effector Memory:4131"
+      },
+      {
+        "final_label": "Classical Monocyte",
+        "n_cells": 25752,
+        "marker_exact_fraction": 0.0705576265921093,
+        "marker_exact_fraction_gated": 0.5359195402298851,
+        "unassigned_fraction_gated": 3.883193538365952e-05,
+        "top_marker_best_labels_gated": "Classical Monocyte:13801; Intermediate Monocyte:9486; Neutrophil:1449; Non-Classical Monocyte:941; Conventional DC 2:39"
+      },
+      {
+        "final_label": "Naive B Cell",
+        "n_cells": 11614,
+        "marker_exact_fraction": 0.2147408300327191,
+        "marker_exact_fraction_gated": 0.7406578267608059,
+        "unassigned_fraction_gated": 0.160151541243327,
+        "top_marker_best_labels_gated": "Naive B Cell:8602; Unassigned:1860; Memory B Cell:628; Plasmablast:400; Plasma Cell:124"
+      },
+      {
+        "final_label": "CD8 Cytotoxic / T Effector Memory",
+        "n_cells": 10513,
+        "marker_exact_fraction": 0.049747931132883,
+        "marker_exact_fraction_gated": 0.5125083230286313,
+        "unassigned_fraction_gated": 0.0123656425378103,
+        "top_marker_best_labels_gated": "CD8 Cytotoxic / T Effector Memory:5388; NK Cell:3505; CD4 T Effector Memory:832; CD8 Naive / T Central Memory:384; NKT Cell:172"
+      },
+      {
+        "final_label": "NK Cell",
+        "n_cells": 10322,
+        "marker_exact_fraction": 0.3061422204999031,
+        "marker_exact_fraction_gated": 0.8921720596783569,
+        "unassigned_fraction_gated": 0.0043596202286378,
+        "top_marker_best_labels_gated": "NK Cell:9209; CD8 Cytotoxic / T Effector Memory:698; CD4 T Effector Memory:180; CD8 Naive / T Central Memory:94; NKT Cell:55"
+      },
+      {
+        "final_label": "Non-Classical Monocyte",
+        "n_cells": 4365,
+        "marker_exact_fraction": 0.3069873997709049,
+        "marker_exact_fraction_gated": 0.8575028636884306,
+        "unassigned_fraction_gated": 0.0006872852233676,
+        "top_marker_best_labels_gated": "Non-Classical Monocyte:3743; Intermediate Monocyte:545; Classical Monocyte:68; Neutrophil:4; Unassigned:3"
+      },
+      {
+        "final_label": "Memory B Cell",
+        "n_cells": 3758,
+        "marker_exact_fraction": 0.005055880787653,
+        "marker_exact_fraction_gated": 0.4837679616817456,
+        "unassigned_fraction_gated": 0.3078765300691857,
+        "top_marker_best_labels_gated": "Memory B Cell:1818; Unassigned:1157; Plasmablast:460; Naive B Cell:276; Plasma Cell:47"
+      },
+      {
+        "final_label": "MAIT Cell",
+        "n_cells": 3724,
+        "marker_exact_fraction": 0.0115467239527389,
+        "marker_exact_fraction_gated": 0.1015037593984962,
+        "unassigned_fraction_gated": 0.0190655209452201,
+        "top_marker_best_labels_gated": "CD8 Cytotoxic / T Effector Memory:1581; CD4 T Effector Memory:906; NK Cell:487; MAIT Cell:378; NKT Cell:179"
+      },
+      {
+        "final_label": "Conventional DC 2",
+        "n_cells": 1415,
+        "marker_exact_fraction": 0.0098939929328621,
+        "marker_exact_fraction_gated": 0.5787985865724382,
+        "unassigned_fraction_gated": 0.0014134275618374,
+        "top_marker_best_labels_gated": "Conventional DC 2:819; Intermediate Monocyte:509; Non-Classical Monocyte:49; Neutrophil:16; Classical Monocyte:12"
+      },
+      {
+        "final_label": "Treg",
+        "n_cells": 1208,
+        "marker_exact_fraction": 0.0074503311258278,
+        "marker_exact_fraction_gated": 0.0538079470198675,
+        "unassigned_fraction_gated": 0.3733443708609271,
+        "top_marker_best_labels_gated": "Unassigned:451; CD8 Naive / T Central Memory:179; CD4 T Effector Memory:175; CD4 Naive / T Central Memory:157; CD8 Cytotoxic / T Effector Memory:141"
+      },
+      {
+        "final_label": "Plasmacytoid DC",
+        "n_cells": 804,
+        "marker_exact_fraction": 0.0534825870646766,
+        "marker_exact_fraction_gated": 0.7649253731343284,
+        "unassigned_fraction_gated": 0.0199004975124378,
+        "top_marker_best_labels_gated": "Plasmacytoid DC:615; Conventional DC 2:94; Intermediate Monocyte:67; Unassigned:16; Neutrophil:7"
+      },
+      {
+        "final_label": "Blood Cell",
+        "n_cells": 695,
+        "marker_exact_fraction": 0.0,
+        "marker_exact_fraction_gated": 0.0,
+        "unassigned_fraction_gated": 0.0647482014388489,
+        "top_marker_best_labels_gated": "Classical Monocyte:295; Intermediate Monocyte:139; Neutrophil:105; RBC:50; Unassigned:45"
+      },
+      {
+        "final_label": "Doublet",
+        "n_cells": 579,
+        "marker_exact_fraction": 0.0,
+        "marker_exact_fraction_gated": 0.0,
+        "unassigned_fraction_gated": 0.006908462867012,
+        "top_marker_best_labels_gated": "Classical Monocyte:131; Intermediate Monocyte:110; NK Cell:75; Naive B Cell:75; Memory B Cell:29"
+      },
+      {
+        "final_label": "Plasma Cell",
+        "n_cells": 171,
+        "marker_exact_fraction": 0.0,
+        "marker_exact_fraction_gated": 0.0818713450292397,
+        "unassigned_fraction_gated": 0.0058479532163742,
+        "top_marker_best_labels_gated": "Plasmablast:154; Plasma Cell:14; Memory B Cell:2; Unassigned:1"
+      }
+    ]
+  },
+  "marker_gate_summary_ja": "v14 marker registry audit は、marker gene list をそのまま全細胞で競わせるのではなく、broad lineage、applicable lineage、key-marker support の順に制限した場合に marker evidence がどう変わるかを見る診断です。単純 winner では Eosinophil 101,081 cells、Platelet 166 cells のような rare/artifact label が出やすい一方、gate 後は Eosinophil 40 cells、Platelet 87 cells に抑制されます。これは final label を marker score だけで置き換えるためではなく、fine label を受け入れる条件と confidence cap を決めるための evidence audit です。 最も gate 後の未割当が多い lineage は Other_lineage (29.2%) です。",
+  "marker_gate_summary_en": "The v14 marker-registry audit tests marker evidence after broad-lineage, applicable-lineage, and key-marker gates, rather than allowing every marker set to compete in every cell. With a naive marker winner, rare/artifact labels such as Eosinophil (101,081 cells) and Platelet (166 cells) can dominate spuriously; after gating, they are reduced to Eosinophil 40 cells and Platelet 87 cells. This section is an evidence audit for acceptance thresholds and confidence caps, not a marker-only replacement of final labels. The highest post-gate unassigned fraction is in Other_lineage (29.2%).",
+  "assessment_ja": "vaccination_study_09 は 139,960 cells / 19,141 portal genes の dataset です。親ラベルまたは Blood Cell に残った割合は 0.5%、doublet は 579 cells、低 confidence は 1,286 cells でした。注意すべき marker gene 欠損は Plasma_ASC(warning: JCHAIN) です。 大規模な T/B dataset で、screfmap は B/CD4T の補助として広く利用できます。 subcluster evidence では CD4 Naive / T Central Memory: 64,895 cells; Classical Monocyte: 25,752 cells; Naive B Cell: 11,614 cells; CD8 Cytotoxic / T Effector Memory: 10,513 cells; NK Cell: 10,322 cells; Non-Classical Monocyte: 4,365 cells が主要な構造です。全細胞に近い coverage で最も broad lineage に沿った source は Marker score (broad concordance 97.8%) で、相対的に不一致が目立つ source は Azimuth PBMC L3 (36.5%) です。 screfmap は適用範囲を B/CD4T に限定すると coverage 40.0%、broad concordance 98.9% でした。 v14 marker registry audit は、marker gene list をそのまま全細胞で競わせるのではなく、broad lineage、applicable lineage、key-marker support の順に制限した場合に marker evidence がどう変わるかを見る診断です。単純 winner では Eosinophil 101,081 cells、Platelet 166 cells のような rare/artifact label が出やすい一方、gate 後は Eosinophil 40 cells、Platelet 87 cells に抑制されます。これは final label を marker score だけで置き換えるためではなく、fine label を受け入れる条件と confidence cap を決めるための evidence audit です。 最も gate 後の未割当が多い lineage は Other_lineage (29.2%) です。",
+  "assessment_en": "vaccination_study_09 contains 139,960 cells and 19,141 portal genes. The residual parent/Blood Cell fraction is 0.5%, with 579 doublets and 1,286 low-confidence cells. Marker-gene availability alerts are Plasma_ASC(warning: JCHAIN). This is a large T/B dataset, and screfmap provides broad scoped support for B/CD4T cells. The dominant subcluster-supported labels are CD4 Naive / T Central Memory: 64,895 cells; Classical Monocyte: 25,752 cells; Naive B Cell: 11,614 cells; CD8 Cytotoxic / T Effector Memory: 10,513 cells; NK Cell: 10,322 cells; Non-Classical Monocyte: 4,365 cells. Among near-global sources, the strongest broad-lineage source is Marker score (broad concordance 97.8%), whereas Azimuth PBMC L3 shows the most disagreement (36.5%). Within the B/CD4T scope, screfmap covers 40.0% of cells and reaches 98.9% broad concordance. The v14 marker-registry audit tests marker evidence after broad-lineage, applicable-lineage, and key-marker gates, rather than allowing every marker set to compete in every cell. With a naive marker winner, rare/artifact labels such as Eosinophil (101,081 cells) and Platelet (166 cells) can dominate spuriously; after gating, they are reduced to Eosinophil 40 cells and Platelet 87 cells. This section is an evidence audit for acceptance thresholds and confidence caps, not a marker-only replacement of final labels. The highest post-gate unassigned fraction is in Other_lineage (29.2%).",
   "caveat_ja": "この評価は ground truth label との accuracy ではなく、複数 annotation source と marker/subcluster evidence の整合性評価です。 marker gene が欠損している cell type では、reference mapping 単独の fine label は過信しない設計です。 Azimuth PBMC L3 の disagreement は、ontology 粒度の違い、gene availability、dataset enrichment の影響を含む可能性があります。",
   "caveat_en": "This is not a ground-truth accuracy estimate; it is a consistency review across annotation sources, marker evidence, and subcluster structure. Fine labels affected by marker-gene loss should not be trusted from reference mapping alone. Disagreement for Azimuth PBMC L3 may reflect ontology granularity, gene availability, or dataset enrichment.",
   "submission_tsv": "submissions/vaccination_study_09_annotation.tsv",
-  "cellxgene_h5ad": "cellxgene/vaccination_study_09.final_v13_recursive_screfmapping.cxg.h5ad"
+  "cellxgene_h5ad": "cellxgene/vaccination_study_09.final_v13_recursive_screfmapping.cxg.h5ad",
+  "updated_date": "2026-05-28"
 }

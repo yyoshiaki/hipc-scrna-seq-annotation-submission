@@ -1,10 +1,10 @@
 # vaccination_study_04 annotation review
 
-Updated: 2026-05-27 EDT
+Updated: 2026-05-28 EDT
 
 ## Dataset-specific assessment
 
-vaccination_study_04 contains 66,065 cells and 16,983 portal genes. The residual parent/Blood Cell fraction is 0.7%, with 647 doublets and 1,111 low-confidence cells. Marker-gene availability alerts are Treg(critical: FOXP3;IL2RA). This dataset should be interpreted as myeloid/DC enriched, and B/T fine-label assessment is limited. pDC calls are not based on JCHAIN alone; the major pDC clusters are supported concordantly by CellTypist, Azimuth, Pan-human Azimuth, cluster consensus, and pDC marker scores. However, pDC and plasma/ASC programs can partially overlap through JCHAIN/MZB1, so smaller mixed clusters should be checked against LILRA4/CLEC4C/IRF7/TCF4/IL3RA and plasma markers. The dominant subcluster-supported labels are Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells. Among near-global sources, the strongest broad-lineage source is Cluster consensus (broad concordance 98.9%), whereas Azimuth PBMC L3 shows the most disagreement (88.2%). Within the B/CD4T scope, screfmap covers 0.3% of cells and reaches 90.0% broad concordance.
+vaccination_study_04 contains 66,065 cells and 16,983 portal genes. The residual parent/Blood Cell fraction is 0.7%, with 647 doublets and 1,111 low-confidence cells. Marker-gene availability alerts are Treg(critical: FOXP3;IL2RA). This dataset should be interpreted as myeloid/DC enriched, and B/T fine-label assessment is limited. pDC calls are not based on JCHAIN alone; the major pDC clusters are supported concordantly by CellTypist, Azimuth, Pan-human Azimuth, cluster consensus, and pDC marker scores. However, pDC and plasma/ASC programs can partially overlap through JCHAIN/MZB1, so smaller mixed clusters should be checked against LILRA4/CLEC4C/IRF7/TCF4/IL3RA and plasma markers. The dominant subcluster-supported labels are Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells. Among near-global sources, the strongest broad-lineage source is Cluster consensus (broad concordance 98.9%), whereas Azimuth PBMC L3 shows the most disagreement (88.2%). Within the B/CD4T scope, screfmap covers 0.3% of cells and reaches 90.0% broad concordance. The v14 marker-registry audit tests marker evidence after broad-lineage, applicable-lineage, and key-marker gates, rather than allowing every marker set to compete in every cell. With a naive marker winner, rare/artifact labels such as Eosinophil (15,614 cells) and Platelet (18,606 cells) can dominate spuriously; after gating, they are reduced to Eosinophil 3,973 cells and Platelet 7 cells. This section is an evidence audit for acceptance thresholds and confidence caps, not a marker-only replacement of final labels. The highest post-gate unassigned fraction is in Other_lineage (46.4%).
 
 ## Methods
 
@@ -81,6 +81,84 @@ This table stratifies cells by final broad lineage and asks whether each source 
 | Myeloid/DC | Azimuth PBMC L2 | 64,151 | 0.936 | 0.987 |
 | Myeloid/DC | Azimuth PBMC L3 | 64,151 | 0.844 | 0.892 |
 | Myeloid/DC | Pan-human Azimuth fine | 64,151 | 0.914 | 0.961 |
+
+## v14 marker registry gate audit
+
+The v14 marker-registry audit tests marker evidence after broad-lineage, applicable-lineage, and key-marker gates, rather than allowing every marker set to compete in every cell. With a naive marker winner, rare/artifact labels such as Eosinophil (15,614 cells) and Platelet (18,606 cells) can dominate spuriously; after gating, they are reduced to Eosinophil 3,973 cells and Platelet 7 cells. This section is an evidence audit for acceptance thresholds and confidence caps, not a marker-only replacement of final labels. The highest post-gate unassigned fraction is in Other_lineage (46.4%).
+
+`Ungated` allows marker sets to compete across all cells, whereas `gated` restricts candidates by broad lineage and key-marker support. This section diagnoses the current final annotation and informs confidence caps or review alerts for the next annotation engine.
+
+![v14 marker gate comparison](assets/bar_vaccination_study_04_v14_marker_gate_comparison.png)
+
+### Registry marker availability alerts
+
+| label | broad_lineage | marker_role | n_present_markers | n_expected_markers | n_key_present | n_key_markers | availability_alert | missing_key_markers |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Platelet | Artifact/Other | artifact | 6 | 12 | 2 | 2 | warning |  |
+| RBC | Artifact/Other | artifact | 3 | 11 | 0 | 3 | critical | HBB;HBA1;HBA2 |
+| T Cell | T/NK | parent | 7 | 11 | 1 | 3 | warning | CD3D;TRAC |
+| CD4 T Cell (ab) | T/NK | parent | 5 | 12 | 2 | 3 | warning | CD3D |
+| CD4 Naive / T Central Memory | T/NK | terminal | 9 | 17 | 3 | 3 | warning |  |
+| Treg | T/NK | terminal | 9 | 16 | 1 | 3 | warning | FOXP3;IL2RA |
+| CD8 T Cell (ab) | T/NK | parent | 5 | 10 | 1 | 3 | warning | CD3D;CD8A |
+| CD8 Naive / T Central Memory | T/NK | terminal | 8 | 14 | 2 | 3 | warning | CD8A |
+| ydT Cell | T/NK | terminal | 4 | 10 | 0 | 3 | critical | TRDC;TRGC1;TRGC2 |
+| MAIT Cell | T/NK | terminal | 7 | 12 | 1 | 2 | warning | SLC4A10 |
+| NKT Cell | T/NK | terminal | 6 | 11 | 2 | 3 | warning | CD3D |
+| Memory B Cell | B | terminal | 12 | 16 | 1 | 3 | warning | CD27;TNFRSF13B |
+| Eosinophil | Myeloid/DC | terminal | 4 | 9 | 1 | 3 | warning | CLC;RNASE3 |
+| Basophil | Myeloid/DC | terminal | 7 | 11 | 1 | 3 | warning | MS4A2;HDC |
+| Mast Cell | Myeloid/DC | terminal | 3 | 9 | 1 | 3 | warning | TPSAB1;TPSB2 |
+
+### Gate effect on marker winners
+
+| label | ungated_n | gated_n | delta_after_gate |
+| --- | --- | --- | --- |
+| Basophil | 28 | 18 | -10 |
+| CD4 Naive / T Central Memory | 5,620 | 59 | -5,561 |
+| Classical Monocyte | 2,189 | 21,262 | 19,073 |
+| Conventional DC 1 | 114 | 864 | 750 |
+| Conventional DC 2 | 3,090 | 9,079 | 5,989 |
+| Eosinophil | 15,614 | 3,973 | -11,641 |
+| HSC | 12 | 409 | 397 |
+| Intermediate Monocyte | 19 | 4,124 | 4,105 |
+| Mast Cell | 0 | 29 | 29 |
+| NK Cell | 1,103 | 218 | -885 |
+| NKT Cell | 16,978 | 152 | -16,826 |
+| Neutrophil | 1 | 4,388 | 4,387 |
+| Non-Classical Monocyte | 2,368 | 15,656 | 13,288 |
+| Plasmacytoid DC | 7 | 3,410 | 3,403 |
+| Platelet | 18,606 | 7 | -18,599 |
+| RBC | 0 | 0 | 0 |
+| Unassigned | 0 | 2,211 | 2,211 |
+| ydT Cell | 227 | 0 | -227 |
+
+### Gated marker labels by audit lineage
+
+| audit_lineage_gate | n_cells | unassigned_n | unassigned_fraction | top_gated_marker_labels |
+| --- | --- | --- | --- | --- |
+| Ambiguous | 790 | 10 | 0.013 | NK Cell: 136; Non-Classical Monocyte: 125; Conventional DC 2: 116; Classical Monocyte: 74; CD4 Naive / T Central Memory: 54 |
+| B_lineage | 118 | 2 | 0.017 | Plasmablast: 105; Naive B Cell: 9; Unassigned: 2; Memory B Cell: 1; Plasma Cell: 1 |
+| Myeloid_lineage | 64,151 | 1,853 | 0.029 | Classical Monocyte: 21,188; Non-Classical Monocyte: 15,531; Conventional DC 2: 8,963; Neutrophil: 4,355; Intermediate Monocyte: 4,087 |
+| Other_lineage | 729 | 338 | 0.464 | HSC: 385; Unassigned: 338; Platelet: 6 |
+| T_NK_lineage | 277 | 8 | 0.029 | NKT Cell: 145; NK Cell: 82; CD8 Naive / T Central Memory: 33; Unassigned: 8; CD4 Naive / T Central Memory: 5 |
+
+### Marker support by final label
+
+| final_label | n_cells | marker_exact_fraction | marker_exact_fraction_gated | unassigned_fraction_gated | top_marker_best_labels_gated |
+| --- | --- | --- | --- | --- | --- |
+| Classical Monocyte | 33,801 | 0.064 | 0.617 | 0.023 | Classical Monocyte:20851; Neutrophil:4177; Intermediate Monocyte:3718; Eosinophil:2280; Conventional DC 2:1129 |
+| Non-Classical Monocyte | 15,645 | 0.150 | 0.931 | 0.043 | Non-Classical Monocyte:14568; Unassigned:680; Intermediate Monocyte:151; Classical Monocyte:114; Eosinophil:60 |
+| Conventional DC 2 | 7,916 | 0.311 | 0.727 | 0.010 | Conventional DC 2:5753; Eosinophil:1564; Classical Monocyte:196; Intermediate Monocyte:186; Neutrophil:132 |
+| Plasmacytoid DC | 5,689 | 0.001 | 0.591 | 0.043 | Plasmacytoid DC:3365; Conventional DC 2:1913; Unassigned:242; Non-Classical Monocyte:86; Classical Monocyte:27 |
+| Conventional DC 1 | 1,100 | 0.000 | 0.780 | 0.055 | Conventional DC 1:858; Conventional DC 2:122; Unassigned:60; Intermediate Monocyte:28; Non-Classical Monocyte:26 |
+| Doublet | 647 | 0.000 | 0.000 | 0.008 | Non-Classical Monocyte:125; NK Cell:121; Classical Monocyte:74; Conventional DC 2:61; CD4 Naive / T Central Memory:52 |
+| Blood Cell | 464 | 0.000 | 0.000 | 0.511 | Unassigned:237; HSC:124; Conventional DC 2:55; Mast Cell:16; CD8 Naive / T Central Memory:11 |
+| HSC | 402 | 0.020 | 0.694 | 0.264 | HSC:279; Unassigned:106; NK Cell:11; Plasmablast:2; Basophil:2 |
+| NK Cell | 251 | 0.036 | 0.323 | 0.024 | NKT Cell:145; NK Cell:81; CD8 Naive / T Central Memory:16; Unassigned:6; CD4 T Effector Memory:2 |
+| Plasma Cell | 118 | 0.000 | 0.008 | 0.017 | Plasmablast:105; Naive B Cell:9; Unassigned:2; Memory B Cell:1; Plasma Cell:1 |
+| CD4 Naive / T Central Memory | 26 | 0.077 | 0.154 | 0.077 | CD8 Naive / T Central Memory:17; CD4 Naive / T Central Memory:4; MAIT Cell:2; Unassigned:2; NK Cell:1 |
+| Platelet | 6 | 1.000 | 1.000 | 0.000 | Platelet:6 |
 
 ## Lineage-specific subclustering
 

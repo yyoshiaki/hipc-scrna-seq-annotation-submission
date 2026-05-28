@@ -1303,10 +1303,517 @@
       "top_screfmapping": "not_available:2"
     }
   ],
-  "assessment_ja": "vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です。親ラベルまたは Blood Cell に残った割合は 0.7%、doublet は 647 cells、低 confidence は 1,111 cells でした。注意すべき marker gene 欠損は Treg(critical: FOXP3;IL2RA) です。 myeloid/DC enriched dataset として読むべきで、B/T 系の細分類評価には向きません。pDC は JCHAIN 単独ではなく、主要 cluster で CellTypist/Azimuth/Pan-human/cluster consensus と pDC marker score が揃って支持しています。ただし pDC と plasma/ASC は JCHAIN/MZB1 で部分的に重なるため、小さい mixed cluster は LILRA4/CLEC4C/IRF7/TCF4/IL3RA と plasma marker を並べて確認する必要があります。 subcluster evidence では Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells が主要な構造です。全細胞に近い coverage で最も broad lineage に沿った source は Cluster consensus (broad concordance 98.9%) で、相対的に不一致が目立つ source は Azimuth PBMC L3 (88.2%) です。 screfmap は適用範囲を B/CD4T に限定すると coverage 0.3%、broad concordance 90.0% でした。",
-  "assessment_en": "vaccination_study_04 contains 66,065 cells and 16,983 portal genes. The residual parent/Blood Cell fraction is 0.7%, with 647 doublets and 1,111 low-confidence cells. Marker-gene availability alerts are Treg(critical: FOXP3;IL2RA). This dataset should be interpreted as myeloid/DC enriched, and B/T fine-label assessment is limited. pDC calls are not based on JCHAIN alone; the major pDC clusters are supported concordantly by CellTypist, Azimuth, Pan-human Azimuth, cluster consensus, and pDC marker scores. However, pDC and plasma/ASC programs can partially overlap through JCHAIN/MZB1, so smaller mixed clusters should be checked against LILRA4/CLEC4C/IRF7/TCF4/IL3RA and plasma markers. The dominant subcluster-supported labels are Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells. Among near-global sources, the strongest broad-lineage source is Cluster consensus (broad concordance 98.9%), whereas Azimuth PBMC L3 shows the most disagreement (88.2%). Within the B/CD4T scope, screfmap covers 0.3% of cells and reaches 90.0% broad concordance.",
+  "marker_gate": {
+    "availability_alerts": [
+      {
+        "study": "vaccination_study_04",
+        "label": "Platelet",
+        "broad_lineage": "Artifact/Other",
+        "applicable_lineage": "Any",
+        "marker_role": "artifact",
+        "provenance": "curated",
+        "n_expected_markers": 12,
+        "n_present_markers": 6,
+        "present_fraction": 0.5,
+        "n_key_markers": 2,
+        "n_key_present": 2,
+        "key_present_fraction": 1.0,
+        "availability_alert": "warning",
+        "missing_key_markers": "",
+        "missing_markers": "CD3D;GP9;HBA1;HBA2;HBB;MS4A1"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "RBC",
+        "broad_lineage": "Artifact/Other",
+        "applicable_lineage": "Any",
+        "marker_role": "artifact",
+        "provenance": "curated",
+        "n_expected_markers": 11,
+        "n_present_markers": 3,
+        "present_fraction": 0.2727272727272727,
+        "n_key_markers": 3,
+        "n_key_present": 0,
+        "key_present_fraction": 0.0,
+        "availability_alert": "critical",
+        "missing_key_markers": "HBB;HBA1;HBA2",
+        "missing_markers": "ALAS2;CD3D;HBA1;HBA2;HBB;HBD;MS4A1;SLC4A1"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "T Cell",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "parent",
+        "provenance": "curated",
+        "n_expected_markers": 11,
+        "n_present_markers": 7,
+        "present_fraction": 0.6363636363636364,
+        "n_key_markers": 3,
+        "n_key_present": 1,
+        "key_present_fraction": 0.3333333333333333,
+        "availability_alert": "warning",
+        "missing_key_markers": "CD3D;TRAC",
+        "missing_markers": "CD3D;LCK;MS4A1;TRAC"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "CD4 T Cell (ab)",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "parent",
+        "provenance": "curated",
+        "n_expected_markers": 12,
+        "n_present_markers": 5,
+        "present_fraction": 0.4166666666666667,
+        "n_key_markers": 3,
+        "n_key_present": 2,
+        "key_present_fraction": 0.6666666666666666,
+        "availability_alert": "warning",
+        "missing_key_markers": "CD3D",
+        "missing_markers": "CD3D;CD8A;CD8B;FOXP3;IL7R;MS4A1;TRAC"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "CD4 Naive / T Central Memory",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 17,
+        "n_present_markers": 9,
+        "present_fraction": 0.5294117647058824,
+        "n_key_markers": 3,
+        "n_key_present": 3,
+        "key_present_fraction": 1.0,
+        "availability_alert": "warning",
+        "missing_key_markers": "",
+        "missing_markers": "CD3D;CD8A;CD8B;FOXP3;IL7R;LEF1;MAL;PRF1"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "Treg",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 16,
+        "n_present_markers": 9,
+        "present_fraction": 0.5625,
+        "n_key_markers": 3,
+        "n_key_present": 1,
+        "key_present_fraction": 0.3333333333333333,
+        "availability_alert": "warning",
+        "missing_key_markers": "FOXP3;IL2RA",
+        "missing_markers": "CCR8;CD3D;CD8A;FOXP3;IL2RA;TIGIT;TNFRSF18"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "CD8 T Cell (ab)",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "parent",
+        "provenance": "curated",
+        "n_expected_markers": 10,
+        "n_present_markers": 5,
+        "present_fraction": 0.5,
+        "n_key_markers": 3,
+        "n_key_present": 1,
+        "key_present_fraction": 0.3333333333333333,
+        "availability_alert": "warning",
+        "missing_key_markers": "CD3D;CD8A",
+        "missing_markers": "CD3D;CD8A;CD8B;MS4A1;TRAC"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "CD8 Naive / T Central Memory",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 14,
+        "n_present_markers": 8,
+        "present_fraction": 0.5714285714285714,
+        "n_key_markers": 3,
+        "n_key_present": 2,
+        "key_present_fraction": 0.6666666666666666,
+        "availability_alert": "warning",
+        "missing_key_markers": "CD8A",
+        "missing_markers": "CD3D;CD8A;CD8B;IL7R;LEF1;PRF1"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "ydT Cell",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated_with_ontology_note",
+        "n_expected_markers": 10,
+        "n_present_markers": 4,
+        "present_fraction": 0.4,
+        "n_key_markers": 3,
+        "n_key_present": 0,
+        "key_present_fraction": 0.0,
+        "availability_alert": "critical",
+        "missing_key_markers": "TRDC;TRGC1;TRGC2",
+        "missing_markers": "CD3D;MS4A1;TRDC;TRDV2;TRGC1;TRGC2"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "MAIT Cell",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 12,
+        "n_present_markers": 7,
+        "present_fraction": 0.5833333333333334,
+        "n_key_markers": 2,
+        "n_key_present": 1,
+        "key_present_fraction": 0.5,
+        "availability_alert": "warning",
+        "missing_key_markers": "SLC4A10",
+        "missing_markers": "CD3D;IL7R;MS4A1;SLC4A10;TRAV1-2"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "NKT Cell",
+        "broad_lineage": "T/NK",
+        "applicable_lineage": "T_NK_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 11,
+        "n_present_markers": 6,
+        "present_fraction": 0.5454545454545454,
+        "n_key_markers": 3,
+        "n_key_present": 2,
+        "key_present_fraction": 0.6666666666666666,
+        "availability_alert": "warning",
+        "missing_key_markers": "CD3D",
+        "missing_markers": "CD3D;CD8A;CD8B;MS4A1;TRAC"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "Memory B Cell",
+        "broad_lineage": "B",
+        "applicable_lineage": "B_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 16,
+        "n_present_markers": 12,
+        "present_fraction": 0.75,
+        "n_key_markers": 3,
+        "n_key_present": 1,
+        "key_present_fraction": 0.3333333333333333,
+        "availability_alert": "warning",
+        "missing_key_markers": "CD27;TNFRSF13B",
+        "missing_markers": "CD27;MS4A1;TBX21;TNFRSF13B"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "Eosinophil",
+        "broad_lineage": "Myeloid/DC",
+        "applicable_lineage": "Myeloid_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 9,
+        "n_present_markers": 4,
+        "present_fraction": 0.4444444444444444,
+        "n_key_markers": 3,
+        "n_key_present": 1,
+        "key_present_fraction": 0.3333333333333333,
+        "availability_alert": "warning",
+        "missing_key_markers": "CLC;RNASE3",
+        "missing_markers": "CD3D;CLC;MS4A1;RNASE3;SIGLEC8"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "Basophil",
+        "broad_lineage": "Myeloid/DC",
+        "applicable_lineage": "Myeloid_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 11,
+        "n_present_markers": 7,
+        "present_fraction": 0.6363636363636364,
+        "n_key_markers": 3,
+        "n_key_present": 1,
+        "key_present_fraction": 0.3333333333333333,
+        "availability_alert": "warning",
+        "missing_key_markers": "MS4A2;HDC",
+        "missing_markers": "CD3D;HDC;MS4A1;MS4A2"
+      },
+      {
+        "study": "vaccination_study_04",
+        "label": "Mast Cell",
+        "broad_lineage": "Myeloid/DC",
+        "applicable_lineage": "Myeloid_lineage",
+        "marker_role": "terminal",
+        "provenance": "curated",
+        "n_expected_markers": 9,
+        "n_present_markers": 3,
+        "present_fraction": 0.3333333333333333,
+        "n_key_markers": 3,
+        "n_key_present": 1,
+        "key_present_fraction": 0.3333333333333333,
+        "availability_alert": "warning",
+        "missing_key_markers": "TPSAB1;TPSB2",
+        "missing_markers": "CD3D;HDC;MS4A1;MS4A2;TPSAB1;TPSB2"
+      }
+    ],
+    "gate_effect": [
+      {
+        "label": "Basophil",
+        "ungated_n": 28,
+        "gated_n": 18,
+        "delta_after_gate": -10
+      },
+      {
+        "label": "CD4 Naive / T Central Memory",
+        "ungated_n": 5620,
+        "gated_n": 59,
+        "delta_after_gate": -5561
+      },
+      {
+        "label": "Classical Monocyte",
+        "ungated_n": 2189,
+        "gated_n": 21262,
+        "delta_after_gate": 19073
+      },
+      {
+        "label": "Conventional DC 1",
+        "ungated_n": 114,
+        "gated_n": 864,
+        "delta_after_gate": 750
+      },
+      {
+        "label": "Conventional DC 2",
+        "ungated_n": 3090,
+        "gated_n": 9079,
+        "delta_after_gate": 5989
+      },
+      {
+        "label": "Eosinophil",
+        "ungated_n": 15614,
+        "gated_n": 3973,
+        "delta_after_gate": -11641
+      },
+      {
+        "label": "HSC",
+        "ungated_n": 12,
+        "gated_n": 409,
+        "delta_after_gate": 397
+      },
+      {
+        "label": "Intermediate Monocyte",
+        "ungated_n": 19,
+        "gated_n": 4124,
+        "delta_after_gate": 4105
+      },
+      {
+        "label": "Mast Cell",
+        "ungated_n": 0,
+        "gated_n": 29,
+        "delta_after_gate": 29
+      },
+      {
+        "label": "NK Cell",
+        "ungated_n": 1103,
+        "gated_n": 218,
+        "delta_after_gate": -885
+      },
+      {
+        "label": "NKT Cell",
+        "ungated_n": 16978,
+        "gated_n": 152,
+        "delta_after_gate": -16826
+      },
+      {
+        "label": "Neutrophil",
+        "ungated_n": 1,
+        "gated_n": 4388,
+        "delta_after_gate": 4387
+      },
+      {
+        "label": "Non-Classical Monocyte",
+        "ungated_n": 2368,
+        "gated_n": 15656,
+        "delta_after_gate": 13288
+      },
+      {
+        "label": "Plasmacytoid DC",
+        "ungated_n": 7,
+        "gated_n": 3410,
+        "delta_after_gate": 3403
+      },
+      {
+        "label": "Platelet",
+        "ungated_n": 18606,
+        "gated_n": 7,
+        "delta_after_gate": -18599
+      },
+      {
+        "label": "RBC",
+        "ungated_n": 0,
+        "gated_n": 0,
+        "delta_after_gate": 0
+      },
+      {
+        "label": "Unassigned",
+        "ungated_n": 0,
+        "gated_n": 2211,
+        "delta_after_gate": 2211
+      },
+      {
+        "label": "ydT Cell",
+        "ungated_n": 227,
+        "gated_n": 0,
+        "delta_after_gate": -227
+      }
+    ],
+    "lineage_gate": [
+      {
+        "audit_lineage_gate": "Ambiguous",
+        "n_cells": 790,
+        "unassigned_n": 10,
+        "unassigned_fraction": 0.012658227848101266,
+        "top_gated_marker_labels": "NK Cell: 136; Non-Classical Monocyte: 125; Conventional DC 2: 116; Classical Monocyte: 74; CD4 Naive / T Central Memory: 54"
+      },
+      {
+        "audit_lineage_gate": "B_lineage",
+        "n_cells": 118,
+        "unassigned_n": 2,
+        "unassigned_fraction": 0.01694915254237288,
+        "top_gated_marker_labels": "Plasmablast: 105; Naive B Cell: 9; Unassigned: 2; Memory B Cell: 1; Plasma Cell: 1"
+      },
+      {
+        "audit_lineage_gate": "Myeloid_lineage",
+        "n_cells": 64151,
+        "unassigned_n": 1853,
+        "unassigned_fraction": 0.02888497451325778,
+        "top_gated_marker_labels": "Classical Monocyte: 21,188; Non-Classical Monocyte: 15,531; Conventional DC 2: 8,963; Neutrophil: 4,355; Intermediate Monocyte: 4,087"
+      },
+      {
+        "audit_lineage_gate": "Other_lineage",
+        "n_cells": 729,
+        "unassigned_n": 338,
+        "unassigned_fraction": 0.46364883401920437,
+        "top_gated_marker_labels": "HSC: 385; Unassigned: 338; Platelet: 6"
+      },
+      {
+        "audit_lineage_gate": "T_NK_lineage",
+        "n_cells": 277,
+        "unassigned_n": 8,
+        "unassigned_fraction": 0.02888086642599278,
+        "top_gated_marker_labels": "NKT Cell: 145; NK Cell: 82; CD8 Naive / T Central Memory: 33; Unassigned: 8; CD4 Naive / T Central Memory: 5"
+      }
+    ],
+    "by_final_label": [
+      {
+        "final_label": "Classical Monocyte",
+        "n_cells": 33801,
+        "marker_exact_fraction": 0.0644655483565575,
+        "marker_exact_fraction_gated": 0.6168752403775036,
+        "unassigned_fraction_gated": 0.0233129197361024,
+        "top_marker_best_labels_gated": "Classical Monocyte:20851; Neutrophil:4177; Intermediate Monocyte:3718; Eosinophil:2280; Conventional DC 2:1129"
+      },
+      {
+        "final_label": "Non-Classical Monocyte",
+        "n_cells": 15645,
+        "marker_exact_fraction": 0.150143815915628,
+        "marker_exact_fraction_gated": 0.9311601150527326,
+        "unassigned_fraction_gated": 0.0434643656120166,
+        "top_marker_best_labels_gated": "Non-Classical Monocyte:14568; Unassigned:680; Intermediate Monocyte:151; Classical Monocyte:114; Eosinophil:60"
+      },
+      {
+        "final_label": "Conventional DC 2",
+        "n_cells": 7916,
+        "marker_exact_fraction": 0.3110156644770085,
+        "marker_exact_fraction_gated": 0.726755937342092,
+        "unassigned_fraction_gated": 0.0104850934815563,
+        "top_marker_best_labels_gated": "Conventional DC 2:5753; Eosinophil:1564; Classical Monocyte:196; Intermediate Monocyte:186; Neutrophil:132"
+      },
+      {
+        "final_label": "Plasmacytoid DC",
+        "n_cells": 5689,
+        "marker_exact_fraction": 0.0012304447178766,
+        "marker_exact_fraction_gated": 0.5914923536649674,
+        "unassigned_fraction_gated": 0.0425382316751625,
+        "top_marker_best_labels_gated": "Plasmacytoid DC:3365; Conventional DC 2:1913; Unassigned:242; Non-Classical Monocyte:86; Classical Monocyte:27"
+      },
+      {
+        "final_label": "Conventional DC 1",
+        "n_cells": 1100,
+        "marker_exact_fraction": 0.0,
+        "marker_exact_fraction_gated": 0.78,
+        "unassigned_fraction_gated": 0.0545454545454545,
+        "top_marker_best_labels_gated": "Conventional DC 1:858; Conventional DC 2:122; Unassigned:60; Intermediate Monocyte:28; Non-Classical Monocyte:26"
+      },
+      {
+        "final_label": "Doublet",
+        "n_cells": 647,
+        "marker_exact_fraction": 0.0,
+        "marker_exact_fraction_gated": 0.0,
+        "unassigned_fraction_gated": 0.0077279752704791,
+        "top_marker_best_labels_gated": "Non-Classical Monocyte:125; NK Cell:121; Classical Monocyte:74; Conventional DC 2:61; CD4 Naive / T Central Memory:52"
+      },
+      {
+        "final_label": "Blood Cell",
+        "n_cells": 464,
+        "marker_exact_fraction": 0.0,
+        "marker_exact_fraction_gated": 0.0,
+        "unassigned_fraction_gated": 0.5107758620689655,
+        "top_marker_best_labels_gated": "Unassigned:237; HSC:124; Conventional DC 2:55; Mast Cell:16; CD8 Naive / T Central Memory:11"
+      },
+      {
+        "final_label": "HSC",
+        "n_cells": 402,
+        "marker_exact_fraction": 0.0199004975124378,
+        "marker_exact_fraction_gated": 0.6940298507462687,
+        "unassigned_fraction_gated": 0.263681592039801,
+        "top_marker_best_labels_gated": "HSC:279; Unassigned:106; NK Cell:11; Plasmablast:2; Basophil:2"
+      },
+      {
+        "final_label": "NK Cell",
+        "n_cells": 251,
+        "marker_exact_fraction": 0.0358565737051792,
+        "marker_exact_fraction_gated": 0.3227091633466135,
+        "unassigned_fraction_gated": 0.0239043824701195,
+        "top_marker_best_labels_gated": "NKT Cell:145; NK Cell:81; CD8 Naive / T Central Memory:16; Unassigned:6; CD4 T Effector Memory:2"
+      },
+      {
+        "final_label": "Plasma Cell",
+        "n_cells": 118,
+        "marker_exact_fraction": 0.0,
+        "marker_exact_fraction_gated": 0.0084745762711864,
+        "unassigned_fraction_gated": 0.0169491525423728,
+        "top_marker_best_labels_gated": "Plasmablast:105; Naive B Cell:9; Unassigned:2; Memory B Cell:1; Plasma Cell:1"
+      },
+      {
+        "final_label": "CD4 Naive / T Central Memory",
+        "n_cells": 26,
+        "marker_exact_fraction": 0.0769230769230769,
+        "marker_exact_fraction_gated": 0.1538461538461538,
+        "unassigned_fraction_gated": 0.0769230769230769,
+        "top_marker_best_labels_gated": "CD8 Naive / T Central Memory:17; CD4 Naive / T Central Memory:4; MAIT Cell:2; Unassigned:2; NK Cell:1"
+      },
+      {
+        "final_label": "Platelet",
+        "n_cells": 6,
+        "marker_exact_fraction": 1.0,
+        "marker_exact_fraction_gated": 1.0,
+        "unassigned_fraction_gated": 0.0,
+        "top_marker_best_labels_gated": "Platelet:6"
+      }
+    ]
+  },
+  "marker_gate_summary_ja": "v14 marker registry audit は、marker gene list をそのまま全細胞で競わせるのではなく、broad lineage、applicable lineage、key-marker support の順に制限した場合に marker evidence がどう変わるかを見る診断です。単純 winner では Eosinophil 15,614 cells、Platelet 18,606 cells のような rare/artifact label が出やすい一方、gate 後は Eosinophil 3,973 cells、Platelet 7 cells に抑制されます。これは final label を marker score だけで置き換えるためではなく、fine label を受け入れる条件と confidence cap を決めるための evidence audit です。 最も gate 後の未割当が多い lineage は Other_lineage (46.4%) です。",
+  "marker_gate_summary_en": "The v14 marker-registry audit tests marker evidence after broad-lineage, applicable-lineage, and key-marker gates, rather than allowing every marker set to compete in every cell. With a naive marker winner, rare/artifact labels such as Eosinophil (15,614 cells) and Platelet (18,606 cells) can dominate spuriously; after gating, they are reduced to Eosinophil 3,973 cells and Platelet 7 cells. This section is an evidence audit for acceptance thresholds and confidence caps, not a marker-only replacement of final labels. The highest post-gate unassigned fraction is in Other_lineage (46.4%).",
+  "assessment_ja": "vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です。親ラベルまたは Blood Cell に残った割合は 0.7%、doublet は 647 cells、低 confidence は 1,111 cells でした。注意すべき marker gene 欠損は Treg(critical: FOXP3;IL2RA) です。 myeloid/DC enriched dataset として読むべきで、B/T 系の細分類評価には向きません。pDC は JCHAIN 単独ではなく、主要 cluster で CellTypist/Azimuth/Pan-human/cluster consensus と pDC marker score が揃って支持しています。ただし pDC と plasma/ASC は JCHAIN/MZB1 で部分的に重なるため、小さい mixed cluster は LILRA4/CLEC4C/IRF7/TCF4/IL3RA と plasma marker を並べて確認する必要があります。 subcluster evidence では Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells が主要な構造です。全細胞に近い coverage で最も broad lineage に沿った source は Cluster consensus (broad concordance 98.9%) で、相対的に不一致が目立つ source は Azimuth PBMC L3 (88.2%) です。 screfmap は適用範囲を B/CD4T に限定すると coverage 0.3%、broad concordance 90.0% でした。 v14 marker registry audit は、marker gene list をそのまま全細胞で競わせるのではなく、broad lineage、applicable lineage、key-marker support の順に制限した場合に marker evidence がどう変わるかを見る診断です。単純 winner では Eosinophil 15,614 cells、Platelet 18,606 cells のような rare/artifact label が出やすい一方、gate 後は Eosinophil 3,973 cells、Platelet 7 cells に抑制されます。これは final label を marker score だけで置き換えるためではなく、fine label を受け入れる条件と confidence cap を決めるための evidence audit です。 最も gate 後の未割当が多い lineage は Other_lineage (46.4%) です。",
+  "assessment_en": "vaccination_study_04 contains 66,065 cells and 16,983 portal genes. The residual parent/Blood Cell fraction is 0.7%, with 647 doublets and 1,111 low-confidence cells. Marker-gene availability alerts are Treg(critical: FOXP3;IL2RA). This dataset should be interpreted as myeloid/DC enriched, and B/T fine-label assessment is limited. pDC calls are not based on JCHAIN alone; the major pDC clusters are supported concordantly by CellTypist, Azimuth, Pan-human Azimuth, cluster consensus, and pDC marker scores. However, pDC and plasma/ASC programs can partially overlap through JCHAIN/MZB1, so smaller mixed clusters should be checked against LILRA4/CLEC4C/IRF7/TCF4/IL3RA and plasma markers. The dominant subcluster-supported labels are Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells. Among near-global sources, the strongest broad-lineage source is Cluster consensus (broad concordance 98.9%), whereas Azimuth PBMC L3 shows the most disagreement (88.2%). Within the B/CD4T scope, screfmap covers 0.3% of cells and reaches 90.0% broad concordance. The v14 marker-registry audit tests marker evidence after broad-lineage, applicable-lineage, and key-marker gates, rather than allowing every marker set to compete in every cell. With a naive marker winner, rare/artifact labels such as Eosinophil (15,614 cells) and Platelet (18,606 cells) can dominate spuriously; after gating, they are reduced to Eosinophil 3,973 cells and Platelet 7 cells. This section is an evidence audit for acceptance thresholds and confidence caps, not a marker-only replacement of final labels. The highest post-gate unassigned fraction is in Other_lineage (46.4%).",
   "caveat_ja": "この評価は ground truth label との accuracy ではなく、複数 annotation source と marker/subcluster evidence の整合性評価です。 marker gene が欠損している cell type では、reference mapping 単独の fine label は過信しない設計です。 Azimuth PBMC L3 の disagreement は、ontology 粒度の違い、gene availability、dataset enrichment の影響を含む可能性があります。 whole PBMC と仮定した解釈より、dataset-specific enrichment と QC structure を優先して読むべきです。",
   "caveat_en": "This is not a ground-truth accuracy estimate; it is a consistency review across annotation sources, marker evidence, and subcluster structure. Fine labels affected by marker-gene loss should not be trusted from reference mapping alone. Disagreement for Azimuth PBMC L3 may reflect ontology granularity, gene availability, or dataset enrichment. Dataset-specific enrichment and QC structure should be prioritized over a whole-PBMC assumption.",
   "submission_tsv": "submissions/vaccination_study_04_annotation.tsv",
-  "cellxgene_h5ad": "cellxgene/vaccination_study_04.final_v13_recursive_screfmapping.cxg.h5ad"
+  "cellxgene_h5ad": "cellxgene/vaccination_study_04.final_v13_recursive_screfmapping.cxg.h5ad",
+  "updated_date": "2026-05-28"
 }

@@ -1,10 +1,10 @@
 # vaccination_study_04 annotation review
 
-Updated: 2026-05-27 EDT
+Updated: 2026-05-28 EDT
 
 ## Dataset-specific assessment
 
-vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です。親ラベルまたは Blood Cell に残った割合は 0.7%、doublet は 647 cells、低 confidence は 1,111 cells でした。注意すべき marker gene 欠損は Treg(critical: FOXP3;IL2RA) です。 myeloid/DC enriched dataset として読むべきで、B/T 系の細分類評価には向きません。pDC は JCHAIN 単独ではなく、主要 cluster で CellTypist/Azimuth/Pan-human/cluster consensus と pDC marker score が揃って支持しています。ただし pDC と plasma/ASC は JCHAIN/MZB1 で部分的に重なるため、小さい mixed cluster は LILRA4/CLEC4C/IRF7/TCF4/IL3RA と plasma marker を並べて確認する必要があります。 subcluster evidence では Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells が主要な構造です。全細胞に近い coverage で最も broad lineage に沿った source は Cluster consensus (broad concordance 98.9%) で、相対的に不一致が目立つ source は Azimuth PBMC L3 (88.2%) です。 screfmap は適用範囲を B/CD4T に限定すると coverage 0.3%、broad concordance 90.0% でした。
+vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です。親ラベルまたは Blood Cell に残った割合は 0.7%、doublet は 647 cells、低 confidence は 1,111 cells でした。注意すべき marker gene 欠損は Treg(critical: FOXP3;IL2RA) です。 myeloid/DC enriched dataset として読むべきで、B/T 系の細分類評価には向きません。pDC は JCHAIN 単独ではなく、主要 cluster で CellTypist/Azimuth/Pan-human/cluster consensus と pDC marker score が揃って支持しています。ただし pDC と plasma/ASC は JCHAIN/MZB1 で部分的に重なるため、小さい mixed cluster は LILRA4/CLEC4C/IRF7/TCF4/IL3RA と plasma marker を並べて確認する必要があります。 subcluster evidence では Classical Monocyte: 33,801 cells; Non-Classical Monocyte: 15,645 cells; Conventional DC 2: 7,916 cells; Plasmacytoid DC: 5,689 cells; Conventional DC 1: 1,100 cells; NK Cell: 251 cells が主要な構造です。全細胞に近い coverage で最も broad lineage に沿った source は Cluster consensus (broad concordance 98.9%) で、相対的に不一致が目立つ source は Azimuth PBMC L3 (88.2%) です。 screfmap は適用範囲を B/CD4T に限定すると coverage 0.3%、broad concordance 90.0% でした。 v14 marker registry audit は、marker gene list をそのまま全細胞で競わせるのではなく、broad lineage、applicable lineage、key-marker support の順に制限した場合に marker evidence がどう変わるかを見る診断です。単純 winner では Eosinophil 15,614 cells、Platelet 18,606 cells のような rare/artifact label が出やすい一方、gate 後は Eosinophil 3,973 cells、Platelet 7 cells に抑制されます。これは final label を marker score だけで置き換えるためではなく、fine label を受け入れる条件と confidence cap を決めるための evidence audit です。 最も gate 後の未割当が多い lineage は Other_lineage (46.4%) です。
 
 ## Methods
 
@@ -81,6 +81,84 @@ vaccination_study_04 は 66,065 cells / 16,983 portal genes の dataset です�
 | Myeloid/DC | Azimuth PBMC L2 | 64,151 | 0.936 | 0.987 |
 | Myeloid/DC | Azimuth PBMC L3 | 64,151 | 0.844 | 0.892 |
 | Myeloid/DC | Pan-human Azimuth fine | 64,151 | 0.914 | 0.961 |
+
+## v14 marker registry gate audit
+
+v14 marker registry audit は、marker gene list をそのまま全細胞で競わせるのではなく、broad lineage、applicable lineage、key-marker support の順に制限した場合に marker evidence がどう変わるかを見る診断です。単純 winner では Eosinophil 15,614 cells、Platelet 18,606 cells のような rare/artifact label が出やすい一方、gate 後は Eosinophil 3,973 cells、Platelet 7 cells に抑制されます。これは final label を marker score だけで置き換えるためではなく、fine label を受け入れる条件と confidence cap を決めるための evidence audit です。 最も gate 後の未割当が多い lineage は Other_lineage (46.4%) です。
+
+`Ungated` は marker set を全細胞で競わせた結果、`gated` は broad lineage と key-marker support で候補を制限した結果です。この section は現在の最終 annotation の妥当性を診断し、次の annotation engine でどの label に confidence cap / review alert を入れるべきかを決めるためのものです。
+
+![v14 marker gate comparison](assets/bar_vaccination_study_04_v14_marker_gate_comparison.png)
+
+### Registry marker availability alerts
+
+| label | broad_lineage | marker_role | n_present_markers | n_expected_markers | n_key_present | n_key_markers | availability_alert | missing_key_markers |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Platelet | Artifact/Other | artifact | 6 | 12 | 2 | 2 | warning |  |
+| RBC | Artifact/Other | artifact | 3 | 11 | 0 | 3 | critical | HBB;HBA1;HBA2 |
+| T Cell | T/NK | parent | 7 | 11 | 1 | 3 | warning | CD3D;TRAC |
+| CD4 T Cell (ab) | T/NK | parent | 5 | 12 | 2 | 3 | warning | CD3D |
+| CD4 Naive / T Central Memory | T/NK | terminal | 9 | 17 | 3 | 3 | warning |  |
+| Treg | T/NK | terminal | 9 | 16 | 1 | 3 | warning | FOXP3;IL2RA |
+| CD8 T Cell (ab) | T/NK | parent | 5 | 10 | 1 | 3 | warning | CD3D;CD8A |
+| CD8 Naive / T Central Memory | T/NK | terminal | 8 | 14 | 2 | 3 | warning | CD8A |
+| ydT Cell | T/NK | terminal | 4 | 10 | 0 | 3 | critical | TRDC;TRGC1;TRGC2 |
+| MAIT Cell | T/NK | terminal | 7 | 12 | 1 | 2 | warning | SLC4A10 |
+| NKT Cell | T/NK | terminal | 6 | 11 | 2 | 3 | warning | CD3D |
+| Memory B Cell | B | terminal | 12 | 16 | 1 | 3 | warning | CD27;TNFRSF13B |
+| Eosinophil | Myeloid/DC | terminal | 4 | 9 | 1 | 3 | warning | CLC;RNASE3 |
+| Basophil | Myeloid/DC | terminal | 7 | 11 | 1 | 3 | warning | MS4A2;HDC |
+| Mast Cell | Myeloid/DC | terminal | 3 | 9 | 1 | 3 | warning | TPSAB1;TPSB2 |
+
+### Gate effect on marker winners
+
+| label | ungated_n | gated_n | delta_after_gate |
+| --- | --- | --- | --- |
+| Basophil | 28 | 18 | -10 |
+| CD4 Naive / T Central Memory | 5,620 | 59 | -5,561 |
+| Classical Monocyte | 2,189 | 21,262 | 19,073 |
+| Conventional DC 1 | 114 | 864 | 750 |
+| Conventional DC 2 | 3,090 | 9,079 | 5,989 |
+| Eosinophil | 15,614 | 3,973 | -11,641 |
+| HSC | 12 | 409 | 397 |
+| Intermediate Monocyte | 19 | 4,124 | 4,105 |
+| Mast Cell | 0 | 29 | 29 |
+| NK Cell | 1,103 | 218 | -885 |
+| NKT Cell | 16,978 | 152 | -16,826 |
+| Neutrophil | 1 | 4,388 | 4,387 |
+| Non-Classical Monocyte | 2,368 | 15,656 | 13,288 |
+| Plasmacytoid DC | 7 | 3,410 | 3,403 |
+| Platelet | 18,606 | 7 | -18,599 |
+| RBC | 0 | 0 | 0 |
+| Unassigned | 0 | 2,211 | 2,211 |
+| ydT Cell | 227 | 0 | -227 |
+
+### Gated marker labels by audit lineage
+
+| audit_lineage_gate | n_cells | unassigned_n | unassigned_fraction | top_gated_marker_labels |
+| --- | --- | --- | --- | --- |
+| Ambiguous | 790 | 10 | 0.013 | NK Cell: 136; Non-Classical Monocyte: 125; Conventional DC 2: 116; Classical Monocyte: 74; CD4 Naive / T Central Memory: 54 |
+| B_lineage | 118 | 2 | 0.017 | Plasmablast: 105; Naive B Cell: 9; Unassigned: 2; Memory B Cell: 1; Plasma Cell: 1 |
+| Myeloid_lineage | 64,151 | 1,853 | 0.029 | Classical Monocyte: 21,188; Non-Classical Monocyte: 15,531; Conventional DC 2: 8,963; Neutrophil: 4,355; Intermediate Monocyte: 4,087 |
+| Other_lineage | 729 | 338 | 0.464 | HSC: 385; Unassigned: 338; Platelet: 6 |
+| T_NK_lineage | 277 | 8 | 0.029 | NKT Cell: 145; NK Cell: 82; CD8 Naive / T Central Memory: 33; Unassigned: 8; CD4 Naive / T Central Memory: 5 |
+
+### Marker support by final label
+
+| final_label | n_cells | marker_exact_fraction | marker_exact_fraction_gated | unassigned_fraction_gated | top_marker_best_labels_gated |
+| --- | --- | --- | --- | --- | --- |
+| Classical Monocyte | 33,801 | 0.064 | 0.617 | 0.023 | Classical Monocyte:20851; Neutrophil:4177; Intermediate Monocyte:3718; Eosinophil:2280; Conventional DC 2:1129 |
+| Non-Classical Monocyte | 15,645 | 0.150 | 0.931 | 0.043 | Non-Classical Monocyte:14568; Unassigned:680; Intermediate Monocyte:151; Classical Monocyte:114; Eosinophil:60 |
+| Conventional DC 2 | 7,916 | 0.311 | 0.727 | 0.010 | Conventional DC 2:5753; Eosinophil:1564; Classical Monocyte:196; Intermediate Monocyte:186; Neutrophil:132 |
+| Plasmacytoid DC | 5,689 | 0.001 | 0.591 | 0.043 | Plasmacytoid DC:3365; Conventional DC 2:1913; Unassigned:242; Non-Classical Monocyte:86; Classical Monocyte:27 |
+| Conventional DC 1 | 1,100 | 0.000 | 0.780 | 0.055 | Conventional DC 1:858; Conventional DC 2:122; Unassigned:60; Intermediate Monocyte:28; Non-Classical Monocyte:26 |
+| Doublet | 647 | 0.000 | 0.000 | 0.008 | Non-Classical Monocyte:125; NK Cell:121; Classical Monocyte:74; Conventional DC 2:61; CD4 Naive / T Central Memory:52 |
+| Blood Cell | 464 | 0.000 | 0.000 | 0.511 | Unassigned:237; HSC:124; Conventional DC 2:55; Mast Cell:16; CD8 Naive / T Central Memory:11 |
+| HSC | 402 | 0.020 | 0.694 | 0.264 | HSC:279; Unassigned:106; NK Cell:11; Plasmablast:2; Basophil:2 |
+| NK Cell | 251 | 0.036 | 0.323 | 0.024 | NKT Cell:145; NK Cell:81; CD8 Naive / T Central Memory:16; Unassigned:6; CD4 T Effector Memory:2 |
+| Plasma Cell | 118 | 0.000 | 0.008 | 0.017 | Plasmablast:105; Naive B Cell:9; Unassigned:2; Memory B Cell:1; Plasma Cell:1 |
+| CD4 Naive / T Central Memory | 26 | 0.077 | 0.154 | 0.077 | CD8 Naive / T Central Memory:17; CD4 Naive / T Central Memory:4; MAIT Cell:2; Unassigned:2; NK Cell:1 |
+| Platelet | 6 | 1.000 | 1.000 | 0.000 | Platelet:6 |
 
 ## Lineage-specific subclustering
 
