@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-05-27 EDT
+Updated: 2026-06-02 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -196,16 +196,18 @@ Batch execution is orchestration, not annotation logic. Keeping the implementati
 
 ## Current Team04 Per-Dataset Reports
 
-- Updated: 2026-05-27 EDT
-- Reports:
-  - `reports/260526_annotation_single_dataset_infection_study_01/`
-  - `reports/260526_annotation_single_dataset_infection_study_04/`
-  - `reports/260526_annotation_single_dataset_vaccination_study_04/`
-  - `reports/260526_annotation_single_dataset_vaccination_study_06/`
-  - `reports/260526_annotation_single_dataset_vaccination_study_09/`
+- Updated: 2026-06-02 EDT
+- Current v14 marker-gate-applied reports:
+  - `reports/260602_annotation_single_dataset_infection_study_01/`
+  - `reports/260602_annotation_single_dataset_infection_study_04/`
+  - `reports/260602_annotation_single_dataset_vaccination_study_04/`
+  - `reports/260602_annotation_single_dataset_vaccination_study_06/`
+  - `reports/260602_annotation_single_dataset_vaccination_study_09/`
+- Earlier v13 review reports are retained under `reports/260526_annotation_single_dataset_*/` for comparison.
 - Each dataset directory contains `report_en.md`, `report_ja.md`, `report_context.json`, tool/support TSVs, and dataset-specific inline figures under `assets/`.
-- Rich report content includes dataset-specific assessment, portal gene-space/QC audit, marker gene availability alerts, marker expression UMAPs, annotation source UMAPs, tool concordance plots, lineage-scoped source support, and B/T-NK/myeloid subcluster review sections.
-- Validation: all five Team04 datasets reached `VALIDATION_PASSED`; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD annotation labels match submission TSVs, confidence columns are present, scRefMapping evidence is loaded where applicable, and report image links resolve.
+- Rich report content includes dataset-specific assessment, portal gene-space/QC audit, marker gene availability alerts, marker expression UMAPs, annotation source UMAPs, tool concordance plots, lineage-scoped source support, v14 marker-registry gate audit, and B/T-NK/myeloid subcluster review sections.
+- Validation: all five Team04 v14 marker-gate-applied datasets passed local validation; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD annotation labels match submission TSVs, confidence columns are present, and report image links resolve.
+- v14 application summary: marker gate changed 1.2-7.5% of cells depending on dataset, mainly through parent-label rescue, same-lineage marker-supported switches, and confidence caps when marker support was weak.
 - Repository policy: Markdown reports and inline figure assets are committed for review. Large generated H5ADs, submission TSVs, and diagnostics tables remain outside the public repository and are available on the Yale server working path.
 
 ## Data Policy
@@ -214,6 +216,18 @@ Large input H5ADs and generated outputs are not committed. Team04 shared input d
 
 ```text
 /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/260526_v13_input_contract_repair/
+```
+
+Current v14 marker-gate-applied outputs are available on the Yale server working path:
+
+```text
+/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/260602_v14_marker_gate_applied/
+```
+
+Current v14 cellxgene H5ADs have also been published to the shared cellxgene S3 folder:
+
+```text
+/home/yy693/cellxgene-data/yy693/Yale/HIPC-scRNAseq-Annotation-Benchmark/
 ```
 
 ## Submission Philosophy
