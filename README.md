@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-02 22:28:28 EDT
+Updated: 2026-06-03 11:27:42 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -196,7 +196,7 @@ Batch execution is orchestration, not annotation logic. Keeping the implementati
 
 ## Current Team04 Reports
 
-- Updated: 2026-06-02 22:28:28 EDT
+- Updated: 2026-06-03 11:27:42 EDT
 - Current report bundle: `reports/current/`
 - Summary reports:
   - `reports/current/summary/report_en.md`
@@ -214,7 +214,7 @@ Batch execution is orchestration, not annotation logic. Keeping the implementati
   - `reports/current/summary/tables/final_annotation_summary.tsv`
   - `reports/current/summary/tables/final_annotation_label_counts.tsv`
   - `reports/current/summary/tables/cluster_consensus_decisions.tsv`
-- Current method: cluster-consensus annotation with neutral public naming. Reports are organized one dataset per directory so each dataset can be reviewed independently.
+- Current method: cluster-consensus annotation with neutral public naming. Reports are organized one dataset per directory and include inline UMAPs, marker-expression panels, source-label overlays, lineage subcluster views, and compact evidence tables so each dataset can be reviewed independently.
 - Repository policy: Markdown reports and compact review tables are committed. Large generated H5ADs and submission TSVs remain outside the public repository and are available on the Yale server working path.
 
 ## Data Policy
