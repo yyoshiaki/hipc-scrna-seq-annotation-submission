@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-02 EDT
+Updated: 2026-06-02 22:23:18 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -194,37 +194,31 @@ Codex should not mark a run complete unless validation confirms:
 
 Batch execution is orchestration, not annotation logic. Keeping the implementation single-dataset first reduces failure surface, simplifies validation, and lets Codex or a scheduler parallelize datasets independently by repeating the same single-dataset skill workflow.
 
-## Current Team04 Per-Dataset Reports
+## Current Team04 Reports
 
-- Updated: 2026-06-02 EDT
-- Current v14 marker-gate-applied reports:
-  - `reports/260602_annotation_single_dataset_infection_study_01/`
-  - `reports/260602_annotation_single_dataset_infection_study_04/`
-  - `reports/260602_annotation_single_dataset_vaccination_study_04/`
-  - `reports/260602_annotation_single_dataset_vaccination_study_06/`
-  - `reports/260602_annotation_single_dataset_vaccination_study_09/`
-- Earlier v13 review reports are retained under `reports/260526_annotation_single_dataset_*/` for comparison.
-- Each dataset directory contains `report_en.md`, `report_ja.md`, `report_context.json`, tool/support TSVs, and dataset-specific inline figures under `assets/`.
-- Rich report content includes dataset-specific assessment, portal gene-space/QC audit, marker gene availability alerts, marker expression UMAPs, annotation source UMAPs, tool concordance plots, lineage-scoped source support, v14 marker-registry gate audit, and B/T-NK/myeloid subcluster review sections.
-- Validation: all five Team04 v14 marker-gate-applied datasets passed local validation; submission row counts match H5AD observations, predicted labels are valid official ontology labels, H5AD annotation labels match submission TSVs, confidence columns are present, and report image links resolve.
-- v14 application summary: marker gate changed 1.2-7.5% of cells depending on dataset, mainly through parent-label rescue, same-lineage marker-supported switches, and confidence caps when marker support was weak.
-- Repository policy: Markdown reports and inline figure assets are committed for review. Large generated H5ADs, submission TSVs, and diagnostics tables remain outside the public repository and are available on the Yale server working path.
+- Updated: 2026-06-02 22:23:18 EDT
+- Current report bundle: `reports/current/`
+- Report files:
+  - `reports/current/report_en.md`
+  - `reports/current/report_ja.md`
+- Review tables:
+  - `reports/current/tables/final_annotation_summary.tsv`
+  - `reports/current/tables/final_annotation_label_counts.tsv`
+  - `reports/current/tables/cluster_consensus_decisions.tsv`
+- Current method: v15 cluster-consensus annotation. The public report uses neutral naming and describes the current annotation logic without exposing intermediate version labels.
+- Repository policy: Markdown reports and compact review tables are committed. Large generated H5ADs and submission TSVs remain outside the public repository and are available on the Yale server working path.
 
 ## Data Policy
 
-Large input H5ADs and generated outputs are not committed. Team04 shared input data, generated submission TSVs, annotated cellxgene H5ADs, and diagnostics tables are available on the Yale server working path:
+Large input H5ADs and generated outputs are not committed. Team04 shared input data, generated submission TSVs, annotated cellxgene H5ADs, and diagnostics tables are available on the Yale server working path.
+
+Current v15 cluster-consensus outputs are available at:
 
 ```text
-/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/260526_v13_input_contract_repair/
+/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/260602_v15_cluster_consensus/
 ```
 
-Current v14 marker-gate-applied outputs are available on the Yale server working path:
-
-```text
-/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/260602_v14_marker_gate_applied/
-```
-
-Current v14 cellxgene H5ADs have also been published to the shared cellxgene S3 folder:
+Current cellxgene H5ADs have been published to the shared cellxgene S3 folder with neutral file names:
 
 ```text
 /home/yy693/cellxgene-data/yy693/Yale/HIPC-scRNAseq-Annotation-Benchmark/

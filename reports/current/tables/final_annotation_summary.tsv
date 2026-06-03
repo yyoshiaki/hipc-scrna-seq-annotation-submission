@@ -1,0 +1,6 @@
+study	n_cells	n_vars	n_labels	parent_or_blood_n	parent_or_blood_fraction	doublet_n	median_confidence	cd4_tem_n	t_cell_n	b_cell_n	invalid_labels
+infection_study_01	54924	33538	22	4827	0.08788507756172165	1278	0.92	1159	3672	29	
+infection_study_04	43767	26361	23	3516	0.08033449859483172	132	0.92	53	458	450	
+vaccination_study_04	66065	16983	17	1321	0.019995459017634148	647	0.92	0	23	12	
+vaccination_study_06	57419	11878	19	7949	0.13843849596823352	1502	0.92	445	2959	29	
+vaccination_study_09	139960	19141	20	9999	0.07144184052586454	579	0.92	865	1	0	
