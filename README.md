@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-02 22:23:18 EDT
+Updated: 2026-06-02 22:28:28 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -196,26 +196,35 @@ Batch execution is orchestration, not annotation logic. Keeping the implementati
 
 ## Current Team04 Reports
 
-- Updated: 2026-06-02 22:23:18 EDT
+- Updated: 2026-06-02 22:28:28 EDT
 - Current report bundle: `reports/current/`
-- Report files:
-  - `reports/current/report_en.md`
-  - `reports/current/report_ja.md`
-- Review tables:
-  - `reports/current/tables/final_annotation_summary.tsv`
-  - `reports/current/tables/final_annotation_label_counts.tsv`
-  - `reports/current/tables/cluster_consensus_decisions.tsv`
-- Current method: v15 cluster-consensus annotation. The public report uses neutral naming and describes the current annotation logic without exposing intermediate version labels.
+- Summary reports:
+  - `reports/current/summary/report_en.md`
+  - `reports/current/summary/report_ja.md`
+- Per-dataset reports:
+  - `reports/current/infection_study_01/report_en.md`, `reports/current/infection_study_01/report_ja.md`
+  - `reports/current/infection_study_04/report_en.md`, `reports/current/infection_study_04/report_ja.md`
+  - `reports/current/vaccination_study_04/report_en.md`, `reports/current/vaccination_study_04/report_ja.md`
+  - `reports/current/vaccination_study_06/report_en.md`, `reports/current/vaccination_study_06/report_ja.md`
+  - `reports/current/vaccination_study_09/report_en.md`, `reports/current/vaccination_study_09/report_ja.md`
+- Per-dataset tables:
+  - `reports/current/<study_id>/tables/label_counts.tsv`
+  - `reports/current/<study_id>/tables/cluster_consensus_decisions.tsv`
+- Summary tables:
+  - `reports/current/summary/tables/final_annotation_summary.tsv`
+  - `reports/current/summary/tables/final_annotation_label_counts.tsv`
+  - `reports/current/summary/tables/cluster_consensus_decisions.tsv`
+- Current method: cluster-consensus annotation with neutral public naming. Reports are organized one dataset per directory so each dataset can be reviewed independently.
 - Repository policy: Markdown reports and compact review tables are committed. Large generated H5ADs and submission TSVs remain outside the public repository and are available on the Yale server working path.
 
 ## Data Policy
 
 Large input H5ADs and generated outputs are not committed. Team04 shared input data, generated submission TSVs, annotated cellxgene H5ADs, and diagnostics tables are available on the Yale server working path.
 
-Current v15 cluster-consensus outputs are available at:
+Current cluster-consensus outputs are available at:
 
 ```text
-/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/260602_v15_cluster_consensus/
+/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/current_cluster_consensus/
 ```
 
 Current cellxgene H5ADs have been published to the shared cellxgene S3 folder with neutral file names:

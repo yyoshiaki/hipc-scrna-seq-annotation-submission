@@ -1,0 +1,20 @@
+study	predicted_cell_type	n_cells
+vaccination_study_06	CD4 Naive / T Central Memory	25096
+vaccination_study_06	NK Cell	8728
+vaccination_study_06	CD8 Cytotoxic / T Effector Memory	7885
+vaccination_study_06	Blood Cell	4957
+vaccination_study_06	T Cell	2959
+vaccination_study_06	Memory B Cell	2772
+vaccination_study_06	Doublet	1502
+vaccination_study_06	MAIT Cell	1339
+vaccination_study_06	CD8 Naive / T Central Memory	869
+vaccination_study_06	Naive B Cell	791
+vaccination_study_06	CD4 T Effector Memory	445
+vaccination_study_06	B Cell	29
+vaccination_study_06	Plasmacytoid DC	18
+vaccination_study_06	Intermediate Monocyte	13
+vaccination_study_06	Plasma Cell	6
+vaccination_study_06	Myeloid Cell	4
+vaccination_study_06	Neutrophil	3
+vaccination_study_06	Classical Monocyte	2
+vaccination_study_06	Plasmablast	1
