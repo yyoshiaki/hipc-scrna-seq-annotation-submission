@@ -194,6 +194,16 @@ Codex should not mark a run complete unless validation confirms:
 
 Batch execution is orchestration, not annotation logic. Keeping the implementation single-dataset first reduces failure surface, simplifies validation, and lets Codex or a scheduler parallelize datasets independently by repeating the same single-dataset skill workflow.
 
+## Report Release Gate
+
+Before replacing or pushing `reports/current/`, run the mandatory report bundle validator:
+
+```bash
+python scripts/validate_report_bundle.py --report-root reports/current
+```
+
+The release checklist is documented in `reports/REPORT_RELEASE_CHECKLIST.md`. A report bundle must remain dataset-specific and include inline UMAPs, marker-expression panels, source-label overlays, lineage subcluster views, compact evidence tables, and zero broken image links. Do not push summary-only report replacements.
+
 ## Current Team04 Reports
 
 - Updated: 2026-06-03 11:27:42 EDT
