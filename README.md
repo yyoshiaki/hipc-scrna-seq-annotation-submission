@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-04 11:43:24 EDT
+Updated: 2026-06-04 12:58:57 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -164,7 +164,7 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 8. **Ontology-constrained labels**: final labels must be official ontology labels after configured exclusions. Known problematic labels such as `Effector B` are excluded by config when appropriate.
 9. **Doublet and QC handling**: doublet evidence is not a filter. Supported doublets are submitted as `Doublet`; low-QC or mixed-marker cells receive confidence caps or review concerns.
 10. **Confidence calibration**: confidence reflects reference agreement, marker support, subcluster coherence, score margin, QC penalties, and doublet/mixed-lineage flags.
-11. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, source disagreement, interpretation notes, UMAPs, marker dotplots, true lineage-specific subcluster plots, and output files. The fixed workflow is documented in this README and is not repeated in every report.
+11. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, source disagreement, interpretation notes, UMAPs, marker dotplots, true lineage-specific subcluster plots, local source-label overlays, and output files. The fixed workflow is documented in this README and is not repeated in every report.
 12. **Validation**: Codex must confirm submission row counts, official labels, non-missing predictions, H5AD/submission agreement, confidence fields, and report image links.
 13. **Codex report assessment**: after generation, Codex reads the report and updates the dataset-specific assessment when the automated text is too generic.
 14. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
@@ -178,7 +178,7 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 5. Treat scRefMapping as lineage-scoped auxiliary evidence after broad lineage assignment; it must not vote in broad lineage assignment.
 6. Submit `Doublet` only when supported; do not filter cells out silently.
 7. Prefer documented uncertainty over hard-coded local fixes.
-8. Reports must expose global UMAPs, true lineage-specific subcluster UMAPs, marker-score UMAPs, marker-expression UMAPs, marker dotplots, disagreement, parent-label residuals, confidence, and validation.
+8. Reports must expose global UMAPs, true lineage-specific subcluster UMAPs, local CellTypist/Azimuth/Pan-human/marker-gene source-label overlays, marker-score UMAPs, marker-expression UMAPs, marker dotplots, disagreement, parent-label residuals, confidence, and validation.
 
 ## Validation Contract
 
@@ -204,7 +204,7 @@ Before replacing or pushing `reports/current/`, run the mandatory report bundle 
 python scripts/validate_report_bundle.py --report-root reports/current
 ```
 
-The release checklist is documented in `reports/REPORT_RELEASE_CHECKLIST.md`. A report bundle must remain dataset-specific and include inline UMAPs, marker-expression panels, source-label overlays, true lineage-specific subcluster views, subcluster marker-score UMAPs, marker-expression UMAPs, candidate-score heatmaps/dotplots, compact evidence tables, and zero broken image links. Do not push summary-only report replacements or post-hoc report patches.
+The release checklist is documented in `reports/REPORT_RELEASE_CHECKLIST.md`. A report bundle must remain dataset-specific and include inline UMAPs, marker-expression panels, global and local source-label overlays, true lineage-specific subcluster views, subcluster marker-score UMAPs, marker-expression UMAPs, candidate-score heatmaps/dotplots, compact evidence tables, and zero broken image links. Do not push summary-only report replacements or post-hoc report patches.
 
 To replace `reports/current/`, first run each dataset into a clean output directory, then package the generated outputs deterministically:
 
@@ -215,7 +215,7 @@ python scripts/validate_report_bundle.py --report-root reports/current
 
 ## Current Team04 Reports
 
-- Updated: 2026-06-04 11:43:24 EDT
+- Updated: 2026-06-04 12:58:57 EDT
 - Current report bundle: `reports/current/`
 - Summary reports:
   - `reports/current/summary/report_en.md`
@@ -239,7 +239,7 @@ python scripts/validate_report_bundle.py --report-root reports/current
   - `reports/current/summary/tables/lineage_subcluster_evidence.tsv.gz`
   - `reports/current/summary/tables/source_disagreement_summary.tsv`
   - `reports/current/summary/tables/lineage_panel_status.tsv`
-- Current method: clean v16 single-dataset annotation. Reports are organized one dataset per directory and include inline UMAPs, marker-expression panels, source-label overlays, true lineage-specific subcluster UMAPs, subcluster marker-score UMAPs, marker-expression UMAPs, marker dotplots, candidate-score heatmaps, and compact evidence tables so each dataset can be reviewed independently.
+- Current method: clean v16 single-dataset annotation. Reports are organized one dataset per directory and include inline UMAPs, marker-expression panels, global and local source-label overlays, true lineage-specific subcluster UMAPs, subcluster marker-score UMAPs, marker-expression UMAPs, marker dotplots, candidate-score heatmaps, and compact evidence tables so each dataset can be reviewed independently.
 - Repository policy: Markdown reports and compact review tables are committed. Large generated H5ADs and submission TSVs remain outside the public repository and are available on the Yale server working path.
 
 ## Data Policy

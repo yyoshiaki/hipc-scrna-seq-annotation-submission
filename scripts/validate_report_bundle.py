@@ -104,6 +104,7 @@ for study in EXPECTED_STUDIES:
     for lineage in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
         required_pngs = [
             study_dir / "assets" / f"umap_{study}_{lineage}_true_subcluster_label.png",
+            study_dir / "assets" / f"umap_{study}_{lineage}_true_subcluster_source_labels.png",
             study_dir / "assets" / f"umap_{study}_{lineage}_true_subcluster_qc.png",
             study_dir / "assets" / f"umap_{study}_{lineage}_true_subcluster_marker_scores.png",
             study_dir / "assets" / f"umap_{study}_{lineage}_true_subcluster_marker_expression.png",
@@ -121,7 +122,7 @@ for study in EXPECTED_STUDIES:
     pngs = sorted((study_dir / "assets").glob("*.png"))
     png_total += len(pngs)
     generated_lineage_n = sum(1 for value in panel_status.values() if value == "generated")
-    min_images = 7 + (generated_lineage_n * 6)
+    min_images = 7 + (generated_lineage_n * 7)
     if len(pngs) < min_images:
         errors.append(f"Too few PNG assets for {study}: {len(pngs)} < {min_images}")
 

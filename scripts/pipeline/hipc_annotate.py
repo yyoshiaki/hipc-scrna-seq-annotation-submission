@@ -628,6 +628,12 @@ for input_row in manifest.itertuples(index=False):
                 "local_cluster": sub.obs[chosen_key].astype(str).values,
                 "subcluster_label": sub.obs["subcluster_label"].astype(str).values,
                 "subcluster_reason": sub.obs["subcluster_reason"].astype(str).values,
+                "celltypist_label": sub.obs["celltypist_v3_label"].astype(str).values if "celltypist_v3_label" in sub.obs.columns else "not_available",
+                "panhuman_fine_label": sub.obs["panhuman_fine_v3_label"].astype(str).values if "panhuman_fine_v3_label" in sub.obs.columns else "not_available",
+                "panhuman_azimuth_fine": sub.obs["panhuman_azimuth_fine"].astype(str).values if "panhuman_azimuth_fine" in sub.obs.columns else "not_available",
+                "cluster_consensus_label": sub.obs["cluster_consensus_v3_label"].astype(str).values if "cluster_consensus_v3_label" in sub.obs.columns else "not_available",
+                "marker_gene_based_assignment": sub.obs["top_marker_v3_label"].astype(str).values if "top_marker_v3_label" in sub.obs.columns else "not_available",
+                "screfmapping_label": sub.obs["screfmapping_official_label"].astype(str).values if "screfmapping_official_label" in sub.obs.columns else "not_available",
                 "local_umap_1": sub.obsm["X_umap"][:, 0],
                 "local_umap_2": sub.obsm["X_umap"][:, 1],
             }
@@ -667,6 +673,22 @@ for input_row in manifest.itertuples(index=False):
 
         sc.pl.umap(sub, color=[chosen_key, "subcluster_label"], frameon=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_label.png")
         plt.close("all")
+        source_label_colors = [
+            column
+            for column in [
+                "celltypist_v3_label",
+                "panhuman_fine_v3_label",
+                "panhuman_azimuth_fine",
+                "cluster_consensus_v3_label",
+                "top_marker_v3_label",
+                "screfmapping_official_label",
+                "subcluster_label",
+            ]
+            if column in sub.obs.columns
+        ]
+        if source_label_colors:
+            sc.pl.umap(sub, color=source_label_colors, ncols=2, legend_loc="right margin", frameon=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_source_labels.png")
+            plt.close("all")
         sub_qc_colors = [column for column in ["n_genes_by_counts", "pct_counts_mt", "subcluster_reason"] if column in sub.obs.columns]
         if sub_qc_colors:
             sc.pl.umap(sub, color=sub_qc_colors, frameon=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_qc.png")
@@ -696,6 +718,7 @@ for input_row in manifest.itertuples(index=False):
 
         for figure_name in [
             f"umap_{study}_{lineage_name}_true_subcluster_label.png",
+            f"umap_{study}_{lineage_name}_true_subcluster_source_labels.png",
             f"umap_{study}_{lineage_name}_true_subcluster_qc.png",
             f"umap_{study}_{lineage_name}_true_subcluster_marker_scores.png",
             f"umap_{study}_{lineage_name}_true_subcluster_marker_expression.png",
@@ -1104,6 +1127,8 @@ for study in summary_df["study"]:
                 f"#### {study} {lineage_name} true subcluster UMAP",
                 "",
                 f"![{study} {lineage_name} true subcluster labels]({asset_link_root}/umap_{study}_{lineage_name}_true_subcluster_label.png)",
+                "",
+                f"![{study} {lineage_name} true subcluster source labels]({asset_link_root}/umap_{study}_{lineage_name}_true_subcluster_source_labels.png)",
                 "",
                 f"![{study} {lineage_name} true subcluster QC]({asset_link_root}/umap_{study}_{lineage_name}_true_subcluster_qc.png)",
                 "",

@@ -100,6 +100,7 @@ for sub_path in submission_paths:
         required_assets.extend(
             [
                 f"umap_{study}_{lineage}_true_subcluster_label.png",
+                f"umap_{study}_{lineage}_true_subcluster_source_labels.png",
                 f"umap_{study}_{lineage}_true_subcluster_qc.png",
                 f"umap_{study}_{lineage}_true_subcluster_marker_scores.png",
                 f"umap_{study}_{lineage}_true_subcluster_marker_expression.png",

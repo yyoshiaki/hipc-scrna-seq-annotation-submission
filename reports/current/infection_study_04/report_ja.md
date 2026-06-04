@@ -108,6 +108,8 @@
 
 ![infection_study_04 B_lineage true subcluster labels](assets/umap_infection_study_04_B_lineage_true_subcluster_label.png)
 
+![infection_study_04 B_lineage true subcluster source labels](assets/umap_infection_study_04_B_lineage_true_subcluster_source_labels.png)
+
 ![infection_study_04 B_lineage true subcluster QC](assets/umap_infection_study_04_B_lineage_true_subcluster_qc.png)
 
 ![infection_study_04 B_lineage true subcluster marker scores](assets/umap_infection_study_04_B_lineage_true_subcluster_marker_scores.png)
@@ -123,6 +125,8 @@ Tables: `tables/infection_study_04_B_lineage_true_subcluster_umap.tsv.gz`, `tabl
 #### infection_study_04 T_NK_lineage true subcluster UMAP
 
 ![infection_study_04 T_NK_lineage true subcluster labels](assets/umap_infection_study_04_T_NK_lineage_true_subcluster_label.png)
+
+![infection_study_04 T_NK_lineage true subcluster source labels](assets/umap_infection_study_04_T_NK_lineage_true_subcluster_source_labels.png)
 
 ![infection_study_04 T_NK_lineage true subcluster QC](assets/umap_infection_study_04_T_NK_lineage_true_subcluster_qc.png)
 
@@ -140,6 +144,8 @@ Tables: `tables/infection_study_04_T_NK_lineage_true_subcluster_umap.tsv.gz`, `t
 
 ![infection_study_04 Myeloid_lineage true subcluster labels](assets/umap_infection_study_04_Myeloid_lineage_true_subcluster_label.png)
 
+![infection_study_04 Myeloid_lineage true subcluster source labels](assets/umap_infection_study_04_Myeloid_lineage_true_subcluster_source_labels.png)
+
 ![infection_study_04 Myeloid_lineage true subcluster QC](assets/umap_infection_study_04_Myeloid_lineage_true_subcluster_qc.png)
 
 ![infection_study_04 Myeloid_lineage true subcluster marker scores](assets/umap_infection_study_04_Myeloid_lineage_true_subcluster_marker_scores.png)
@@ -155,7 +161,7 @@ Tables: `tables/infection_study_04_Myeloid_lineage_true_subcluster_umap.tsv.gz`,
 
 ## Subcluster Marker Score Review
 
-上の lineage-specific panel は、各 lineage subset で HVG 選択、PCA、neighbors、Leiden、UMAP を再計算した true local subcluster analysis から生成しています。Marker gene による fine label の確認は global UMAP だけではなく、この local UMAP、marker-score UMAP、marker-expression UMAP、dotplot を主に見ます。
+上の lineage-specific panel は、各 lineage subset で HVG 選択、PCA、neighbors、Leiden、UMAP を再計算した true local subcluster analysis から生成しています。Marker gene による fine label の確認は global UMAP だけではなく、この local UMAP、CellTypist/Azimuth/Pan-human/marker gene source-label overlay、marker-score UMAP、marker-expression UMAP、dotplot を主に見ます。
 
 ## Cluster Consensus Evidence
 

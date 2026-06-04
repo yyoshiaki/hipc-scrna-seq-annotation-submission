@@ -103,6 +103,8 @@
 
 ![vaccination_study_06 B_lineage true subcluster labels](assets/umap_vaccination_study_06_B_lineage_true_subcluster_label.png)
 
+![vaccination_study_06 B_lineage true subcluster source labels](assets/umap_vaccination_study_06_B_lineage_true_subcluster_source_labels.png)
+
 ![vaccination_study_06 B_lineage true subcluster QC](assets/umap_vaccination_study_06_B_lineage_true_subcluster_qc.png)
 
 ![vaccination_study_06 B_lineage true subcluster marker scores](assets/umap_vaccination_study_06_B_lineage_true_subcluster_marker_scores.png)
@@ -118,6 +120,8 @@ Tables: `tables/vaccination_study_06_B_lineage_true_subcluster_umap.tsv.gz`, `ta
 #### vaccination_study_06 T_NK_lineage true subcluster UMAP
 
 ![vaccination_study_06 T_NK_lineage true subcluster labels](assets/umap_vaccination_study_06_T_NK_lineage_true_subcluster_label.png)
+
+![vaccination_study_06 T_NK_lineage true subcluster source labels](assets/umap_vaccination_study_06_T_NK_lineage_true_subcluster_source_labels.png)
 
 ![vaccination_study_06 T_NK_lineage true subcluster QC](assets/umap_vaccination_study_06_T_NK_lineage_true_subcluster_qc.png)
 
@@ -140,7 +144,7 @@ Tables: `tables/vaccination_study_06_Myeloid_lineage_true_subcluster_umap.tsv.gz
 
 ## Subcluster Marker Score Review
 
-上の lineage-specific panel は、各 lineage subset で HVG 選択、PCA、neighbors、Leiden、UMAP を再計算した true local subcluster analysis から生成しています。Marker gene による fine label の確認は global UMAP だけではなく、この local UMAP、marker-score UMAP、marker-expression UMAP、dotplot を主に見ます。
+上の lineage-specific panel は、各 lineage subset で HVG 選択、PCA、neighbors、Leiden、UMAP を再計算した true local subcluster analysis から生成しています。Marker gene による fine label の確認は global UMAP だけではなく、この local UMAP、CellTypist/Azimuth/Pan-human/marker gene source-label overlay、marker-score UMAP、marker-expression UMAP、dotplot を主に見ます。
 
 ## Cluster Consensus Evidence
 

@@ -103,6 +103,8 @@ None.
 
 ![infection_study_01 B_lineage true subcluster labels](assets/umap_infection_study_01_B_lineage_true_subcluster_label.png)
 
+![infection_study_01 B_lineage true subcluster source labels](assets/umap_infection_study_01_B_lineage_true_subcluster_source_labels.png)
+
 ![infection_study_01 B_lineage true subcluster QC](assets/umap_infection_study_01_B_lineage_true_subcluster_qc.png)
 
 ![infection_study_01 B_lineage true subcluster marker scores](assets/umap_infection_study_01_B_lineage_true_subcluster_marker_scores.png)
@@ -118,6 +120,8 @@ Tables: `tables/infection_study_01_B_lineage_true_subcluster_umap.tsv.gz`, `tabl
 #### infection_study_01 T_NK_lineage true subcluster UMAP
 
 ![infection_study_01 T_NK_lineage true subcluster labels](assets/umap_infection_study_01_T_NK_lineage_true_subcluster_label.png)
+
+![infection_study_01 T_NK_lineage true subcluster source labels](assets/umap_infection_study_01_T_NK_lineage_true_subcluster_source_labels.png)
 
 ![infection_study_01 T_NK_lineage true subcluster QC](assets/umap_infection_study_01_T_NK_lineage_true_subcluster_qc.png)
 
@@ -135,6 +139,8 @@ Tables: `tables/infection_study_01_T_NK_lineage_true_subcluster_umap.tsv.gz`, `t
 
 ![infection_study_01 Myeloid_lineage true subcluster labels](assets/umap_infection_study_01_Myeloid_lineage_true_subcluster_label.png)
 
+![infection_study_01 Myeloid_lineage true subcluster source labels](assets/umap_infection_study_01_Myeloid_lineage_true_subcluster_source_labels.png)
+
 ![infection_study_01 Myeloid_lineage true subcluster QC](assets/umap_infection_study_01_Myeloid_lineage_true_subcluster_qc.png)
 
 ![infection_study_01 Myeloid_lineage true subcluster marker scores](assets/umap_infection_study_01_Myeloid_lineage_true_subcluster_marker_scores.png)
@@ -150,7 +156,7 @@ Tables: `tables/infection_study_01_Myeloid_lineage_true_subcluster_umap.tsv.gz`,
 
 ## Subcluster Marker Score Review
 
-The lineage-specific panels above are generated from true local subcluster analyses: each lineage subset is reclustered after HVG selection, PCA, neighbors, Leiden, and UMAP recomputation. Marker-based fine-label review should use these local UMAPs, marker-score UMAPs, marker-expression UMAPs, and dotplots rather than only the global UMAP.
+The lineage-specific panels above are generated from true local subcluster analyses: each lineage subset is reclustered after HVG selection, PCA, neighbors, Leiden, and UMAP recomputation. Marker-based fine-label review should use these local UMAPs, CellTypist/Azimuth/Pan-human/marker-gene source-label overlays, marker-score UMAPs, marker-expression UMAPs, and dotplots rather than only the global UMAP.
 
 ## Cluster Consensus Evidence
 

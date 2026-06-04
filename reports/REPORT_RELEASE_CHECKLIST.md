@@ -1,6 +1,6 @@
 # Report Release Checklist
 
-Updated: 2026-06-04 11:43:24 EDT
+Updated: 2026-06-04 12:58:57 EDT
 
 This checklist is mandatory before replacing or pushing any committed report bundle under `reports/current/`.
 
@@ -58,7 +58,7 @@ Before commit or push, all of these must pass:
 - Reports include marker-expression sections.
 - Reports include true lineage-specific subcluster sections.
 - Reports include `Subcluster Marker Score Review`.
-- Each generated B/T-NK/Myeloid lineage panel has true subcluster label UMAPs, QC UMAPs, marker-score UMAPs, marker-expression UMAPs, marker-score heatmaps, and marker dotplots. Lineages with fewer than 50 assigned cells must be explicitly marked `skipped_lt50` in `lineage_panel_status.tsv` and must not emit broken image links.
+- Each generated B/T-NK/Myeloid lineage panel has true subcluster label UMAPs, local source-label UMAPs for CellTypist/Azimuth/Pan-human/marker-gene based assignment, QC UMAPs, marker-score UMAPs, marker-expression UMAPs, marker-score heatmaps, and marker dotplots. Lineages with fewer than 50 assigned cells must be explicitly marked `skipped_lt50` in `lineage_panel_status.tsv` and must not emit broken image links.
 - Each dataset has B/T-NK/Myeloid true subcluster UMAP coordinate tables and candidate-score tables.
 - Reports include compact evidence tables.
 - Old internal version strings must not appear in public current reports: `v13`, `v14`, `v15`, `260526`, `260602_annotation_single`, `marker-gate-applied`, `final_v14`.
@@ -81,7 +81,7 @@ After the validation command passes, open at least one dataset report and confir
 reports/current/infection_study_01/report_ja.md
 ```
 
-Confirm that `Inline Figures` shows global UMAPs, marker-expression panels, and true lineage-specific subcluster UMAPs. Confirm that `Subcluster Marker Score Review` shows lineage-specific marker-score UMAPs, marker-expression UMAPs, score heatmaps, and dotplots, not only tables.
+Confirm that `Inline Figures` shows global UMAPs, marker-expression panels, true lineage-specific subcluster UMAPs, and local source-label overlays. Confirm that `Subcluster Marker Score Review` shows lineage-specific marker-score UMAPs, marker-expression UMAPs, score heatmaps, and dotplots, not only tables.
 
 ## Release Rule
 
