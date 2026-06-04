@@ -24,6 +24,7 @@ REQUIRED_PHRASES = [
     "Inline Figures",
     "Label Composition",
     "Cluster Consensus Evidence",
+    "Subcluster Marker Score Review",
 ]
 REQUIRED_TOPIC_PATTERNS = [
     re.compile(r"source|annotation source", re.IGNORECASE),
@@ -33,7 +34,7 @@ REQUIRED_TOPIC_PATTERNS = [
 
 parser = argparse.ArgumentParser(description="Validate committed HIPC report bundle before release.")
 parser.add_argument("--report-root", default="reports/current")
-parser.add_argument("--min-images-per-study", type=int, default=8)
+parser.add_argument("--min-images-per-study", type=int, default=14)
 args = parser.parse_args()
 
 root = Path(args.report_root)
@@ -60,9 +61,21 @@ for study in EXPECTED_STUDIES:
         errors.append(f"Missing study directory: {study_dir}")
         continue
 
-    for required in [study_dir / "tables/label_counts.tsv", study_dir / "tables/cluster_consensus_decisions.tsv"]:
+    required_tables = [study_dir / "tables/label_counts.tsv", study_dir / "tables/cluster_consensus_decisions.tsv"]
+    for lineage in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
+        required_tables.extend([
+            study_dir / f"tables/subcluster_marker_scores_{lineage}.tsv",
+            study_dir / f"tables/subcluster_marker_score_top3_{lineage}.tsv",
+        ])
+    for required in required_tables:
         if not required.exists():
             errors.append(f"Missing table for {study}: {required}")
+
+    for lineage in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
+        for prefix in ["subcluster_marker_score_heatmap", "subcluster_marker_dotplot"]:
+            required_png = study_dir / "assets" / f"{prefix}_{study}_{lineage}.png"
+            if not required_png.exists():
+                errors.append(f"Missing subcluster marker plot for {study}: {required_png}")
 
     pngs = sorted((study_dir / "assets").glob("*.png"))
     png_total += len(pngs)

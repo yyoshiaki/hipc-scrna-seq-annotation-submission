@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-03 11:27:42 EDT
+Updated: 2026-06-03 21:55:00 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -202,11 +202,11 @@ Before replacing or pushing `reports/current/`, run the mandatory report bundle 
 python scripts/validate_report_bundle.py --report-root reports/current
 ```
 
-The release checklist is documented in `reports/REPORT_RELEASE_CHECKLIST.md`. A report bundle must remain dataset-specific and include inline UMAPs, marker-expression panels, source-label overlays, lineage subcluster views, compact evidence tables, and zero broken image links. Do not push summary-only report replacements.
+The release checklist is documented in `reports/REPORT_RELEASE_CHECKLIST.md`. A report bundle must remain dataset-specific and include inline UMAPs, marker-expression panels, source-label overlays, lineage subcluster views, subcluster marker score heatmaps/dotplots, compact evidence tables, and zero broken image links. Do not push summary-only report replacements.
 
 ## Current Team04 Reports
 
-- Updated: 2026-06-03 11:27:42 EDT
+- Updated: 2026-06-03 21:55:00 EDT
 - Current report bundle: `reports/current/`
 - Summary reports:
   - `reports/current/summary/report_en.md`
@@ -224,7 +224,7 @@ The release checklist is documented in `reports/REPORT_RELEASE_CHECKLIST.md`. A 
   - `reports/current/summary/tables/final_annotation_summary.tsv`
   - `reports/current/summary/tables/final_annotation_label_counts.tsv`
   - `reports/current/summary/tables/cluster_consensus_decisions.tsv`
-- Current method: cluster-consensus annotation with neutral public naming. Reports are organized one dataset per directory and include inline UMAPs, marker-expression panels, source-label overlays, lineage subcluster views, and compact evidence tables so each dataset can be reviewed independently.
+- Current method: cluster-consensus annotation with neutral public naming. Reports are organized one dataset per directory and include inline UMAPs, marker-expression panels, source-label overlays, lineage subcluster views, subcluster marker score heatmaps/dotplots, and compact evidence tables so each dataset can be reviewed independently.
 - Repository policy: Markdown reports and compact review tables are committed. Large generated H5ADs and submission TSVs remain outside the public repository and are available on the Yale server working path.
 
 ## Data Policy

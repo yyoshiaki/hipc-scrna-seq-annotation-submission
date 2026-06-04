@@ -1,0 +1,34 @@
+study	lineage	subcluster	candidate_label	marker_role	n_cells	positive_genes_present	key_genes_present	negative_genes_present	marker_score_mean	positive_mean	negative_mean	key_gene_present_fraction	marker_score_scaled	rank_within_subcluster
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:0	Plasmacytoid DC	terminal	18	LILRA4,TCF4,IRF7,GZMB,SPIB	LILRA4,TCF4	CD3D,MS4A1	0.46141915453804866	0.6431333118014866	0.3634283145268758	0.5	0.9161241279024531	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:0	Conventional DC 2	terminal	18	HLA-DRA,CD74		LILRA4	2.0879888667000666	2.1360430320103965	0.09610833062065972	0.0	0.775453637715947	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:0	DC	parent	18	HLA-DRA,CD74	HLA-DRA,CD74	CD3D,MS4A1	1.9543288747469585	2.1360430320103965	0.3634283145268758	1.0	0.7379302902262602	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:1	Myeloid Cell	parent	18	LST1,TYROBP,FCER1G	LST1	CD3D,CD79A,MS4A1,NKG7	1.5303043167072312	1.5426857614958724	0.0247628895772828	0.5	1.0	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:1	Monocyte	parent	18	LST1,FCGR3A	LST1	CD3D,MS4A1	0.26626340713765884	0.26626340713765884	0.0	0.5	1.0	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:1	Classical Monocyte	terminal	18	LST1,CTSS,LGALS3		FCGR3A	2.1549134822907274	2.226753104616095	0.14367924465073478	0.0	1.0	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:10	Plasmacytoid DC	terminal	5	LILRA4,TCF4,IRF7,GZMB,SPIB	LILRA4,TCF4	CD3D,MS4A1	0.3906583929061889	0.5198201560974121	0.25832352638244627	0.5	0.7336832800899179	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:10	Intermediate Monocyte	terminal	5	LST1,HLA-DRA,CD74	HLA-DRA	NKG7	1.143165397644043	1.143165397644043	0.0	0.3333333333333333	0.6498527595537508	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:10	Conventional DC 2	terminal	5	HLA-DRA,CD74		LILRA4	1.7147480964660644	1.7147480964660644	0.0	0.0	0.5937215830860142	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:2	Classical Monocyte	terminal	18	LST1,CTSS,LGALS3		FCGR3A	1.0045069831388966	1.0045069831388966	0.0	0.0	0.4508044016730971	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:2	Basophil	terminal	18			CD3D,MS4A1,LST1	-0.08561991210337037	0.0	0.17123982420674075	0.0	0.4435143958016572	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:2	Mast Cell	terminal	18			CD3D,MS4A1,LST1	-0.08561991210337037	0.0	0.17123982420674075	0.0	0.4435143958016572	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:3	Basophil	terminal	15			CD3D,MS4A1,LST1	-0.0691774050394694	0.0	0.1383548100789388	0.0	0.5923192144876731	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:3	Mast Cell	terminal	15			CD3D,MS4A1,LST1	-0.0691774050394694	0.0	0.1383548100789388	0.0	0.5923192144876731	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:3	Granulocyte	parent	15			CD3D,MS4A1	-0.1037661075592041	0.0	0.2075322151184082	0.0	0.48064858129228283	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:4	Monocyte	parent	15	LST1,FCGR3A	LST1	CD3D,MS4A1	-0.05533780654271444	0.08710565567016601	0.2848869244257609	0.5	0.43390839166146067	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:4	Conventional DC 2	terminal	15	HLA-DRA,CD74		LILRA4	1.1131746610005697	1.1131746610005697	0.0	0.0	0.3008136663828347	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:4	Intermediate Monocyte	terminal	15	LST1,HLA-DRA,CD74	HLA-DRA	NKG7	0.5798537943098281	0.8001868777804905	0.4406661669413249	0.3333333333333333	0.296222892679137	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:5	Conventional DC 2	terminal	12	HLA-DRA,CD74		LILRA4	1.633205235004425	1.633205235004425	0.0	0.0	0.5540181183639341	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:5	Intermediate Monocyte	terminal	12	LST1,HLA-DRA,CD74	HLA-DRA	NKG7	0.9739946027596793	1.0888034900029502	0.22961777448654175	0.3333333333333333	0.5436524872356668	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:5	DC	parent	12	HLA-DRA,CD74	HLA-DRA,CD74	CD3D,MS4A1	1.4153205702702205	1.633205235004425	0.43576932946840924	1.0	0.47662482586468646	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:6	Intermediate Monocyte	terminal	10	LST1,HLA-DRA,CD74	HLA-DRA	NKG7	1.7662029633919396	1.8526773730913795	0.17294881939888002	0.3333333333333333	1.0	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:6	DC	parent	10	HLA-DRA,CD74	HLA-DRA,CD74	CD3D,MS4A1	2.6564786717295648	2.77901605963707	0.24507477581501008	1.0	1.0	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:6	Plasmacytoid DC	terminal	10	LILRA4,TCF4,IRF7,GZMB,SPIB	LILRA4,TCF4	CD3D,MS4A1	0.526482660472393	0.649020048379898	0.24507477581501008	0.5	1.0	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:7	Basophil	terminal	10			CD3D,MS4A1,LST1	-0.04825968742370605	0.0	0.0965193748474121	0.0	0.7816247239846214	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:7	Mast Cell	terminal	10			CD3D,MS4A1,LST1	-0.04825968742370605	0.0	0.0965193748474121	0.0	0.7816247239846214	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:7	Plasmacytoid DC	terminal	10	LILRA4,TCF4,IRF7,GZMB,SPIB	LILRA4,TCF4	CD3D,MS4A1	0.37392944812774653	0.44631897926330566	0.14477906227111817	0.5	0.6905514256835638	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:8	Conventional DC 1	terminal	9	BATF3,CADM1,IRF8,C1orf54	BATF3		0.3202549351586236	0.3202549351586236	0.0	0.3333333333333333	1.0	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:8	Neutrophil	terminal	9	CXCR2,NAMPT		CD3D,MS4A1,CD79A	0.5739686842317934	0.668111628956265	0.18828588944894298	0.0	0.6681510766165702	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:8	Classical Monocyte	terminal	9	LST1,CTSS,LGALS3		FCGR3A	1.0171249884146232	1.0171249884146232	0.0	0.0	0.46272118060718415	3.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:9	Granulocyte	parent	7			CD3D,MS4A1	0.0	0.0	0.0	0.0	1.0	1.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:9	Eosinophil	terminal	7	IL5RA		CD3D,MS4A1	0.0	0.0	0.0	0.0	1.0	2.0
+vaccination_study_06	Myeloid_lineage	Myeloid_lineage:9	Basophil	terminal	7			CD3D,MS4A1,LST1	0.0	0.0	0.0	0.0	1.0	3.0

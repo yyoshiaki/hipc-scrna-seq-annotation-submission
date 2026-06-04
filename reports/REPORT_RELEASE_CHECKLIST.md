@@ -1,6 +1,6 @@
 # Report Release Checklist
 
-Updated: 2026-06-03 11:27:42 EDT
+Updated: 2026-06-03 21:55:00 EDT
 
 This checklist is mandatory before replacing or pushing any committed report bundle under `reports/current/`.
 
@@ -26,6 +26,8 @@ reports/current/
     assets/*.png
     tables/label_counts.tsv
     tables/cluster_consensus_decisions.tsv
+    tables/subcluster_marker_scores_<lineage>.tsv
+    tables/subcluster_marker_score_top3_<lineage>.tsv
 ```
 
 For Team04, the expected dataset directories are:
@@ -43,12 +45,15 @@ Before commit or push, all of these must pass:
 - Each expected dataset directory exists under `reports/current/`.
 - Each dataset has both `report_en.md` and `report_ja.md`.
 - Each dataset report contains inline image links.
-- Each dataset has at least 8 PNG images under `assets/`.
+- Each dataset has at least 14 PNG images under `assets/`.
 - Every Markdown inline image link resolves to an existing file.
 - Reports include dataset-specific assessment text.
 - Reports include source-label or annotation-source sections.
 - Reports include marker-expression sections.
 - Reports include lineage/subcluster sections.
+- Reports include `Subcluster Marker Score Review`.
+- Each dataset has B/T-NK/Myeloid subcluster marker score heatmaps and marker dotplots.
+- Each dataset has B/T-NK/Myeloid subcluster marker score tables.
 - Reports include compact evidence tables.
 - Old internal version strings must not appear in public current reports: `v13`, `v14`, `v15`, `260526`, `260602_annotation_single`, `marker-gate-applied`, `final_v14`.
 
@@ -70,8 +75,8 @@ After the validation command passes, open at least one dataset report and confir
 reports/current/infection_study_01/report_ja.md
 ```
 
-Confirm that `Inline Figures` shows UMAP and marker-expression panels, not only tables.
+Confirm that `Inline Figures` shows UMAP and marker-expression panels, and that `Subcluster Marker Score Review` shows lineage-specific score heatmaps and dotplots, not only tables.
 
 ## Release Rule
 
-Do not replace `reports/current/` with a post-hoc summary-only bundle. If reports are regenerated from current H5AD outputs, regenerate or copy the dataset-level figure assets at the same time and rerun the validator.
+Do not replace `reports/current/` with a post-hoc summary-only bundle. If reports are regenerated from current H5AD outputs, regenerate or copy the dataset-level figure assets, subcluster marker score plots, and subcluster marker score tables at the same time and rerun the validator.

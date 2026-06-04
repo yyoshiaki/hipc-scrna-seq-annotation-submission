@@ -73,6 +73,34 @@ B-cell label は比較的安定していますが、T-state call は conservativ
 
 ![Myeloid/DC-lineage marker expression](assets/umap_vaccination_study_09_Myeloid_lineage_marker_expression.png)
 
+## Subcluster Marker Score Review
+
+下の marker score は各 lineage 内で再計算し、lineage subcluster ごとに要約したものです。fine lineage label の確認は global marker UMAP だけではなく、この subcluster 単位の score / dotplot を主に見ます。
+
+### B lineage subcluster marker scores
+
+![B lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_09_B_lineage.png)
+
+![B lineage subcluster marker dotplot](assets/subcluster_marker_dotplot_vaccination_study_09_B_lineage.png)
+
+Tables: `tables/subcluster_marker_scores_B_lineage.tsv`, `tables/subcluster_marker_score_top3_B_lineage.tsv`.
+
+### T/NK lineage subcluster marker scores
+
+![T/NK lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_09_T_NK_lineage.png)
+
+![T/NK lineage subcluster marker dotplot](assets/subcluster_marker_dotplot_vaccination_study_09_T_NK_lineage.png)
+
+Tables: `tables/subcluster_marker_scores_T_NK_lineage.tsv`, `tables/subcluster_marker_score_top3_T_NK_lineage.tsv`.
+
+### Myeloid/DC lineage subcluster marker scores
+
+![Myeloid/DC lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_09_Myeloid_lineage.png)
+
+![Myeloid/DC lineage subcluster marker dotplot](assets/subcluster_marker_dotplot_vaccination_study_09_Myeloid_lineage.png)
+
+Tables: `tables/subcluster_marker_scores_Myeloid_lineage.tsv`, `tables/subcluster_marker_score_top3_Myeloid_lineage.tsv`.
+
 ## Label Composition
 
 | predicted_cell_type               |   n_cells | fraction   |

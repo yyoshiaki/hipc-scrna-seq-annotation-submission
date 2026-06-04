@@ -73,6 +73,34 @@ This sample is strongly myeloid/DC-skewed relative to a balanced PBMC expectatio
 
 ![Myeloid/DC-lineage marker expression](assets/umap_vaccination_study_04_Myeloid_lineage_marker_expression.png)
 
+## Subcluster Marker Score Review
+
+Marker scores below are recomputed within each lineage and summarized by lineage subcluster. These plots are the intended review layer for fine lineage labels, not the global marker-expression UMAP alone.
+
+### B lineage subcluster marker scores
+
+![B lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_04_B_lineage.png)
+
+![B lineage subcluster marker dotplot](assets/subcluster_marker_dotplot_vaccination_study_04_B_lineage.png)
+
+Tables: `tables/subcluster_marker_scores_B_lineage.tsv`, `tables/subcluster_marker_score_top3_B_lineage.tsv`.
+
+### T/NK lineage subcluster marker scores
+
+![T/NK lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_04_T_NK_lineage.png)
+
+![T/NK lineage subcluster marker dotplot](assets/subcluster_marker_dotplot_vaccination_study_04_T_NK_lineage.png)
+
+Tables: `tables/subcluster_marker_scores_T_NK_lineage.tsv`, `tables/subcluster_marker_score_top3_T_NK_lineage.tsv`.
+
+### Myeloid/DC lineage subcluster marker scores
+
+![Myeloid/DC lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_04_Myeloid_lineage.png)
+
+![Myeloid/DC lineage subcluster marker dotplot](assets/subcluster_marker_dotplot_vaccination_study_04_Myeloid_lineage.png)
+
+Tables: `tables/subcluster_marker_scores_Myeloid_lineage.tsv`, `tables/subcluster_marker_score_top3_Myeloid_lineage.tsv`.
+
 ## Label Composition
 
 | predicted_cell_type          |   n_cells | fraction   |
