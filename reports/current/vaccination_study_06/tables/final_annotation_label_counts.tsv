@@ -1,5 +1,5 @@
 study	predicted_cell_type	n_cells
-vaccination_study_06	CD4 Naive / T Central Memory	28867
+vaccination_study_06	CD4 Naive / T Central Memory	29433
 vaccination_study_06	NK Cell	10087
 vaccination_study_06	CD8 Cytotoxic / T Effector Memory	9129
 vaccination_study_06	Memory B Cell	3619
@@ -7,6 +7,5 @@ vaccination_study_06	Doublet	1502
 vaccination_study_06	MAIT Cell	1404
 vaccination_study_06	Blood Cell	992
 vaccination_study_06	CD8 Naive / T Central Memory	872
-vaccination_study_06	T Cell	566
 vaccination_study_06	Naive B Cell	201
 vaccination_study_06	Plasma Cell	180

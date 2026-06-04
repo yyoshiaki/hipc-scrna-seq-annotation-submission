@@ -8,7 +8,7 @@
 
 | study | cells | analysis_X_genes | pre_hvg_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_04 | 43,767 | 26,361 | 26,361 | 26,361 | 17 | 0.045 | 1,549 | 132 | 324 | 0.820 | 2,082 | 8,697 (0.199) | none |
+| infection_study_04 | 43,767 | 26,361 | 26,361 | 26,361 | 16 | 0.035 | 1,549 | 132 | 324 | 0.820 | 2,082 | 8,661 (0.198) | none |
 
 ## 実行概要
 
@@ -19,7 +19,7 @@
 
 ## データセット固有の解釈
 
-- `infection_study_04`: 43,767 cells、analysis X/var 26,361 genes、pre-HVG slot 26,361 genes、submitted label 17 種、parent/Blood residual fraction 0.045、median confidence 0.820。
+- `infection_study_04`: 43,767 cells、analysis X/var 26,361 genes、pre-HVG slot 26,361 genes、submitted label 16 種、parent/Blood residual fraction 0.035、median confidence 0.820。
   - 2,082 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
   - 132 cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。
   - 1,549 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
@@ -27,7 +27,7 @@
 
 ## データセット固有の評価
 
-- 全体像: 43,767 cells / analysis X/var 26,361 genes / pre-HVG slot 26,361 genes。parent/Blood residual は 0.045、low-confidence は 2,082 cells、source disagreement flag は 8,697 cells (0.199)。
+- 全体像: 43,767 cells / analysis X/var 26,361 genes / pre-HVG slot 26,361 genes。parent/Blood residual は 0.035、low-confidence は 2,082 cells、source disagreement flag は 8,661 cells (0.198)。
 - 優先確認: low-confidence 領域が QC UMAP と source-disagreement UMAP で同じ場所に集まるかを確認する。
 - 優先確認: `Blood Cell` 残存が孤立 cluster なのか、複数 lineage に分散した曖昧領域なのかを UMAP で確認する。
 - Marker gene 欠損: Plasma_ASC は confidence cap 対象。該当 label は marker expression UMAP と dotplot で妥当性を確認する。
@@ -42,7 +42,6 @@
 
 | study | predicted_cell_type | cells | median_source_agreement | disagreement_cells | disagreement_fraction |
 | --- | --- | --- | --- | --- | --- |
-| infection_study_04 | T Cell | 401 | 0.000 | 401 | 1.000 |
 | infection_study_04 | Doublet | 132 | 0.000 | 132 | 1.000 |
 | infection_study_04 | Memory B Cell | 1,468 | 0.250 | 884 | 0.602 |
 | infection_study_04 | Blood Cell | 1,549 | 0.250 | 906 | 0.585 |
@@ -52,8 +51,9 @@
 | infection_study_04 | NK Cell | 7,363 | 0.750 | 1,534 | 0.208 |
 | infection_study_04 | Treg | 488 | 0.500 | 100 | 0.205 |
 | infection_study_04 | Conventional DC 2 | 415 | 0.500 | 72 | 0.173 |
-| infection_study_04 | CD4 Naive / T Central Memory | 7,845 | 0.750 | 908 | 0.116 |
+| infection_study_04 | CD4 Naive / T Central Memory | 8,246 | 0.750 | 1,273 | 0.154 |
 | infection_study_04 | Classical Monocyte | 10,485 | 0.750 | 1,101 | 0.105 |
+| infection_study_04 | Non-Classical Monocyte | 1,400 | 0.750 | 91 | 0.065 |
 
 ## レビュー優先事項
 
@@ -62,7 +62,6 @@
 | infection_study_04 | High source disagreement for Blood Cell | 906 |
 | infection_study_04 | High source disagreement for Doublet | 132 |
 | infection_study_04 | High source disagreement for Memory B Cell | 884 |
-| infection_study_04 | High source disagreement for T Cell | 401 |
 | infection_study_04 | warning marker availability for Plasma_ASC | 3,137 |
 | infection_study_04 | Large Blood Cell/ambiguous residual remains | 1,549 |
 
@@ -71,7 +70,7 @@
 | study | predicted_cell_type | cells |
 | --- | --- | --- |
 | infection_study_04 | Classical Monocyte | 10,485 |
-| infection_study_04 | CD4 Naive / T Central Memory | 7,845 |
+| infection_study_04 | CD4 Naive / T Central Memory | 8,246 |
 | infection_study_04 | NK Cell | 7,363 |
 | infection_study_04 | CD8 Cytotoxic / T Effector Memory | 6,418 |
 | infection_study_04 | Plasma Cell | 3,137 |
@@ -81,7 +80,6 @@
 | infection_study_04 | Non-Classical Monocyte | 1,400 |
 | infection_study_04 | Treg | 488 |
 | infection_study_04 | Conventional DC 2 | 415 |
-| infection_study_04 | T Cell | 401 |
 | infection_study_04 | MAIT Cell | 318 |
 | infection_study_04 | Plasmacytoid DC | 229 |
 | infection_study_04 | Platelet | 201 |
@@ -161,50 +159,50 @@ Tables: `tables/infection_study_04_Myeloid_lineage_true_subcluster_umap.tsv.gz`,
 
 ## Subcluster Marker Score Review
 
-上の lineage-specific panel は、各 lineage subset で HVG 選択、PCA、neighbors、Leiden、UMAP を再計算した true local subcluster analysis から生成しています。Marker gene による fine label の確認は global UMAP だけではなく、この local UMAP、CellTypist/Azimuth/Pan-human/marker gene source-label overlay、marker-score UMAP、marker-expression UMAP、dotplot を主に見ます。
+上の lineage-specific panel は、各 lineage subset で HVG 選択、PCA、neighbors、Leiden、UMAP を再計算した true local subcluster analysis から生成しています。Marker gene による fine label の確認は global UMAP だけではなく、この local UMAP、CellTypist/Azimuth/Pan-human/cluster-level marker gene assignment overlay、cluster marker gate score UMAP、marker-expression UMAP、dotplot を主に見ます。Treg など sparse marker label は cell-wise marker winner ではなく、local cluster の FOXP3/IL2RA/CTLA4 など key-marker support と reference support で判定します。
 
 ## Cluster Consensus Evidence
 
-| study | lineage | cluster | cells | chosen_label | accepted | score_margin | marker_set | marker_alert |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_04 | B_lineage | 0 | 929 | Naive B Cell | True | 3.071 | B_naive | pass |
-| infection_study_04 | B_lineage | 1 | 590 | Plasma Cell | True | 2.393 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 2 | 457 | Plasma Cell | True | 2.770 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 3 | 436 | Plasma Cell | True | 2.786 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 4 | 411 | Memory B Cell | True | 1.495 | B_memory_ABC | pass |
-| infection_study_04 | B_lineage | 5 | 403 | Memory B Cell | True | 0.961 | B_memory_ABC | pass |
-| infection_study_04 | B_lineage | 6 | 401 | Naive B Cell | True | 1.894 | B_naive | pass |
-| infection_study_04 | B_lineage | 7 | 384 | Memory B Cell | True | 1.498 | B_memory_ABC | pass |
-| infection_study_04 | B_lineage | 8 | 329 | Plasma Cell | True | 2.545 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 9 | 270 | Memory B Cell | True | 2.077 | B_memory_ABC | pass |
-| infection_study_04 | B_lineage | 10 | 269 | Plasma Cell | True | 2.729 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 11 | 258 | Plasma Cell | True | 2.693 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 12 | 254 | Plasma Cell | True | 2.769 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 13 | 244 | Naive B Cell | True | 1.073 | B_naive | pass |
-| infection_study_04 | B_lineage | 14 | 221 | Naive B Cell | True | 0.733 | B_naive | pass |
-| infection_study_04 | B_lineage | 15 | 197 | Plasma Cell | True | 2.601 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 16 | 187 | Plasma Cell | True | 2.643 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 17 | 70 | Plasma Cell | True | 1.705 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 18 | 54 | Plasma Cell | True | 2.401 | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 19 | 36 | Plasma Cell | True | 0.878 | Plasma_ASC | warning |
-| infection_study_04 | Myeloid_lineage | 0 | 1,091 | Classical Monocyte | True | 2.273 | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 1 | 952 | Classical Monocyte | True | 2.630 | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 2 | 913 | Classical Monocyte | True | 2.686 | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 3 | 912 | Classical Monocyte | True | 2.733 | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 4 | 871 | Classical Monocyte | True | 2.441 | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 5 | 838 | Classical Monocyte | True | 1.892 | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 6 | 677 | Non-Classical Monocyte | True | 1.903 | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 7 | 640 | Classical Monocyte | True | 2.385 | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 8 | 609 | Classical Monocyte | True | 2.630 | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 9 | 589 | Classical Monocyte | True | 2.185 | not_applicable | pass |
+| study | lineage | cluster | cells | chosen_label | accepted | score_margin | cluster_marker_assignment | treg_key_any | treg_key_bonus | marker_set | marker_alert |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| infection_study_04 | B_lineage | 0 | 929 | Naive B Cell | True | 3.089 | Naive B Cell | nan | nan | B_naive | pass |
+| infection_study_04 | B_lineage | 1 | 590 | Plasma Cell | True | 2.393 | Naive B Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 2 | 457 | Plasma Cell | True | 2.787 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 3 | 436 | Plasma Cell | True | 2.808 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 4 | 411 | Memory B Cell | True | 1.361 | Naive B Cell | nan | nan | B_memory_ABC | pass |
+| infection_study_04 | B_lineage | 5 | 403 | Memory B Cell | True | 0.883 | Naive B Cell | nan | nan | B_memory_ABC | pass |
+| infection_study_04 | B_lineage | 6 | 401 | Naive B Cell | True | 1.944 | Naive B Cell | nan | nan | B_naive | pass |
+| infection_study_04 | B_lineage | 7 | 384 | Memory B Cell | True | 1.416 | Naive B Cell | nan | nan | B_memory_ABC | pass |
+| infection_study_04 | B_lineage | 8 | 329 | Plasma Cell | True | 2.551 | Naive B Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 9 | 270 | Memory B Cell | True | 1.907 | Naive B Cell | nan | nan | B_memory_ABC | pass |
+| infection_study_04 | B_lineage | 10 | 269 | Plasma Cell | True | 2.745 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 11 | 258 | Plasma Cell | True | 2.724 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 12 | 254 | Plasma Cell | True | 2.785 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 13 | 244 | Naive B Cell | True | 1.088 | Naive B Cell | nan | nan | B_naive | pass |
+| infection_study_04 | B_lineage | 14 | 221 | Naive B Cell | True | 0.759 | Naive B Cell | nan | nan | B_naive | pass |
+| infection_study_04 | B_lineage | 15 | 197 | Plasma Cell | True | 2.601 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 16 | 187 | Plasma Cell | True | 2.643 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 17 | 70 | Plasma Cell | True | 1.705 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 18 | 54 | Plasma Cell | True | 2.419 | Naive B Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | B_lineage | 19 | 36 | Plasma Cell | True | 0.878 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| infection_study_04 | Myeloid_lineage | 0 | 1,091 | Classical Monocyte | True | 2.354 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | Myeloid_lineage | 1 | 952 | Classical Monocyte | True | 2.574 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | Myeloid_lineage | 2 | 913 | Classical Monocyte | True | 2.549 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | Myeloid_lineage | 3 | 912 | Classical Monocyte | True | 2.593 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | Myeloid_lineage | 4 | 871 | Classical Monocyte | True | 2.382 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | Myeloid_lineage | 5 | 838 | Classical Monocyte | True | 1.994 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | Myeloid_lineage | 6 | 677 | Non-Classical Monocyte | True | 1.725 | Non-Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | Myeloid_lineage | 7 | 640 | Classical Monocyte | True | 2.363 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | Myeloid_lineage | 8 | 609 | Classical Monocyte | True | 2.517 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | Myeloid_lineage | 9 | 589 | Classical Monocyte | True | 2.171 | Classical Monocyte | nan | nan | not_applicable | pass |
 
 ## 出力ファイル
 
-- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/infection_study_04/submissions/`
-- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/infection_study_04/cellxgene/`
-- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/infection_study_04/tables/marker_gene_availability.tsv`
-- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/infection_study_04/tables/marker_gene_availability_alerts.tsv`
-- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/infection_study_04/tables/lineage_subcluster_evidence.tsv.gz`
-- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/infection_study_04/tables/source_disagreement_summary.tsv`
-- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/infection_study_04/tables/`
+- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/infection_study_04/submissions/`
+- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/infection_study_04/cellxgene/`
+- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/infection_study_04/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/infection_study_04/tables/marker_gene_availability_alerts.tsv`
+- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/infection_study_04/tables/lineage_subcluster_evidence.tsv.gz`
+- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/infection_study_04/tables/source_disagreement_summary.tsv`
+- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/infection_study_04/tables/`
 

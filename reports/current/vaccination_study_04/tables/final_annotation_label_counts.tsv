@@ -1,6 +1,6 @@
 study	predicted_cell_type	n_cells
-vaccination_study_04	Classical Monocyte	34238
-vaccination_study_04	Non-Classical Monocyte	15552
+vaccination_study_04	Classical Monocyte	34276
+vaccination_study_04	Non-Classical Monocyte	15514
 vaccination_study_04	Conventional DC 2	7705
 vaccination_study_04	Plasmacytoid DC	5505
 vaccination_study_04	Conventional DC 1	1110
@@ -12,5 +12,5 @@ vaccination_study_04	Plasma Cell	100
 vaccination_study_04	CD4 Naive / T Central Memory	28
 vaccination_study_04	Naive B Cell	6
 vaccination_study_04	Platelet	6
-vaccination_study_04	Treg	2
+vaccination_study_04	T Cell	2
 vaccination_study_04	Memory B Cell	2

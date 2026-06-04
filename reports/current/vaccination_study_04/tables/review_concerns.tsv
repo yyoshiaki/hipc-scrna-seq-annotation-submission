@@ -2,5 +2,4 @@ study	concern	n_cells
 vaccination_study_04	High source disagreement for CD4 Naive / T Central Memory	16
 vaccination_study_04	High source disagreement for Doublet	647
 vaccination_study_04	High source disagreement for Naive B Cell	4
-vaccination_study_04	High source disagreement for Treg	2
-vaccination_study_04	critical marker availability for Treg	2
+vaccination_study_04	High source disagreement for T Cell	2
