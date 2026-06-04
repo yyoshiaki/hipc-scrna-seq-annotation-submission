@@ -1,0 +1,20 @@
+study	predicted_cell_type	n_cells
+infection_study_01	Classical Monocyte	17100
+infection_study_01	NK Cell	9487
+infection_study_01	CD8 Cytotoxic / T Effector Memory	8774
+infection_study_01	Naive B Cell	4235
+infection_study_01	CD4 T Effector Memory	4124
+infection_study_01	Non-Classical Monocyte	2154
+infection_study_01	Memory B Cell	2114
+infection_study_01	CD4 Naive / T Central Memory	1876
+infection_study_01	Platelet	1336
+infection_study_01	Doublet	1278
+infection_study_01	MAIT Cell	976
+infection_study_01	Conventional DC 2	442
+infection_study_01	CD8 Naive / T Central Memory	364
+infection_study_01	Blood Cell	326
+infection_study_01	Plasma Cell	183
+infection_study_01	Plasmacytoid DC	107
+infection_study_01	Conventional DC 1	34
+infection_study_01	HSC	13
+infection_study_01	RBC	1

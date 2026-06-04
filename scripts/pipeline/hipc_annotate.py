@@ -43,6 +43,16 @@ def raw_fraction(frame, columns, pattern):
     return float(hit.mean())
 
 
+def fill_obs_alias(obs, canonical, aliases, default):
+    if canonical in obs.columns:
+        return
+    for alias in aliases:
+        if alias in obs.columns:
+            obs[canonical] = obs[alias].values
+            return
+    obs[canonical] = default
+
+
 def map_screfmapping_label(query_type, cluster_l1, cluster_l2):
     label_text = f"{cluster_l1} {cluster_l2}"
     if query_type == "B":
@@ -279,12 +289,29 @@ review_concern_thresholds = config["decision_engine"].get(
 )
 marker_availability_rows = []
 source_disagreement_rows = []
+subcluster_candidate_score_rows = []
+subcluster_umap_rows = []
+lineage_panel_status_rows = []
+
+evidence_aliases = {
+    "celltypist_v3_label": ["celltypist_label", "majority_voting", "majority_voting_Immune_All_Low"],
+    "panhuman_fine_v3_label": ["panhuman_fine_label", "panhuman_azimuth_fine"],
+    "cluster_consensus_v3_label": ["cluster_consensus_label"],
+    "top_marker_v3_label": ["marker_best_label", "top_marker_label"],
+    "majority_voting_Immune_All_Low": ["celltypist_label", "majority_voting"],
+    "panhuman_azimuth_fine": ["panhuman_fine_label", "panhuman_fine_v3_label"],
+}
 
 for input_row in manifest.itertuples(index=False):
     study = input_row.study_id
     h5ad = project_path(input_row.input_h5ad)
     adata = sc.read_h5ad(h5ad)
     obs = adata.obs.copy()
+
+    for canonical, aliases in evidence_aliases.items():
+        fill_obs_alias(obs, canonical, aliases, "not_available")
+        if canonical not in adata.obs.columns:
+            adata.obs[canonical] = obs[canonical].values
 
     study_marker_alert = {}
     varnames = pd.Index(adata.var_names.astype(str))
@@ -320,6 +347,7 @@ for input_row in manifest.itertuples(index=False):
     for column in ref_cols + raw_cols:
         if column not in obs.columns:
             obs[column] = "not_available"
+            adata.obs[column] = "not_available"
 
     required_scref_cols = ["screfmapping_query_type", "screfmapping_clusterL1", "screfmapping_clusterL1_prob", "screfmapping_clusterL2", "screfmapping_clusterL2_prob", "screfmapping_official_label"]
     if "screfmapping_official_label" not in obs.columns:
@@ -381,7 +409,14 @@ for input_row in manifest.itertuples(index=False):
     lineage_second = lineage_scores.apply(lambda row: row.sort_values(ascending=False).iloc[1], axis=1)
     lineage = lineage.where((lineage_max >= 2) & ((lineage_max - lineage_second) >= 1), "Ambiguous")
 
-    doublet = obs["doublet_flag_v3_independent"].astype(str).str.lower().eq("true") if "doublet_flag_v3_independent" in obs.columns else pd.Series(False, index=obs.index)
+    if "doublet_flag_v3_independent" in obs.columns:
+        doublet = obs["doublet_flag_v3_independent"].astype(str).str.lower().eq("true")
+    elif "doublet_flag" in obs.columns:
+        doublet = obs["doublet_flag"].astype(str).str.lower().eq("true")
+    elif "predicted_doublet" in obs.columns:
+        doublet = obs["predicted_doublet"].astype(str).str.lower().eq("true")
+    else:
+        doublet = pd.Series(False, index=obs.index)
     mixed = obs["mixed_lineage_marker_monitor_v3_independent"].astype(str).str.lower().eq("true") if "mixed_lineage_marker_monitor_v3_independent" in obs.columns else pd.Series(False, index=obs.index)
     lineage.loc[doublet] = "Ambiguous"
 
@@ -405,6 +440,21 @@ for input_row in manifest.itertuples(index=False):
         mask = lineage.eq(lineage_name)
         if int(mask.sum()) < 50:
             adata.obs[f"{lineage_name}_leiden"] = "not_in_lineage"
+            pd.DataFrame(columns=["cell_barcode", "study", "lineage", "local_cluster", "subcluster_label", "subcluster_reason", "local_umap_1", "local_umap_2"]).to_csv(
+                tables_dir / f"{study}_{lineage_name}_true_subcluster_umap.tsv.gz", sep="\t", index=False
+            )
+            pd.DataFrame(columns=["study", "lineage", "cluster", "candidate_label", "rank_within_cluster", "n_cells", "marker_pct", "ref_fraction", "raw_fraction", "screfmapping_fraction", "total_score"]).to_csv(
+                tables_dir / f"{study}_{lineage_name}_subcluster_candidate_scores.tsv", sep="\t", index=False
+            )
+            lineage_panel_status_rows.append(
+                {
+                    "study": study,
+                    "lineage": lineage_name,
+                    "n_cells": int(mask.sum()),
+                    "status": "skipped_lt50",
+                    "reason": "fewer than 50 cells assigned to this broad lineage",
+                }
+            )
             continue
 
         sub = adata[mask].copy()
@@ -440,10 +490,12 @@ for input_row in manifest.itertuples(index=False):
         lineage_obs["annotation_cluster"] = sub.obs[chosen_key].astype(str).values
         for score_col in lineage_config["candidate_scores"].values():
             lineage_obs[score_col] = obs.loc[sub.obs_names, score_col]
+            sub.obs[score_col] = obs.loc[sub.obs_names, score_col].values
 
         cluster_to_label = {}
         cluster_to_conf = {}
         cluster_to_reason = {}
+        lineage_candidate_score_rows = []
         for cluster_id in sorted(lineage_obs["annotation_cluster"].astype(str).unique()):
             cluster_mask = lineage_obs["annotation_cluster"].astype(str).eq(cluster_id)
             cluster_frame = lineage_obs.loc[cluster_mask]
@@ -467,6 +519,22 @@ for input_row in manifest.itertuples(index=False):
             candidate_df = pd.DataFrame(candidate_rows).sort_values("total_score", ascending=False)
             best = candidate_df.iloc[0]
             second_score = float(candidate_df.iloc[1]["total_score"]) if candidate_df.shape[0] > 1 else 0.0
+            for rank, candidate_row in enumerate(candidate_df.itertuples(index=False), start=1):
+                score_row = {
+                    "study": study,
+                    "lineage": lineage_name,
+                    "cluster": cluster_id,
+                    "candidate_label": candidate_row.candidate,
+                    "rank_within_cluster": rank,
+                    "n_cells": int(cluster_mask.sum()),
+                    "marker_pct": float(candidate_row.marker_pct),
+                    "ref_fraction": float(candidate_row.ref_fraction),
+                    "raw_fraction": float(candidate_row.raw_fraction),
+                    "screfmapping_fraction": float(candidate_row.screfmapping_fraction),
+                    "total_score": float(candidate_row.total_score),
+                }
+                lineage_candidate_score_rows.append(score_row)
+                subcluster_candidate_score_rows.append(score_row)
             accepted = (float(best["total_score"]) >= 1.05) and (
                 (float(best["ref_fraction"]) >= 0.25)
                 or (float(best["raw_fraction"]) >= 0.35)
@@ -552,16 +620,85 @@ for input_row in manifest.itertuples(index=False):
         sub.obs["subcluster_label"] = sub.obs[chosen_key].astype(str).map(cluster_to_label).astype(str)
         sub.obs["subcluster_reason"] = sub.obs[chosen_key].astype(str).map(cluster_to_reason).astype(str)
 
-        sc.pl.umap(sub, color=[chosen_key, "subcluster_label"], frameon=False, show=False, save=f"_{study}_{lineage_name}_subcluster_label.png")
+        local_umap = pd.DataFrame(
+            {
+                "cell_barcode": sub.obs_names.astype(str),
+                "study": study,
+                "lineage": lineage_name,
+                "local_cluster": sub.obs[chosen_key].astype(str).values,
+                "subcluster_label": sub.obs["subcluster_label"].astype(str).values,
+                "subcluster_reason": sub.obs["subcluster_reason"].astype(str).values,
+                "local_umap_1": sub.obsm["X_umap"][:, 0],
+                "local_umap_2": sub.obsm["X_umap"][:, 1],
+            }
+        )
+        for candidate, score_col in lineage_config["candidate_scores"].items():
+            local_umap[f"{candidate}_marker_pct"] = pd.to_numeric(sub.obs[score_col], errors="coerce").values
+        local_umap.to_csv(tables_dir / f"{study}_{lineage_name}_true_subcluster_umap.tsv.gz", sep="\t", index=False)
+        subcluster_umap_rows.append({"study": study, "lineage": lineage_name, "n_cells": int(sub.n_obs), "n_local_clusters": int(sub.obs[chosen_key].astype(str).nunique())})
+        lineage_panel_status_rows.append(
+            {
+                "study": study,
+                "lineage": lineage_name,
+                "n_cells": int(sub.n_obs),
+                "status": "generated",
+                "reason": "true lineage-specific subcluster UMAP generated",
+            }
+        )
+
+        lineage_candidate_score_df = pd.DataFrame(lineage_candidate_score_rows)
+        lineage_candidate_score_df.to_csv(tables_dir / f"{study}_{lineage_name}_subcluster_candidate_scores.tsv", sep="\t", index=False)
+        if not lineage_candidate_score_df.empty:
+            heatmap = lineage_candidate_score_df.pivot(index="candidate_label", columns="cluster", values="marker_pct").fillna(0)
+            fig, ax = plt.subplots(figsize=(max(5, 0.35 * heatmap.shape[1]), max(3, 0.35 * heatmap.shape[0])))
+            image = ax.imshow(heatmap.values, aspect="auto", vmin=0, vmax=1, cmap="viridis")
+            ax.set_xticks(np.arange(heatmap.shape[1]))
+            ax.set_xticklabels(heatmap.columns.astype(str), rotation=90, fontsize=7)
+            ax.set_yticks(np.arange(heatmap.shape[0]))
+            ax.set_yticklabels(heatmap.index.astype(str), fontsize=8)
+            ax.set_xlabel("Local subcluster")
+            ax.set_ylabel("Candidate label")
+            ax.set_title(f"{study} {lineage_name} marker score by local subcluster")
+            fig.colorbar(image, ax=ax, label="median marker percentile")
+            fig.tight_layout()
+            fig.savefig(asset_dir / f"subcluster_marker_score_heatmap_{study}_{lineage_name}.png", dpi=180)
+            fig.savefig(figures_dir / f"subcluster_marker_score_heatmap_{study}_{lineage_name}.pdf")
+            plt.close(fig)
+
+        sc.pl.umap(sub, color=[chosen_key, "subcluster_label"], frameon=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_label.png")
         plt.close("all")
         sub_qc_colors = [column for column in ["n_genes_by_counts", "pct_counts_mt", "subcluster_reason"] if column in sub.obs.columns]
         if sub_qc_colors:
-            sc.pl.umap(sub, color=sub_qc_colors, frameon=False, show=False, save=f"_{study}_{lineage_name}_subcluster_qc.png")
+            sc.pl.umap(sub, color=sub_qc_colors, frameon=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_qc.png")
             plt.close("all")
+        marker_score_cols = list(lineage_config["candidate_scores"].values())
+        sc.pl.umap(sub, color=marker_score_cols, ncols=3, frameon=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_marker_scores.png")
+        plt.close("all")
+
+        lineage_marker_genes = []
+        for score_col in lineage_config["candidate_scores"].values():
+            lineage_marker_genes.extend(score_gene_sets.get(score_col.replace("_pct", ""), []))
+        lineage_marker_genes = [gene for gene in dict.fromkeys(lineage_marker_genes) if gene in adata.var_names]
+        if lineage_marker_genes:
+            sub_plot = adata[sub.obs_names, lineage_marker_genes].copy()
+            sub_plot.obsm["X_umap"] = sub.obsm["X_umap"].copy()
+            sub_plot.obs[chosen_key] = sub.obs[chosen_key].astype(str).values
+            sub_plot.obs["subcluster_label"] = sub.obs["subcluster_label"].astype(str).values
+            sub_plot.obs["subcluster_reason"] = sub.obs["subcluster_reason"].astype(str).values
+            sc.pl.umap(sub_plot, color=lineage_marker_genes[:16], ncols=4, frameon=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_marker_expression.png")
+            plt.close("all")
+            sc.pl.dotplot(sub_plot, var_names=lineage_marker_genes, groupby="subcluster_label", standard_scale="var", dendrogram=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_marker_dotplot.png")
+            plt.close("all")
+            dotplot_png = figures_dir / f"dotplot__{study}_{lineage_name}_true_subcluster_marker_dotplot.png"
+            if dotplot_png.exists():
+                asset_dir.joinpath(f"dotplot_{study}_{lineage_name}_true_subcluster_marker_dotplot.png").write_bytes(dotplot_png.read_bytes())
+            del sub_plot
 
         for figure_name in [
-            f"umap_{study}_{lineage_name}_subcluster_label.png",
-            f"umap_{study}_{lineage_name}_subcluster_qc.png",
+            f"umap_{study}_{lineage_name}_true_subcluster_label.png",
+            f"umap_{study}_{lineage_name}_true_subcluster_qc.png",
+            f"umap_{study}_{lineage_name}_true_subcluster_marker_scores.png",
+            f"umap_{study}_{lineage_name}_true_subcluster_marker_expression.png",
         ]:
             source_png = figures_dir / figure_name
             if source_png.exists():
@@ -818,6 +955,10 @@ marker_availability_df = pd.DataFrame(marker_availability_rows)
 marker_alert_df = marker_availability_df[marker_availability_df["alert_level"].isin(["critical", "warning"])].copy()
 marker_availability_df.to_csv(tables_dir / "marker_gene_availability.tsv", sep="\t", index=False)
 marker_alert_df.to_csv(tables_dir / "marker_gene_availability_alerts.tsv", sep="\t", index=False)
+pd.DataFrame(subcluster_candidate_score_rows).to_csv(tables_dir / "subcluster_candidate_scores.tsv", sep="\t", index=False)
+pd.DataFrame(subcluster_umap_rows).to_csv(tables_dir / "true_subcluster_umap_summary.tsv", sep="\t", index=False)
+lineage_panel_status_df = pd.DataFrame(lineage_panel_status_rows)
+lineage_panel_status_df.to_csv(tables_dir / "lineage_panel_status.tsv", sep="\t", index=False)
 
 summary_df.to_csv(tables_dir / "final_annotation_summary.tsv", sep="\t", index=False)
 label_df.to_csv(tables_dir / "final_annotation_label_counts.tsv", sep="\t", index=False)
@@ -902,6 +1043,28 @@ if not source_disagreement_df.empty:
             }
         )
 
+subcluster_evidence_rows_for_report = []
+if not subcluster_df.empty:
+    for row in subcluster_df.sort_values(["study", "lineage", "n_cells"], ascending=[True, True, False]).head(30).itertuples(index=False):
+        subcluster_evidence_rows_for_report.append(
+            {
+                "study": row.study,
+                "lineage": row.lineage,
+                "cluster": row.cluster,
+                "cells": f"{row.n_cells:,}",
+                "chosen_label": row.chosen_label,
+                "accepted": row.accepted,
+                "score_margin": f"{row.score_margin:.3f}",
+                "marker_set": row.marker_set,
+                "marker_alert": row.marker_availability_alert,
+            }
+        )
+
+lineage_panel_status_lookup = {}
+if not lineage_panel_status_df.empty:
+    for row in lineage_panel_status_df.itertuples(index=False):
+        lineage_panel_status_lookup[(str(row.study), str(row.lineage))] = row
+
 figure_lines = []
 for study in summary_df["study"]:
     figure_lines.extend(
@@ -923,13 +1086,36 @@ for study in summary_df["study"]:
         ]
     )
     for lineage_name in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
+        status_row = lineage_panel_status_lookup.get((str(study), lineage_name))
+        if status_row is not None and status_row.status != "generated":
+            figure_lines.extend(
+                [
+                    f"#### {study} {lineage_name} true subcluster UMAP",
+                    "",
+                    f"Skipped: {status_row.reason} (`n_cells={int(status_row.n_cells)}`).",
+                    "",
+                    f"Tables: `tables/{study}_{lineage_name}_true_subcluster_umap.tsv.gz`, `tables/{study}_{lineage_name}_subcluster_candidate_scores.tsv`.",
+                    "",
+                ]
+            )
+            continue
         figure_lines.extend(
             [
-                f"#### {study} {lineage_name} subcluster UMAP",
+                f"#### {study} {lineage_name} true subcluster UMAP",
                 "",
-                f"![{study} {lineage_name} subcluster labels]({asset_link_root}/umap_{study}_{lineage_name}_subcluster_label.png)",
+                f"![{study} {lineage_name} true subcluster labels]({asset_link_root}/umap_{study}_{lineage_name}_true_subcluster_label.png)",
                 "",
-                f"![{study} {lineage_name} subcluster QC]({asset_link_root}/umap_{study}_{lineage_name}_subcluster_qc.png)",
+                f"![{study} {lineage_name} true subcluster QC]({asset_link_root}/umap_{study}_{lineage_name}_true_subcluster_qc.png)",
+                "",
+                f"![{study} {lineage_name} true subcluster marker scores]({asset_link_root}/umap_{study}_{lineage_name}_true_subcluster_marker_scores.png)",
+                "",
+                f"![{study} {lineage_name} true subcluster marker expression]({asset_link_root}/umap_{study}_{lineage_name}_true_subcluster_marker_expression.png)",
+                "",
+                f"![{study} {lineage_name} subcluster marker score heatmap]({asset_link_root}/subcluster_marker_score_heatmap_{study}_{lineage_name}.png)",
+                "",
+                f"![{study} {lineage_name} subcluster marker dotplot]({asset_link_root}/dotplot_{study}_{lineage_name}_true_subcluster_marker_dotplot.png)",
+                "",
+                f"Tables: `tables/{study}_{lineage_name}_true_subcluster_umap.tsv.gz`, `tables/{study}_{lineage_name}_subcluster_candidate_scores.tsv`.",
                 "",
             ]
         )
@@ -1073,6 +1259,7 @@ def report_values(language):
         "SOURCE_DISAGREEMENT": table_or_none(source_disagreement_rows_for_report, ["study", "predicted_cell_type", "cells", "median_source_agreement", "disagreement_cells", "disagreement_fraction"], language),
         "REVIEW_CONCERNS": table_or_none(concern_rows_for_report, ["study", "concern", "cells"], language),
         "LABEL_COMPOSITION": table_or_none(label_rows_for_report, ["study", "predicted_cell_type", "cells"], language),
+        "SUBCLUSTER_EVIDENCE_TABLE": table_or_none(subcluster_evidence_rows_for_report, ["study", "lineage", "cluster", "cells", "chosen_label", "accepted", "score_margin", "marker_set", "marker_alert"], language),
         "FIGURE_BLOCKS": figure_blocks,
         "FILE_BLOCK": file_block,
         "LLM_REVIEW_PROMPT": llm_review_prompt,

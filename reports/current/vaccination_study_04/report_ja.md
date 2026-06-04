@@ -1,154 +1,201 @@
-# vaccination_study_04 Annotation Report
+# HIPC データセットアノテーションレポート: vaccination_study_04
 
-Updated: 2026-06-03 EDT
+更新日: 2026-06-04 EDT
 
-## Dataset-Specific Assessment
+このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
-balanced PBMC というより myeloid/DC 寄りの dataset です。DC/pDC-like call は単一 marker ではなく、marker panel 全体で読むべきです。
+## データセット概要
 
-## Key Metrics
+| study | cells | analysis_X_genes | pre_hvg_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| vaccination_study_04 | 66,065 | 16,983 | 16,983 | 16,983 | 15 | 0.009 | 575 | 647 | 343 | 0.850 | 1,250 | 2,787 (0.042) | none |
 
-| Metric                         | Value        |
-|:-------------------------------|:-------------|
-| Cells                          | 66,065       |
-| Genes in H5AD var              | 16,983       |
-| Submitted labels               | 17           |
-| Parent or Blood fallback cells | 1,321 (2.0%) |
-| Doublet calls                  | 647          |
-| Median confidence              | 0.92         |
-| CD4 T Effector Memory calls    | 0            |
-| Generic T Cell calls           | 23           |
-| Generic B Cell calls           | 12           |
+## 実行概要
 
-## Review Priorities
+- 実行単位: one dataset in, one annotated dataset out。
+- 実行経路: Codex skill `hipc-annotation` -> bundled helper `run_one.sh` -> annotation CLI -> validator -> report inspection。
+- 検証: submission row count、H5AD observation count、official label validity、H5AD/submission agreement、confidence column、report image link を確認する。
+- このレポートは workflow の再掲ではなく、このデータセットの marker 欠損、UMAP、label 構成、review concern を読むためのもの。
 
-- final label は source-label UMAP と合わせて確認する。完全一致は必須ではありませんが、UMAP 上でまとまった source disagreement は解釈が必要です。
-- pDC、plasma/plasmablast、Treg、effector-memory T state など狭い label は marker-expression panel を見て判断します。
-- `Doublet` は filter out ではなく submitted label として扱います。
-- parent または Blood fallback label は conservative uncertainty を表すため、terminal label に無理に押し込まず UMAP 上で確認します。
+## データセット固有の解釈
+
+- `vaccination_study_04`: 66,065 cells、analysis X/var 16,983 genes、pre-HVG slot 16,983 genes、submitted label 15 種、parent/Blood residual fraction 0.009、median confidence 0.850。
+  - 1,250 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
+  - 647 cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。
+  - 575 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
+  - Marker gene 欠損アラート: Treg。該当 marker set に依存する fine label は慎重に見る。
+
+## データセット固有の評価
+
+- 全体像: 66,065 cells / analysis X/var 16,983 genes / pre-HVG slot 16,983 genes。parent/Blood residual は 0.009、low-confidence は 1,250 cells、source disagreement flag は 2,787 cells (0.042)。
+- 優先確認: low-confidence 領域が QC UMAP と source-disagreement UMAP で同じ場所に集まるかを確認する。
+- 優先確認: `Blood Cell` 残存が孤立 cluster なのか、複数 lineage に分散した曖昧領域なのかを UMAP で確認する。
+- Marker gene 欠損: Treg は confidence cap 対象。該当 label は marker expression UMAP と dotplot で妥当性を確認する。
+
+## Marker Gene 欠損アラート
+
+| study | marker_set | alert | present_fraction | missing_critical_markers | missing_genes |
+| --- | --- | --- | --- | --- | --- |
+| vaccination_study_04 | Treg | critical | 0.286 | FOXP3;IL2RA | FOXP3;IL2RA;TIGIT;TNFRSF18;CCR8 |
+
+## ソース間不一致
+
+| study | predicted_cell_type | cells | median_source_agreement | disagreement_cells | disagreement_fraction |
+| --- | --- | --- | --- | --- | --- |
+| vaccination_study_04 | Doublet | 647 | 0.000 | 647 | 1.000 |
+| vaccination_study_04 | Treg | 2 | 0.250 | 2 | 1.000 |
+| vaccination_study_04 | Naive B Cell | 6 | 0.250 | 4 | 0.667 |
+| vaccination_study_04 | CD4 Naive / T Central Memory | 28 | 0.250 | 16 | 0.571 |
+| vaccination_study_04 | NK Cell | 252 | 0.750 | 58 | 0.230 |
+| vaccination_study_04 | Conventional DC 2 | 7,705 | 0.750 | 819 | 0.106 |
+| vaccination_study_04 | Blood Cell | 575 | 0.750 | 30 | 0.052 |
+| vaccination_study_04 | Plasma Cell | 100 | 0.750 | 5 | 0.050 |
+| vaccination_study_04 | Classical Monocyte | 34,238 | 0.750 | 977 | 0.029 |
+| vaccination_study_04 | Conventional DC 1 | 1,110 | 0.750 | 31 | 0.028 |
+| vaccination_study_04 | Plasmacytoid DC | 5,505 | 0.750 | 53 | 0.010 |
+| vaccination_study_04 | Non-Classical Monocyte | 15,552 | 0.750 | 145 | 0.009 |
+
+## レビュー優先事項
+
+| study | concern | cells |
+| --- | --- | --- |
+| vaccination_study_04 | High source disagreement for CD4 Naive / T Central Memory | 16 |
+| vaccination_study_04 | High source disagreement for Doublet | 647 |
+| vaccination_study_04 | High source disagreement for Naive B Cell | 4 |
+| vaccination_study_04 | High source disagreement for Treg | 2 |
+| vaccination_study_04 | critical marker availability for Treg | 2 |
+
+## ラベル構成
+
+| study | predicted_cell_type | cells |
+| --- | --- | --- |
+| vaccination_study_04 | Classical Monocyte | 34,238 |
+| vaccination_study_04 | Non-Classical Monocyte | 15,552 |
+| vaccination_study_04 | Conventional DC 2 | 7,705 |
+| vaccination_study_04 | Plasmacytoid DC | 5,505 |
+| vaccination_study_04 | Conventional DC 1 | 1,110 |
+| vaccination_study_04 | Doublet | 647 |
+| vaccination_study_04 | Blood Cell | 575 |
+| vaccination_study_04 | HSC | 337 |
+| vaccination_study_04 | NK Cell | 252 |
+| vaccination_study_04 | Plasma Cell | 100 |
+| vaccination_study_04 | CD4 Naive / T Central Memory | 28 |
+| vaccination_study_04 | Naive B Cell | 6 |
+| vaccination_study_04 | Platelet | 6 |
+| vaccination_study_04 | Treg | 2 |
+| vaccination_study_04 | Memory B Cell | 2 |
 
 ## Inline Figures
 
-### Final submitted labels
+### vaccination_study_04
 
-![Final submitted labels](assets/umap_vaccination_study_04_final_label.png)
+![vaccination_study_04 final labels](assets/umap_vaccination_study_04_annotation_label.png)
 
-### QC and confidence
+![vaccination_study_04 lineage and annotation reason](assets/umap_vaccination_study_04_annotation_lineage_reason.png)
 
-![QC and confidence](assets/umap_vaccination_study_04_qc_confidence.png)
+![vaccination_study_04 QC and confidence](assets/umap_vaccination_study_04_annotation_qc_confidence.png)
 
-### Annotation source labels
+![vaccination_study_04 source agreement and disagreement](assets/umap_vaccination_study_04_annotation_source_disagreement.png)
 
-![Annotation source labels](assets/umap_vaccination_study_04_annotation_sources.png)
+![vaccination_study_04 marker expression UMAPs](assets/umap_vaccination_study_04_annotation_marker_expression.png)
 
-### Lineage, reason, and doublet overlays
+![vaccination_study_04 submitted-label marker dotplot](assets/dotplot_vaccination_study_04_annotation_marker_dotplot.png)
 
-![Lineage, reason, and doublet overlays](assets/umap_vaccination_study_04_lineage_reason_doublet.png)
+#### vaccination_study_04 B_lineage true subcluster UMAP
 
-### Lineage core marker expression
+![vaccination_study_04 B_lineage true subcluster labels](assets/umap_vaccination_study_04_B_lineage_true_subcluster_label.png)
 
-![Lineage core marker expression](assets/umap_vaccination_study_04_lineage_core_marker_expression.png)
+![vaccination_study_04 B_lineage true subcluster QC](assets/umap_vaccination_study_04_B_lineage_true_subcluster_qc.png)
 
-### B-lineage subcluster labels
+![vaccination_study_04 B_lineage true subcluster marker scores](assets/umap_vaccination_study_04_B_lineage_true_subcluster_marker_scores.png)
 
-![B-lineage subcluster labels](assets/umap_vaccination_study_04_B_lineage_subcluster_label.png)
+![vaccination_study_04 B_lineage true subcluster marker expression](assets/umap_vaccination_study_04_B_lineage_true_subcluster_marker_expression.png)
 
-### B-lineage marker expression
+![vaccination_study_04 B_lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_04_B_lineage.png)
 
-![B-lineage marker expression](assets/umap_vaccination_study_04_B_lineage_marker_expression.png)
+![vaccination_study_04 B_lineage subcluster marker dotplot](assets/dotplot_vaccination_study_04_B_lineage_true_subcluster_marker_dotplot.png)
 
-### T/NK-lineage subcluster labels
+Tables: `tables/vaccination_study_04_B_lineage_true_subcluster_umap.tsv.gz`, `tables/vaccination_study_04_B_lineage_subcluster_candidate_scores.tsv`.
 
-![T/NK-lineage subcluster labels](assets/umap_vaccination_study_04_T_NK_lineage_subcluster_label.png)
+#### vaccination_study_04 T_NK_lineage true subcluster UMAP
 
-### T/NK-lineage marker expression
+![vaccination_study_04 T_NK_lineage true subcluster labels](assets/umap_vaccination_study_04_T_NK_lineage_true_subcluster_label.png)
 
-![T/NK-lineage marker expression](assets/umap_vaccination_study_04_T_NK_lineage_marker_expression.png)
+![vaccination_study_04 T_NK_lineage true subcluster QC](assets/umap_vaccination_study_04_T_NK_lineage_true_subcluster_qc.png)
 
-### Myeloid/DC-lineage subcluster labels
+![vaccination_study_04 T_NK_lineage true subcluster marker scores](assets/umap_vaccination_study_04_T_NK_lineage_true_subcluster_marker_scores.png)
 
-![Myeloid/DC-lineage subcluster labels](assets/umap_vaccination_study_04_Myeloid_lineage_subcluster_label.png)
+![vaccination_study_04 T_NK_lineage true subcluster marker expression](assets/umap_vaccination_study_04_T_NK_lineage_true_subcluster_marker_expression.png)
 
-### Myeloid/DC-lineage marker expression
+![vaccination_study_04 T_NK_lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_04_T_NK_lineage.png)
 
-![Myeloid/DC-lineage marker expression](assets/umap_vaccination_study_04_Myeloid_lineage_marker_expression.png)
+![vaccination_study_04 T_NK_lineage subcluster marker dotplot](assets/dotplot_vaccination_study_04_T_NK_lineage_true_subcluster_marker_dotplot.png)
+
+Tables: `tables/vaccination_study_04_T_NK_lineage_true_subcluster_umap.tsv.gz`, `tables/vaccination_study_04_T_NK_lineage_subcluster_candidate_scores.tsv`.
+
+#### vaccination_study_04 Myeloid_lineage true subcluster UMAP
+
+![vaccination_study_04 Myeloid_lineage true subcluster labels](assets/umap_vaccination_study_04_Myeloid_lineage_true_subcluster_label.png)
+
+![vaccination_study_04 Myeloid_lineage true subcluster QC](assets/umap_vaccination_study_04_Myeloid_lineage_true_subcluster_qc.png)
+
+![vaccination_study_04 Myeloid_lineage true subcluster marker scores](assets/umap_vaccination_study_04_Myeloid_lineage_true_subcluster_marker_scores.png)
+
+![vaccination_study_04 Myeloid_lineage true subcluster marker expression](assets/umap_vaccination_study_04_Myeloid_lineage_true_subcluster_marker_expression.png)
+
+![vaccination_study_04 Myeloid_lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_04_Myeloid_lineage.png)
+
+![vaccination_study_04 Myeloid_lineage subcluster marker dotplot](assets/dotplot_vaccination_study_04_Myeloid_lineage_true_subcluster_marker_dotplot.png)
+
+Tables: `tables/vaccination_study_04_Myeloid_lineage_true_subcluster_umap.tsv.gz`, `tables/vaccination_study_04_Myeloid_lineage_subcluster_candidate_scores.tsv`.
+
 
 ## Subcluster Marker Score Review
 
-下の marker score は各 lineage 内で再計算し、lineage subcluster ごとに要約したものです。fine lineage label の確認は global marker UMAP だけではなく、この subcluster 単位の score / dotplot を主に見ます。
-
-### B lineage subcluster marker scores
-
-![B lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_04_B_lineage.png)
-
-![B lineage subcluster marker dotplot](assets/subcluster_marker_dotplot_vaccination_study_04_B_lineage.png)
-
-Tables: `tables/subcluster_marker_scores_B_lineage.tsv`, `tables/subcluster_marker_score_top3_B_lineage.tsv`.
-
-### T/NK lineage subcluster marker scores
-
-![T/NK lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_04_T_NK_lineage.png)
-
-![T/NK lineage subcluster marker dotplot](assets/subcluster_marker_dotplot_vaccination_study_04_T_NK_lineage.png)
-
-Tables: `tables/subcluster_marker_scores_T_NK_lineage.tsv`, `tables/subcluster_marker_score_top3_T_NK_lineage.tsv`.
-
-### Myeloid/DC lineage subcluster marker scores
-
-![Myeloid/DC lineage subcluster marker score heatmap](assets/subcluster_marker_score_heatmap_vaccination_study_04_Myeloid_lineage.png)
-
-![Myeloid/DC lineage subcluster marker dotplot](assets/subcluster_marker_dotplot_vaccination_study_04_Myeloid_lineage.png)
-
-Tables: `tables/subcluster_marker_scores_Myeloid_lineage.tsv`, `tables/subcluster_marker_score_top3_Myeloid_lineage.tsv`.
-
-## Label Composition
-
-| predicted_cell_type          |   n_cells | fraction   |
-|:-----------------------------|----------:|:-----------|
-| Classical Monocyte           |     32748 | 49.6%      |
-| Non-Classical Monocyte       |     15624 | 23.6%      |
-| Conventional DC 2            |      7770 | 11.8%      |
-| Plasmacytoid DC              |      5615 | 8.5%       |
-| Conventional DC 1            |      1099 | 1.7%       |
-| Myeloid Cell                 |       984 | 1.5%       |
-| HSC                          |       884 | 1.3%       |
-| Doublet                      |       647 | 1.0%       |
-| Blood Cell                   |       302 | 0.5%       |
-| NK Cell                      |       210 | 0.3%       |
-| Plasma Cell                  |        82 | 0.1%       |
-| Platelet                     |        26 | 0.0%       |
-| CD4 Naive / T Central Memory |        26 | 0.0%       |
-| T Cell                       |        23 | 0.0%       |
-| B Cell                       |        12 | 0.0%       |
+上の lineage-specific panel は、各 lineage subset で HVG 選択、PCA、neighbors、Leiden、UMAP を再計算した true local subcluster analysis から生成しています。Marker gene による fine label の確認は global UMAP だけではなく、この local UMAP、marker-score UMAP、marker-expression UMAP、dotplot を主に見ます。
 
 ## Cluster Consensus Evidence
 
-| broad_lineage   | cluster            |   n_cells | chosen_label           | accepted   | best_candidate_before_parent_fallback   |   score_margin |   marker_pct |   source_fraction | cluster_reason                          |
-|:----------------|:-------------------|----------:|:-----------------------|:-----------|:----------------------------------------|---------------:|-------------:|------------------:|:----------------------------------------|
-| Myeloid/DC      | Myeloid_lineage:0  |      5886 | Non-Classical Monocyte | True       | Non-Classical Monocyte                  |           1.73 |         0.92 |              0.71 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:1  |      5457 | Classical Monocyte     | True       | Classical Monocyte                      |           1.6  |         0.91 |              0.71 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:2  |      5421 | Classical Monocyte     | True       | Classical Monocyte                      |           1.29 |         0.75 |              0.7  | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:3  |      5343 | Classical Monocyte     | True       | Classical Monocyte                      |           1.14 |         0.7  |              0.7  | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:4  |      3752 | Conventional DC 2      | True       | Conventional DC 2                       |           0.98 |         0.85 |              0.49 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:5  |      3677 | Classical Monocyte     | True       | Classical Monocyte                      |           1.04 |         0.74 |              0.71 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:6  |      3501 | Classical Monocyte     | True       | Classical Monocyte                      |           0.99 |         0.53 |              0.68 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:7  |      3017 | Classical Monocyte     | True       | Classical Monocyte                      |           1.47 |         0.79 |              0.71 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:8  |      2583 | Classical Monocyte     | True       | Classical Monocyte                      |           1.12 |         0.7  |              0.7  | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:9  |      2565 | Non-Classical Monocyte | True       | Non-Classical Monocyte                  |           1.56 |         0.86 |              0.7  | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:10 |      2458 | Non-Classical Monocyte | True       | Non-Classical Monocyte                  |           1.51 |         0.87 |              0.67 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:11 |      2348 | Plasmacytoid DC        | True       | Plasmacytoid DC                         |           1.57 |         0.95 |              0.71 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:12 |      2249 | Plasmacytoid DC        | True       | Plasmacytoid DC                         |           1.59 |         0.97 |              0.71 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:13 |      1717 | Non-Classical Monocyte | True       | Non-Classical Monocyte                  |           1.3  |         0.83 |              0.71 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:14 |      1577 | Conventional DC 2      | True       | Conventional DC 2                       |           1.18 |         0.85 |              0.44 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:15 |      1266 | Conventional DC 2      | True       | Conventional DC 2                       |           1.38 |         0.92 |              0.5  | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:16 |      1241 | Non-Classical Monocyte | True       | Non-Classical Monocyte                  |           1.69 |         0.87 |              0.68 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:18 |      1197 | Non-Classical Monocyte | True       | Non-Classical Monocyte                  |           1.63 |         0.92 |              0.71 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:17 |      1175 | Conventional DC 2      | True       | Conventional DC 2                       |           0.67 |         0.77 |              0.37 | cluster_consensus_marker_source_support |
-| Myeloid/DC      | Myeloid_lineage:19 |      1099 | Conventional DC 1      | True       | Conventional DC 1                       |           1.06 |         0.76 |              0.69 | cluster_consensus_marker_source_support |
+| study | lineage | cluster | cells | chosen_label | accepted | score_margin | marker_set | marker_alert |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| vaccination_study_04 | B_lineage | 0 | 15 | Plasma Cell | True | 3.157 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 1 | 11 | Plasma Cell | True | 2.920 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 2 | 9 | Plasma Cell | True | 2.761 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 3 | 9 | Plasma Cell | True | 1.823 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 4 | 8 | Plasma Cell | True | 2.658 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 5 | 8 | Plasma Cell | True | 3.110 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 6 | 6 | Plasma Cell | True | 2.623 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 7 | 6 | Plasma Cell | True | 3.129 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 10 | 4 | Plasma Cell | True | 3.157 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 11 | 4 | Naive B Cell | True | 0.106 | B_naive | pass |
+| vaccination_study_04 | B_lineage | 12 | 4 | Plasma Cell | True | 2.657 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 13 | 4 | Plasma Cell | True | 3.157 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 8 | 4 | Plasma Cell | True | 2.798 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 9 | 4 | Plasma Cell | True | 3.113 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 14 | 2 | Plasma Cell | True | 3.157 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 15 | 2 | Naive B Cell | True | 2.304 | B_naive | pass |
+| vaccination_study_04 | B_lineage | 16 | 2 | Plasma Cell | True | 2.610 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 17 | 2 | Memory B Cell | True | 2.184 | B_memory_ABC | pass |
+| vaccination_study_04 | B_lineage | 18 | 2 | Plasma Cell | True | 3.145 | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 19 | 2 | Plasma Cell | True | 2.599 | Plasma_ASC | pass |
+| vaccination_study_04 | Myeloid_lineage | 0 | 5,841 | Non-Classical Monocyte | True | 2.214 | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 1 | 5,555 | Classical Monocyte | True | 2.803 | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 2 | 4,757 | Classical Monocyte | True | 2.156 | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 3 | 3,925 | Classical Monocyte | True | 2.295 | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 4 | 3,738 | Conventional DC 2 | True | 2.428 | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 5 | 3,249 | Classical Monocyte | True | 2.968 | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 6 | 3,204 | Classical Monocyte | True | 2.937 | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 7 | 3,037 | Classical Monocyte | True | 2.710 | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 8 | 2,683 | Classical Monocyte | True | 3.111 | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 9 | 2,474 | Plasmacytoid DC | True | 2.781 | not_applicable | pass |
 
-## Output Files
+## 出力ファイル
 
-- Label counts: `tables/label_counts.tsv`
-- Cluster decisions: `tables/cluster_consensus_decisions.tsv`
-- Local H5AD: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/current_cluster_consensus/cellxgene/vaccination_study_04.final_annotation.cluster_consensus.cxg.h5ad`
-- Local submission TSV: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/current_cluster_consensus/submissions/vaccination_study_04_annotation.tsv`
+- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/vaccination_study_04/submissions/`
+- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/vaccination_study_04/cellxgene/`
+- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/vaccination_study_04/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/vaccination_study_04/tables/marker_gene_availability_alerts.tsv`
+- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/vaccination_study_04/tables/lineage_subcluster_evidence.tsv.gz`
+- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/vaccination_study_04/tables/source_disagreement_summary.tsv`
+- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v16/vaccination_study_04/tables/`
+

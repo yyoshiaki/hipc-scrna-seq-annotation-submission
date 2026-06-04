@@ -19,12 +19,21 @@ FORBIDDEN_PATTERNS = [
     "marker-gate-applied",
     "final_v14",
 ]
-REQUIRED_PHRASES = [
+REQUIRED_PHRASES_EN = [
     "Dataset-Specific Assessment",
     "Inline Figures",
     "Label Composition",
     "Cluster Consensus Evidence",
     "Subcluster Marker Score Review",
+    "true subcluster",
+]
+REQUIRED_PHRASES_JA = [
+    "データセット固有の評価",
+    "Inline Figures",
+    "ラベル構成",
+    "Cluster Consensus Evidence",
+    "Subcluster Marker Score Review",
+    "true subcluster",
 ]
 REQUIRED_TOPIC_PATTERNS = [
     re.compile(r"source|annotation source", re.IGNORECASE),
@@ -34,7 +43,7 @@ REQUIRED_TOPIC_PATTERNS = [
 
 parser = argparse.ArgumentParser(description="Validate committed HIPC report bundle before release.")
 parser.add_argument("--report-root", default="reports/current")
-parser.add_argument("--min-images-per-study", type=int, default=14)
+parser.add_argument("--min-images-per-study", type=int, default=23)
 args = parser.parse_args()
 
 root = Path(args.report_root)
@@ -47,7 +56,9 @@ summary_required = [
     root / "summary/report_ja.md",
     root / "summary/tables/final_annotation_summary.tsv",
     root / "summary/tables/final_annotation_label_counts.tsv",
-    root / "summary/tables/cluster_consensus_decisions.tsv",
+    root / "summary/tables/lineage_subcluster_evidence.tsv.gz",
+    root / "summary/tables/source_disagreement_summary.tsv",
+    root / "summary/tables/lineage_panel_status.tsv",
 ]
 for path in summary_required:
     if not path.exists():
@@ -61,26 +72,58 @@ for study in EXPECTED_STUDIES:
         errors.append(f"Missing study directory: {study_dir}")
         continue
 
-    required_tables = [study_dir / "tables/label_counts.tsv", study_dir / "tables/cluster_consensus_decisions.tsv"]
+    required_tables = [
+        study_dir / "tables/final_annotation_label_counts.tsv",
+        study_dir / "tables/final_annotation_summary.tsv",
+        study_dir / "tables/lineage_subcluster_evidence.tsv.gz",
+        study_dir / "tables/source_disagreement_summary.tsv",
+        study_dir / "tables/subcluster_candidate_scores.tsv",
+        study_dir / "tables/lineage_panel_status.tsv",
+    ]
     for lineage in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
-        required_tables.extend([
-            study_dir / f"tables/subcluster_marker_scores_{lineage}.tsv",
-            study_dir / f"tables/subcluster_marker_score_top3_{lineage}.tsv",
-        ])
+        required_tables.extend(
+            [
+                study_dir / f"tables/{study}_{lineage}_true_subcluster_umap.tsv.gz",
+                study_dir / f"tables/{study}_{lineage}_subcluster_candidate_scores.tsv",
+            ]
+        )
     for required in required_tables:
         if not required.exists():
             errors.append(f"Missing table for {study}: {required}")
 
+    panel_status_path = study_dir / "tables/lineage_panel_status.tsv"
+    if panel_status_path.exists():
+        panel_status = {}
+        for row in panel_status_path.read_text().splitlines()[1:]:
+            fields = row.split("\t")
+            if len(fields) >= 4:
+                panel_status[fields[1]] = fields[3]
+    else:
+        panel_status = {}
+
     for lineage in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
-        for prefix in ["subcluster_marker_score_heatmap", "subcluster_marker_dotplot"]:
-            required_png = study_dir / "assets" / f"{prefix}_{study}_{lineage}.png"
+        required_pngs = [
+            study_dir / "assets" / f"umap_{study}_{lineage}_true_subcluster_label.png",
+            study_dir / "assets" / f"umap_{study}_{lineage}_true_subcluster_qc.png",
+            study_dir / "assets" / f"umap_{study}_{lineage}_true_subcluster_marker_scores.png",
+            study_dir / "assets" / f"umap_{study}_{lineage}_true_subcluster_marker_expression.png",
+            study_dir / "assets" / f"subcluster_marker_score_heatmap_{study}_{lineage}.png",
+            study_dir / "assets" / f"dotplot_{study}_{lineage}_true_subcluster_marker_dotplot.png",
+        ]
+        if panel_status.get(lineage) != "generated":
+            if lineage not in panel_status:
+                errors.append(f"Missing lineage panel status for {study}: {lineage}")
+            continue
+        for required_png in required_pngs:
             if not required_png.exists():
-                errors.append(f"Missing subcluster marker plot for {study}: {required_png}")
+                errors.append(f"Missing true subcluster marker plot for {study}: {required_png}")
 
     pngs = sorted((study_dir / "assets").glob("*.png"))
     png_total += len(pngs)
-    if len(pngs) < args.min_images_per_study:
-        errors.append(f"Too few PNG assets for {study}: {len(pngs)} < {args.min_images_per_study}")
+    generated_lineage_n = sum(1 for value in panel_status.values() if value == "generated")
+    min_images = 7 + (generated_lineage_n * 6)
+    if len(pngs) < min_images:
+        errors.append(f"Too few PNG assets for {study}: {len(pngs)} < {min_images}")
 
     for lang in ["en", "ja"]:
         report = study_dir / f"report_{lang}.md"
@@ -95,7 +138,8 @@ for study in EXPECTED_STUDIES:
         for link in links:
             if not (report.parent / link).exists():
                 errors.append(f"Broken image link in {report}: {link}")
-        for phrase in REQUIRED_PHRASES:
+        required_phrases = REQUIRED_PHRASES_JA if lang == "ja" else REQUIRED_PHRASES_EN
+        for phrase in required_phrases:
             if phrase not in text:
                 errors.append(f"Missing required section in {report}: {phrase}")
         for pattern in REQUIRED_TOPIC_PATTERNS:

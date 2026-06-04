@@ -68,12 +68,58 @@ for sub_path in submission_paths:
     if invalid_labels:
         failures.append(f"{study}: invalid labels {invalid_labels}")
 
+    panel_status_path = output_root / "tables" / "lineage_panel_status.tsv"
+    if panel_status_path.exists():
+        panel_status = pd.read_csv(panel_status_path, sep="\t")
+    else:
+        panel_status = pd.DataFrame(columns=["study", "lineage", "status"])
+
+    required_assets = [
+        f"umap_{study}_annotation_label.png",
+        f"umap_{study}_annotation_qc_confidence.png",
+        f"umap_{study}_annotation_source_disagreement.png",
+        f"dotplot_{study}_annotation_marker_dotplot.png",
+    ]
+    for lineage in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
+        status_rows = panel_status[(panel_status["study"].astype(str) == study) & (panel_status["lineage"].astype(str) == lineage)]
+        status = status_rows["status"].astype(str).iloc[0] if not status_rows.empty else "missing"
+        required_assets.extend(
+            []
+        )
+        required_tables = [
+            output_root / "tables" / f"{study}_{lineage}_true_subcluster_umap.tsv.gz",
+            output_root / "tables" / f"{study}_{lineage}_subcluster_candidate_scores.tsv",
+        ]
+        for table in required_tables:
+            if not table.exists():
+                failures.append(f"{study}: missing true subcluster table {table}")
+        if status != "generated":
+            if status == "missing":
+                failures.append(f"{study}: missing lineage panel status for {lineage}")
+            continue
+        required_assets.extend(
+            [
+                f"umap_{study}_{lineage}_true_subcluster_label.png",
+                f"umap_{study}_{lineage}_true_subcluster_qc.png",
+                f"umap_{study}_{lineage}_true_subcluster_marker_scores.png",
+                f"umap_{study}_{lineage}_true_subcluster_marker_expression.png",
+                f"subcluster_marker_score_heatmap_{study}_{lineage}.png",
+                f"dotplot_{study}_{lineage}_true_subcluster_marker_dotplot.png",
+            ]
+        )
+    for asset in required_assets:
+        if not (output_root / "assets" / asset).exists():
+            failures.append(f"{study}: missing required report asset {asset}")
+
 broken_links = []
 report_paths = sorted(output_root.glob("report_*.md"))
 if not report_paths:
     report_paths = sorted((output_root / "reports").glob("report_*.md"))
 for report in report_paths:
     text = report.read_text()
+    for required_phrase in ["Inline Figures", "Subcluster Marker Score Review", "true subcluster"]:
+        if required_phrase not in text:
+            failures.append(f"{report.name}: missing required report phrase {required_phrase}")
     for target in re.findall(r"!\[[^\]]*\]\(([^)]+)\)", text):
         resolved = (report.parent / target).resolve()
         if not resolved.exists():

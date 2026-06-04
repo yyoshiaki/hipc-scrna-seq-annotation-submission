@@ -1,0 +1,2 @@
+study	marker_set	official_labels_relevant_to_set	n_genes_expected	n_genes_present	present_fraction	alert_level	missing_critical_markers	present_genes	missing_genes
+infection_study_04	Plasma_ASC	Plasma Cell;Plasmablast	9	8	0.8888888888888888	warning	JCHAIN	MZB1;XBP1;SDC1;PRDM1;IRF4;TNFRSF17;IGHG1;IGHA1	JCHAIN

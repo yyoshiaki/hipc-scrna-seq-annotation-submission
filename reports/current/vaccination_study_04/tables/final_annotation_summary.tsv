@@ -1,0 +1,2 @@
+study	n_cells	n_genes	pre_hvg_n_genes	counts_layer_n_genes	n_labels	b_cell_n	t_cell_n	myeloid_cell_n	blood_cell_n	parent_or_blood_n	parent_or_blood_fraction	artifact_n	doublet_n	effector_b_n	median_confidence	low_confidence_n	source_disagreement_flag_n	source_disagreement_flag_fraction	invalid_labels
+vaccination_study_04	66065	16983	16983	16983	15	0	0	0	575	575	0.008703549534549307	343	647	0	0.85	1250	2787	0.04218572617876334	

@@ -1,0 +1,2 @@
+study	marker_set	official_labels_relevant_to_set	n_genes_expected	n_genes_present	present_fraction	alert_level	missing_critical_markers	present_genes	missing_genes
+vaccination_study_04	Treg	Treg	7	2	0.2857142857142857	critical	FOXP3;IL2RA	CTLA4;IKZF2	FOXP3;IL2RA;TIGIT;TNFRSF18;CCR8

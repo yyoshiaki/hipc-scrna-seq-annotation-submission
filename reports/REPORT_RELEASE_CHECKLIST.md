@@ -1,12 +1,12 @@
 # Report Release Checklist
 
-Updated: 2026-06-03 21:55:00 EDT
+Updated: 2026-06-04 11:43:24 EDT
 
 This checklist is mandatory before replacing or pushing any committed report bundle under `reports/current/`.
 
 ## Why This Exists
 
-A previous report release accidentally replaced rich per-dataset reports with a thin TSV-derived summary bundle. That removed inline UMAPs, marker-expression panels, source-label overlays, and lineage subcluster views from GitHub. This file defines the release gate that prevents that failure mode from recurring.
+A previous report release accidentally replaced rich per-dataset reports with a thin TSV-derived summary bundle. That removed inline UMAPs, marker-expression panels, source-label overlays, and lineage subcluster views from GitHub. A later repair also allowed global UMAP overlays to masquerade as lineage-specific subcluster UMAPs. This file defines the release gate that prevents both failure modes from recurring.
 
 ## Required Structure
 
@@ -19,15 +19,21 @@ reports/current/
     report_ja.md
     tables/final_annotation_summary.tsv
     tables/final_annotation_label_counts.tsv
-    tables/cluster_consensus_decisions.tsv
+    tables/lineage_subcluster_evidence.tsv.gz
+    tables/source_disagreement_summary.tsv
+    tables/lineage_panel_status.tsv
   <study_id>/
     report_en.md
     report_ja.md
     assets/*.png
-    tables/label_counts.tsv
-    tables/cluster_consensus_decisions.tsv
-    tables/subcluster_marker_scores_<lineage>.tsv
-    tables/subcluster_marker_score_top3_<lineage>.tsv
+    tables/final_annotation_summary.tsv
+    tables/final_annotation_label_counts.tsv
+    tables/lineage_subcluster_evidence.tsv.gz
+    tables/source_disagreement_summary.tsv
+    tables/subcluster_candidate_scores.tsv
+    tables/lineage_panel_status.tsv
+    tables/<study_id>_<lineage>_true_subcluster_umap.tsv.gz
+    tables/<study_id>_<lineage>_subcluster_candidate_scores.tsv
 ```
 
 For Team04, the expected dataset directories are:
@@ -45,15 +51,15 @@ Before commit or push, all of these must pass:
 - Each expected dataset directory exists under `reports/current/`.
 - Each dataset has both `report_en.md` and `report_ja.md`.
 - Each dataset report contains inline image links.
-- Each dataset has at least 14 PNG images under `assets/`.
+- Each dataset has at least 23 PNG images under `assets/`.
 - Every Markdown inline image link resolves to an existing file.
 - Reports include dataset-specific assessment text.
 - Reports include source-label or annotation-source sections.
 - Reports include marker-expression sections.
-- Reports include lineage/subcluster sections.
+- Reports include true lineage-specific subcluster sections.
 - Reports include `Subcluster Marker Score Review`.
-- Each dataset has B/T-NK/Myeloid subcluster marker score heatmaps and marker dotplots.
-- Each dataset has B/T-NK/Myeloid subcluster marker score tables.
+- Each generated B/T-NK/Myeloid lineage panel has true subcluster label UMAPs, QC UMAPs, marker-score UMAPs, marker-expression UMAPs, marker-score heatmaps, and marker dotplots. Lineages with fewer than 50 assigned cells must be explicitly marked `skipped_lt50` in `lineage_panel_status.tsv` and must not emit broken image links.
+- Each dataset has B/T-NK/Myeloid true subcluster UMAP coordinate tables and candidate-score tables.
 - Reports include compact evidence tables.
 - Old internal version strings must not appear in public current reports: `v13`, `v14`, `v15`, `260526`, `260602_annotation_single`, `marker-gate-applied`, `final_v14`.
 
@@ -75,8 +81,8 @@ After the validation command passes, open at least one dataset report and confir
 reports/current/infection_study_01/report_ja.md
 ```
 
-Confirm that `Inline Figures` shows UMAP and marker-expression panels, and that `Subcluster Marker Score Review` shows lineage-specific score heatmaps and dotplots, not only tables.
+Confirm that `Inline Figures` shows global UMAPs, marker-expression panels, and true lineage-specific subcluster UMAPs. Confirm that `Subcluster Marker Score Review` shows lineage-specific marker-score UMAPs, marker-expression UMAPs, score heatmaps, and dotplots, not only tables.
 
 ## Release Rule
 
-Do not replace `reports/current/` with a post-hoc summary-only bundle. If reports are regenerated from current H5AD outputs, regenerate or copy the dataset-level figure assets, subcluster marker score plots, and subcluster marker score tables at the same time and rerun the validator.
+Do not replace `reports/current/` with a post-hoc summary-only bundle or hand-patched report bundle. If report content is insufficient, update the deterministic pipeline/templates/validator, rerun each dataset cleanly, package with `scripts/package_clean_reports.py`, and rerun the validator.

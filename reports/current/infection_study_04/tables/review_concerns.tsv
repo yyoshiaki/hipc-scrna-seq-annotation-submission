@@ -1,0 +1,7 @@
+study	concern	n_cells
+infection_study_04	High source disagreement for Blood Cell	906
+infection_study_04	High source disagreement for Doublet	132
+infection_study_04	High source disagreement for Memory B Cell	884
+infection_study_04	High source disagreement for T Cell	401
+infection_study_04	warning marker availability for Plasma_ASC	3137
+infection_study_04	Large Blood Cell/ambiguous residual remains	1549

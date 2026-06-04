@@ -1,0 +1,7 @@
+study	marker_set	official_labels_relevant_to_set	n_genes_expected	n_genes_present	present_fraction	alert_level	missing_critical_markers	present_genes	missing_genes
+infection_study_04	CD4_naive_tcm	CD4 Naive / T Central Memory	9	9	1.0	pass		CD3D;CD3E;CD4;IL7R;CCR7;SELL;TCF7;LEF1;LTB	
+infection_study_04	CD4_effector_memory	CD4 T Effector Memory	8	8	1.0	pass		GZMK;CCL5;NKG7;GNLY;PRF1;GZMB;CXCR3;KLRB1	
+infection_study_04	Treg	Treg	7	7	1.0	pass		FOXP3;IL2RA;CTLA4;IKZF2;TIGIT;TNFRSF18;CCR8	
+infection_study_04	B_naive	Naive B Cell	8	8	1.0	pass		MS4A1;CD79A;CD79B;TCL1A;IGHD;IGHM;FCER2;IL4R	
+infection_study_04	B_memory_ABC	Memory B Cell	8	8	1.0	pass		CD27;TNFRSF13B;FCRL5;ITGAX;TBX21;AIM2;BANK1;CD86	
+infection_study_04	Plasma_ASC	Plasma Cell;Plasmablast	9	8	0.8888888888888888	warning	JCHAIN	MZB1;XBP1;SDC1;PRDM1;IRF4;TNFRSF17;IGHG1;IGHA1	JCHAIN

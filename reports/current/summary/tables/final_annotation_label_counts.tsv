@@ -1,102 +1,82 @@
 study	predicted_cell_type	n_cells
-infection_study_01	Classical Monocyte	16771
-infection_study_01	CD8 Cytotoxic / T Effector Memory	9299
-infection_study_01	NK Cell	7851
-infection_study_01	Naive B Cell	4157
-infection_study_01	T Cell	3672
-infection_study_01	CD4 Naive / T Central Memory	2779
-infection_study_01	Memory B Cell	2165
-infection_study_01	Non-Classical Monocyte	2122
-infection_study_01	Platelet	1391
+infection_study_01	Classical Monocyte	17100
+infection_study_01	NK Cell	9487
+infection_study_01	CD8 Cytotoxic / T Effector Memory	8774
+infection_study_01	Naive B Cell	4235
+infection_study_01	CD4 T Effector Memory	4124
+infection_study_01	Non-Classical Monocyte	2154
+infection_study_01	Memory B Cell	2114
+infection_study_01	CD4 Naive / T Central Memory	1876
+infection_study_01	Platelet	1336
 infection_study_01	Doublet	1278
-infection_study_01	CD4 T Effector Memory	1159
-infection_study_01	Blood Cell	679
-infection_study_01	Myeloid Cell	447
-infection_study_01	Conventional DC 2	423
-infection_study_01	MAIT Cell	253
-infection_study_01	RBC	201
-infection_study_01	Plasma Cell	127
-infection_study_01	Plasmacytoid DC	82
-infection_study_01	HSC	36
-infection_study_01	B Cell	29
-infection_study_01	Plasmablast	2
-infection_study_01	Treg	1
-infection_study_04	Classical Monocyte	10292
-infection_study_04	CD4 Naive / T Central Memory	7960
-infection_study_04	NK Cell	6813
-infection_study_04	CD8 Cytotoxic / T Effector Memory	5780
-infection_study_04	Blood Cell	2597
-infection_study_04	Plasma Cell	2323
-infection_study_04	Naive B Cell	1540
-infection_study_04	Memory B Cell	1366
-infection_study_04	Non-Classical Monocyte	1240
-infection_study_04	Plasmablast	571
-infection_study_04	Conventional DC 2	547
-infection_study_04	MAIT Cell	481
-infection_study_04	T Cell	458
-infection_study_04	B Cell	450
-infection_study_04	RBC	422
-infection_study_04	Platelet	283
-infection_study_04	Plasmacytoid DC	224
-infection_study_04	HSC	214
+infection_study_01	MAIT Cell	976
+infection_study_01	Conventional DC 2	442
+infection_study_01	CD8 Naive / T Central Memory	364
+infection_study_01	Blood Cell	326
+infection_study_01	Plasma Cell	183
+infection_study_01	Plasmacytoid DC	107
+infection_study_01	Conventional DC 1	34
+infection_study_01	HSC	13
+infection_study_01	RBC	1
+infection_study_04	Classical Monocyte	10485
+infection_study_04	CD4 Naive / T Central Memory	7845
+infection_study_04	NK Cell	7363
+infection_study_04	CD8 Cytotoxic / T Effector Memory	6418
+infection_study_04	Plasma Cell	3137
+infection_study_04	Naive B Cell	1795
+infection_study_04	Blood Cell	1549
+infection_study_04	Memory B Cell	1468
+infection_study_04	Non-Classical Monocyte	1400
+infection_study_04	Treg	488
+infection_study_04	Conventional DC 2	415
+infection_study_04	T Cell	401
+infection_study_04	MAIT Cell	318
+infection_study_04	Plasmacytoid DC	229
+infection_study_04	Platelet	201
 infection_study_04	Doublet	132
-infection_study_04	CD4 T Effector Memory	53
-infection_study_04	Myeloid Cell	11
-infection_study_04	Neutrophil	8
-infection_study_04	Treg	2
-vaccination_study_04	Classical Monocyte	32748
-vaccination_study_04	Non-Classical Monocyte	15624
-vaccination_study_04	Conventional DC 2	7770
-vaccination_study_04	Plasmacytoid DC	5615
-vaccination_study_04	Conventional DC 1	1099
-vaccination_study_04	Myeloid Cell	984
-vaccination_study_04	HSC	884
+infection_study_04	HSC	123
+vaccination_study_04	Classical Monocyte	34238
+vaccination_study_04	Non-Classical Monocyte	15552
+vaccination_study_04	Conventional DC 2	7705
+vaccination_study_04	Plasmacytoid DC	5505
+vaccination_study_04	Conventional DC 1	1110
 vaccination_study_04	Doublet	647
-vaccination_study_04	Blood Cell	302
-vaccination_study_04	NK Cell	210
-vaccination_study_04	Plasma Cell	82
-vaccination_study_04	Platelet	26
-vaccination_study_04	CD4 Naive / T Central Memory	26
-vaccination_study_04	T Cell	23
-vaccination_study_04	B Cell	12
-vaccination_study_04	Plasmablast	10
-vaccination_study_04	MAIT Cell	3
-vaccination_study_06	CD4 Naive / T Central Memory	25096
-vaccination_study_06	NK Cell	8728
-vaccination_study_06	CD8 Cytotoxic / T Effector Memory	7885
-vaccination_study_06	Blood Cell	4957
-vaccination_study_06	T Cell	2959
-vaccination_study_06	Memory B Cell	2772
+vaccination_study_04	Blood Cell	575
+vaccination_study_04	HSC	337
+vaccination_study_04	NK Cell	252
+vaccination_study_04	Plasma Cell	100
+vaccination_study_04	CD4 Naive / T Central Memory	28
+vaccination_study_04	Naive B Cell	6
+vaccination_study_04	Platelet	6
+vaccination_study_04	Treg	2
+vaccination_study_04	Memory B Cell	2
+vaccination_study_06	CD4 Naive / T Central Memory	28867
+vaccination_study_06	NK Cell	10087
+vaccination_study_06	CD8 Cytotoxic / T Effector Memory	9129
+vaccination_study_06	Memory B Cell	3619
 vaccination_study_06	Doublet	1502
-vaccination_study_06	MAIT Cell	1339
-vaccination_study_06	CD8 Naive / T Central Memory	869
-vaccination_study_06	Naive B Cell	791
-vaccination_study_06	CD4 T Effector Memory	445
-vaccination_study_06	B Cell	29
-vaccination_study_06	Plasmacytoid DC	18
-vaccination_study_06	Intermediate Monocyte	13
-vaccination_study_06	Plasma Cell	6
-vaccination_study_06	Myeloid Cell	4
-vaccination_study_06	Neutrophil	3
-vaccination_study_06	Classical Monocyte	2
-vaccination_study_06	Plasmablast	1
-vaccination_study_09	CD4 Naive / T Central Memory	53666
-vaccination_study_09	Classical Monocyte	18932
-vaccination_study_09	CD8 Cytotoxic / T Effector Memory	10915
-vaccination_study_09	Naive B Cell	10783
-vaccination_study_09	Blood Cell	9998
-vaccination_study_09	CD8 Naive / T Central Memory	9693
-vaccination_study_09	NK Cell	9004
-vaccination_study_09	Non-Classical Monocyte	4238
-vaccination_study_09	Memory B Cell	3849
-vaccination_study_09	MAIT Cell	3420
-vaccination_study_09	Conventional DC 2	1496
-vaccination_study_09	Treg	1195
-vaccination_study_09	CD4 T Effector Memory	865
-vaccination_study_09	Plasmacytoid DC	793
+vaccination_study_06	MAIT Cell	1404
+vaccination_study_06	Blood Cell	992
+vaccination_study_06	CD8 Naive / T Central Memory	872
+vaccination_study_06	T Cell	566
+vaccination_study_06	Naive B Cell	201
+vaccination_study_06	Plasma Cell	180
+vaccination_study_09	CD4 Naive / T Central Memory	46629
+vaccination_study_09	Classical Monocyte	24881
+vaccination_study_09	NK Cell	18502
+vaccination_study_09	CD8 Naive / T Central Memory	11312
+vaccination_study_09	Naive B Cell	11096
+vaccination_study_09	CD8 Cytotoxic / T Effector Memory	7531
+vaccination_study_09	Memory B Cell	4201
+vaccination_study_09	Non-Classical Monocyte	3947
+vaccination_study_09	MAIT Cell	3840
+vaccination_study_09	Treg	2459
+vaccination_study_09	Blood Cell	1708
+vaccination_study_09	Conventional DC 2	1645
+vaccination_study_09	Plasmacytoid DC	802
+vaccination_study_09	Plasma Cell	645
 vaccination_study_09	Doublet	579
-vaccination_study_09	Plasma Cell	159
-vaccination_study_09	Platelet	148
-vaccination_study_09	HSC	143
-vaccination_study_09	RBC	83
-vaccination_study_09	T Cell	1
+vaccination_study_09	Platelet	86
+vaccination_study_09	Conventional DC 1	51
+vaccination_study_09	HSC	45
+vaccination_study_09	RBC	1

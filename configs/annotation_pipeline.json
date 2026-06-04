@@ -1,6 +1,6 @@
 {
-  "version": "hipc_annotation_master",
-  "output_root": "outputs/final_annotations/hipc_annotation_master",
+  "version": "hipc_annotation_clean_v16",
+  "output_root": "outputs/final_annotations/hipc_annotation_clean_v16",
   "report": {
     "default_language": "en",
     "development_languages": ["ja"],
