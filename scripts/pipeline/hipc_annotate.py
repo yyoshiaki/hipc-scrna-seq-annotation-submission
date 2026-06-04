@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scanpy as sc
+import yaml
 from scipy import sparse
 
 
@@ -76,6 +77,14 @@ def cluster_marker_metrics(expr_frame, background_positive, genes, key_genes):
     }
 
 
+def marker_positive_fraction(expr_frame, genes):
+    available = [gene for gene in genes if gene in expr_frame.columns]
+    if not available:
+        return 0.0, 0.0, []
+    positive = expr_frame[available].gt(0)
+    return float(positive.any(axis=1).mean()), float(positive.mean(axis=0).mean()), available
+
+
 def fill_obs_alias(obs, canonical, aliases, default):
     if canonical in obs.columns:
         return
@@ -113,8 +122,17 @@ def load_screfmapping_evidence(study, index):
     evidence["screfmapping_clusterL2"] = "not_available"
     evidence["screfmapping_clusterL2_prob"] = 0.0
     evidence["screfmapping_official_label"] = "not_available"
+    result_roots = [output_root / "screfmapping_results", output_root / "screfmap_results"]
+    result_roots.extend([project_path(path) for path in config.get("screfmapping", {}).get("fallback_result_roots", [])])
     for query_type in ["B", "CD4T"]:
-        result_path = output_root / "screfmapping_results" / study / query_type / f"{study}_{query_type}_Reference_Mapping.csv"
+        result_path = None
+        for result_root in result_roots:
+            candidate_path = result_root / study / query_type / f"{study}_{query_type}_Reference_Mapping.csv"
+            if candidate_path.exists():
+                result_path = candidate_path
+                break
+        if result_path is None:
+            continue
         if not result_path.exists():
             continue
         result = pd.read_csv(result_path)
@@ -162,6 +180,8 @@ args = parser.parse_args()
 
 project_root = Path.cwd()
 config = json.loads(project_path(args.config).read_text())
+marker_registry = yaml.safe_load(project_path(config["marker_registry"]["path"]).read_text())
+marker_registry_labels = marker_registry.get("labels", {})
 manifest = pd.read_csv(project_path(args.manifest), sep="\t").fillna("")
 version = config["version"]
 report_updated = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d EDT")
@@ -190,7 +210,7 @@ sc.settings.set_figure_params(dpi=120, frameon=False)
 plt.rcParams["pdf.fonttype"] = 42
 plt.rcParams["ps.fonttype"] = 42
 
-ref_cols = ["celltypist_v3_label", "panhuman_fine_v3_label", "cluster_consensus_v3_label", "top_marker_v3_label"]
+ref_cols = ["celltypist_v3_label", "panhuman_fine_v3_label", "cluster_consensus_v3_label"]
 raw_cols = ["majority_voting_Immune_All_Low", "panhuman_azimuth_fine"]
 
 b_labels = {"B Cell", "Naive B Cell", "Memory B Cell", "Plasma Cell", "Plasmablast"}
@@ -327,6 +347,7 @@ source_disagreement_rows = []
 subcluster_candidate_score_rows = []
 subcluster_umap_rows = []
 lineage_panel_status_rows = []
+marker_feedback_rows = []
 
 evidence_aliases = {
     "celltypist_v3_label": ["celltypist_label", "majority_voting", "majority_voting_Immune_All_Low"],
@@ -385,7 +406,11 @@ for input_row in manifest.itertuples(index=False):
             adata.obs[column] = "not_available"
 
     required_scref_cols = ["screfmapping_query_type", "screfmapping_clusterL1", "screfmapping_clusterL1_prob", "screfmapping_clusterL2", "screfmapping_clusterL2_prob", "screfmapping_official_label"]
-    if "screfmapping_official_label" not in obs.columns:
+    has_usable_screfmapping = (
+        "screfmapping_official_label" in obs.columns
+        and obs["screfmapping_official_label"].astype(str).ne("not_available").any()
+    )
+    if not has_usable_screfmapping:
         screfmapping = load_screfmapping_evidence(study, obs.index)
         for column in screfmapping.columns:
             obs[column] = screfmapping[column].values
@@ -458,6 +483,10 @@ for input_row in manifest.itertuples(index=False):
     annotation_label = pd.Series("Blood Cell", index=obs.index, dtype="object")
     annotation_conf = pd.Series(0.45, index=obs.index, dtype="float64")
     annotation_reason = pd.Series("ambiguous_default_blood_cell", index=obs.index, dtype="object")
+    global_subcluster_label = pd.Series("not_in_lineage", index=obs.index, dtype="object")
+    global_subcluster_reason = pd.Series("not_in_lineage", index=obs.index, dtype="object")
+    global_subcluster_id = pd.Series("not_in_lineage", index=obs.index, dtype="object")
+    global_cluster_marker_assignment = pd.Series("not_available", index=obs.index, dtype="object")
 
     for direct_label in sorted(other_direct_labels):
         direct_votes = pd.Series(0, index=obs.index, dtype="int64")
@@ -529,10 +558,15 @@ for input_row in manifest.itertuples(index=False):
 
         lineage_marker_genes = []
         for candidate, score_col in lineage_config["candidate_scores"].items():
+            registry_spec = marker_registry_labels.get(candidate, {})
             marker_set = label_to_marker_set.get(candidate, "")
             lineage_marker_genes.extend(score_gene_sets.get(score_col.replace("_pct", ""), []))
             lineage_marker_genes.extend(marker_set_gene_lookup.get(marker_set, []))
             lineage_marker_genes.extend(marker_set_key_gene_lookup.get(marker_set, []))
+            lineage_marker_genes.extend(registry_spec.get("positive", []))
+            lineage_marker_genes.extend(registry_spec.get("key", []))
+            lineage_marker_genes.extend(registry_spec.get("negative", []))
+            lineage_marker_genes.extend(registry_spec.get("confound", []))
         lineage_marker_genes = [gene for gene in dict.fromkeys(lineage_marker_genes) if gene in adata.var_names]
         lineage_expr = pd.DataFrame(index=sub.obs_names)
         lineage_positive = pd.DataFrame(index=sub.obs_names)
@@ -559,11 +593,34 @@ for input_row in manifest.itertuples(index=False):
                 raw_frac = raw_fraction(cluster_frame, raw_cols, lineage_config["raw_bonus"][candidate])
                 marker_pct = float(pd.to_numeric(cluster_frame[score_col], errors="coerce").median())
                 scref_frac = source_fraction(cluster_frame, ["screfmapping_official_label"], candidate)
+                registry_spec = marker_registry_labels.get(candidate, {})
                 marker_set = label_to_marker_set.get(candidate, "")
-                marker_genes = list(score_gene_sets.get(score_col.replace("_pct", ""), []))
-                marker_genes.extend(marker_set_gene_lookup.get(marker_set, []))
-                key_genes = marker_set_key_gene_lookup.get(marker_set, [])
+                registry_positive = list(registry_spec.get("positive", []))
+                registry_key = list(registry_spec.get("key", []))
+                if registry_positive:
+                    marker_genes = list(dict.fromkeys(registry_positive))
+                else:
+                    marker_genes = list(score_gene_sets.get(score_col.replace("_pct", ""), []))
+                    marker_genes.extend(marker_set_gene_lookup.get(marker_set, []))
+                    marker_genes = list(dict.fromkeys(marker_genes))
+                if registry_key:
+                    key_genes = list(dict.fromkeys(registry_key))
+                else:
+                    key_genes = list(dict.fromkeys(marker_set_key_gene_lookup.get(marker_set, [])))
+                negative_genes = list(dict.fromkeys(registry_spec.get("negative", [])))
+                confound_genes = [gene for gene in dict.fromkeys(registry_spec.get("confound", [])) if gene not in set(marker_genes)]
+                available_key_genes = [gene for gene in key_genes if gene in cluster_expr.columns]
                 marker_metrics = cluster_marker_metrics(cluster_expr, lineage_positive, marker_genes, key_genes)
+                negative_any_fraction, negative_mean_positive_fraction, available_negative_genes = marker_positive_fraction(cluster_expr, negative_genes)
+                confound_any_fraction, confound_mean_positive_fraction, available_confound_genes = marker_positive_fraction(cluster_expr, confound_genes)
+                negative_marker_penalty = min(
+                    0.50,
+                    (0.38 * negative_any_fraction) + (0.22 * negative_mean_positive_fraction),
+                )
+                confound_marker_penalty = min(
+                    0.45,
+                    (0.30 * confound_any_fraction) + (0.15 * confound_mean_positive_fraction),
+                )
                 key_marker_bonus = 0.0
                 if candidate == "Treg":
                     foxp3_fraction = float(cluster_expr["FOXP3"].gt(0).mean()) if "FOXP3" in cluster_expr.columns else 0.0
@@ -579,8 +636,28 @@ for input_row in manifest.itertuples(index=False):
                     elif marker_metrics["key_marker_any_fraction"] >= 0.18 and has_foxp3_support and ref_frac >= 0.20:
                         key_marker_bonus = 0.35
                 marker_decision_score = max(marker_pct, marker_metrics["key_marker_any_fraction"], marker_metrics["marker_mean_positive_fraction"])
-                marker_gate_score = min(1.0, marker_decision_score + key_marker_bonus)
-                total_score = (1.6 * ref_frac) + raw_frac + marker_decision_score + (1.2 * scref_frac) + key_marker_bonus
+                if available_key_genes:
+                    enrichment_bonus = min(0.25, max(0.0, (marker_metrics["key_marker_enrichment"] - 1.0) / 4.0))
+                    marker_base_score = min(
+                        1.0,
+                        max(
+                            marker_metrics["key_marker_any_fraction"],
+                            marker_metrics["key_marker_max_fraction"],
+                            2.0 * marker_metrics["key_marker_two_fraction"],
+                        )
+                        + enrichment_bonus
+                        + key_marker_bonus,
+                    )
+                else:
+                    marker_base_score = min(
+                        1.0,
+                        (0.65 * marker_metrics["marker_mean_positive_fraction"])
+                        + (0.35 * marker_metrics["marker_any_fraction"]),
+                    )
+                marker_penalty = min(0.60, negative_marker_penalty + confound_marker_penalty)
+                marker_discriminative_score = max(0.0, marker_base_score - marker_penalty)
+                marker_gate_score = marker_discriminative_score
+                total_score = (1.6 * ref_frac) + raw_frac + marker_discriminative_score + (1.2 * scref_frac)
                 candidate_rows.append(
                     {
                         "candidate": candidate,
@@ -588,8 +665,19 @@ for input_row in manifest.itertuples(index=False):
                         "raw_fraction": raw_frac,
                         "marker_pct": marker_pct,
                         "marker_decision_score": marker_decision_score,
+                        "marker_base_score": marker_base_score,
+                        "negative_marker_penalty": negative_marker_penalty,
+                        "confound_marker_penalty": confound_marker_penalty,
+                        "marker_penalty": marker_penalty,
+                        "marker_discriminative_score": marker_discriminative_score,
                         "marker_gate_score": marker_gate_score,
                         "key_marker_bonus": key_marker_bonus,
+                        "negative_marker_any_fraction": negative_any_fraction,
+                        "negative_marker_mean_positive_fraction": negative_mean_positive_fraction,
+                        "confound_marker_any_fraction": confound_any_fraction,
+                        "confound_marker_mean_positive_fraction": confound_mean_positive_fraction,
+                        "available_negative_markers": ";".join(available_negative_genes),
+                        "available_confound_markers": ";".join(available_confound_genes),
                         "screfmapping_fraction": scref_frac,
                         "total_score": total_score,
                         **marker_metrics,
@@ -612,6 +700,11 @@ for input_row in manifest.itertuples(index=False):
                     "n_cells": int(cluster_mask.sum()),
                     "marker_pct": float(candidate_row.marker_pct),
                     "marker_decision_score": float(candidate_row.marker_decision_score),
+                    "marker_base_score": float(candidate_row.marker_base_score),
+                    "negative_marker_penalty": float(candidate_row.negative_marker_penalty),
+                    "confound_marker_penalty": float(candidate_row.confound_marker_penalty),
+                    "marker_penalty": float(candidate_row.marker_penalty),
+                    "marker_discriminative_score": float(candidate_row.marker_discriminative_score),
                     "marker_gate_score": float(candidate_row.marker_gate_score),
                     "key_marker_bonus": float(candidate_row.key_marker_bonus),
                     "marker_any_fraction": float(candidate_row.marker_any_fraction),
@@ -620,6 +713,12 @@ for input_row in manifest.itertuples(index=False):
                     "key_marker_two_fraction": float(candidate_row.key_marker_two_fraction),
                     "key_marker_max_fraction": float(candidate_row.key_marker_max_fraction),
                     "key_marker_enrichment": float(candidate_row.key_marker_enrichment),
+                    "negative_marker_any_fraction": float(candidate_row.negative_marker_any_fraction),
+                    "negative_marker_mean_positive_fraction": float(candidate_row.negative_marker_mean_positive_fraction),
+                    "confound_marker_any_fraction": float(candidate_row.confound_marker_any_fraction),
+                    "confound_marker_mean_positive_fraction": float(candidate_row.confound_marker_mean_positive_fraction),
+                    "available_negative_markers": candidate_row.available_negative_markers,
+                    "available_confound_markers": candidate_row.available_confound_markers,
                     "ref_fraction": float(candidate_row.ref_fraction),
                     "raw_fraction": float(candidate_row.raw_fraction),
                     "screfmapping_fraction": float(candidate_row.screfmapping_fraction),
@@ -631,14 +730,14 @@ for input_row in manifest.itertuples(index=False):
             accepted = (float(best["total_score"]) >= 1.05) and (
                 (float(best["ref_fraction"]) >= 0.25)
                 or (float(best["raw_fraction"]) >= 0.35)
-                or (float(best["marker_decision_score"]) >= 0.72)
+                or (float(best["marker_discriminative_score"]) >= 0.72)
                 or (float(best["screfmapping_fraction"]) >= 0.35)
                 or (float(best["key_marker_bonus"]) >= 0.70)
             )
             if lineage_name == "B_lineage" and best["candidate"] == "Plasma Cell":
-                accepted = accepted and ((float(best["marker_decision_score"]) >= 0.65) or (float(best["ref_fraction"]) >= 0.40))
+                accepted = accepted and ((float(best["marker_discriminative_score"]) >= 0.65) or (float(best["ref_fraction"]) >= 0.40))
             if lineage_name == "T_NK_lineage" and best["candidate"] == "NK Cell":
-                accepted = accepted and ((float(best["marker_decision_score"]) >= 0.65) or (float(best["ref_fraction"]) >= 0.35))
+                accepted = accepted and ((float(best["marker_discriminative_score"]) >= 0.65) or (float(best["ref_fraction"]) >= 0.35))
             if lineage_name == "T_NK_lineage" and best["candidate"] == "Treg":
                 accepted = accepted and (
                     (float(best["key_marker_bonus"]) >= 0.70)
@@ -648,7 +747,7 @@ for input_row in manifest.itertuples(index=False):
                     )
                 )
             if lineage_name == "Myeloid_lineage" and best["candidate"] in {"Plasmacytoid DC", "Conventional DC 1", "Conventional DC 2"}:
-                accepted = accepted and ((float(best["marker_decision_score"]) >= 0.60) or (float(best["ref_fraction"]) >= 0.35))
+                accepted = accepted and ((float(best["marker_discriminative_score"]) >= 0.60) or (float(best["ref_fraction"]) >= 0.35))
 
             marker_set = label_to_marker_set.get(str(best["candidate"]), "not_applicable")
             marker_alert = study_marker_alert.get(marker_set, "pass")
@@ -656,7 +755,7 @@ for input_row in manifest.itertuples(index=False):
                 float(best["screfmapping_fraction"]) >= 0.35
                 and float(best["ref_fraction"]) < 0.25
                 and float(best["raw_fraction"]) < 0.35
-                and float(best["marker_decision_score"]) < 0.72
+                and float(best["marker_discriminative_score"]) < 0.72
             )
             if marker_alert == "critical" and single_scref_rescue:
                 accepted = False
@@ -666,12 +765,12 @@ for input_row in manifest.itertuples(index=False):
             chosen_label = str(best["candidate"]) if accepted else lineage_config["parent"]
             cluster_to_label[cluster_id] = chosen_label
             cluster_to_marker_label[cluster_id] = str(marker_best["candidate"])
-            purity = max(float(best["ref_fraction"]), float(best["raw_fraction"]), float(best["marker_decision_score"]))
+            purity = max(float(best["ref_fraction"]), float(best["raw_fraction"]), float(best["marker_discriminative_score"]))
             margin = float(best["total_score"]) - second_score
             support_terms = [
                 min(float(best["ref_fraction"]) / 0.60, 1.0),
                 min(float(best["raw_fraction"]) / 0.60, 1.0),
-                min(float(best["marker_decision_score"]) / 0.85, 1.0),
+                min(float(best["marker_discriminative_score"]) / 0.85, 1.0),
                 min(max(margin, 0.0) / 0.75, 1.0),
             ]
             if cluster_frame["screfmapping_official_label"].astype(str).ne("not_available").any():
@@ -719,17 +818,63 @@ for input_row in manifest.itertuples(index=False):
                 row[f"{item['candidate']}_raw_fraction"] = item["raw_fraction"]
                 row[f"{item['candidate']}_marker_pct"] = item["marker_pct"]
                 row[f"{item['candidate']}_marker_decision_score"] = item["marker_decision_score"]
+                row[f"{item['candidate']}_marker_base_score"] = item["marker_base_score"]
+                row[f"{item['candidate']}_negative_marker_penalty"] = item["negative_marker_penalty"]
+                row[f"{item['candidate']}_confound_marker_penalty"] = item["confound_marker_penalty"]
+                row[f"{item['candidate']}_marker_penalty"] = item["marker_penalty"]
+                row[f"{item['candidate']}_marker_discriminative_score"] = item["marker_discriminative_score"]
                 row[f"{item['candidate']}_marker_gate_score"] = item["marker_gate_score"]
                 row[f"{item['candidate']}_key_marker_bonus"] = item["key_marker_bonus"]
                 row[f"{item['candidate']}_key_marker_any_fraction"] = item["key_marker_any_fraction"]
                 row[f"{item['candidate']}_key_marker_two_fraction"] = item["key_marker_two_fraction"]
                 row[f"{item['candidate']}_key_marker_max_fraction"] = item["key_marker_max_fraction"]
+                row[f"{item['candidate']}_negative_marker_any_fraction"] = item["negative_marker_any_fraction"]
+                row[f"{item['candidate']}_confound_marker_any_fraction"] = item["confound_marker_any_fraction"]
                 row[f"{item['candidate']}_screfmapping_fraction"] = item["screfmapping_fraction"]
             subcluster_rows.append(row)
+            marker_final_disagreement = str(cluster_to_marker_label[cluster_id]) != str(chosen_label)
+            marker_weak = float(marker_best["marker_gate_score"]) < 0.35
+            scref_missing_for_scope = (
+                lineage_name in {"B_lineage", "T_NK_lineage"}
+                and cluster_frame["screfmapping_official_label"].astype(str).eq("not_available").mean() > 0.80
+            )
+            if marker_final_disagreement or marker_weak or scref_missing_for_scope:
+                flags = []
+                if marker_final_disagreement:
+                    flags.append("marker_final_disagreement")
+                if marker_weak:
+                    flags.append("weak_marker_specificity")
+                if scref_missing_for_scope:
+                    flags.append("screfmapping_missing_for_scope")
+                marker_feedback_rows.append(
+                    {
+                        "study": study,
+                        "lineage": lineage_name,
+                        "cluster": cluster_id,
+                        "n_cells": int(cluster_mask.sum()),
+                        "chosen_label": chosen_label,
+                        "cluster_marker_gene_assignment": cluster_to_marker_label[cluster_id],
+                        "marker_assignment_score": float(marker_best["marker_gate_score"]),
+                        "marker_assignment_base_score": float(marker_best["marker_base_score"]),
+                        "marker_assignment_penalty": float(marker_best["marker_penalty"]),
+                        "negative_marker_penalty": float(marker_best["negative_marker_penalty"]),
+                        "confound_marker_penalty": float(marker_best["confound_marker_penalty"]),
+                        "best_total_score": float(best["total_score"]),
+                        "score_margin": margin,
+                        "top_celltypist": row["top_celltypist"],
+                        "top_panhuman_fine": row["top_panhuman_fine"],
+                        "top_screfmapping": row["top_screfmapping"],
+                        "feedback_flags": ";".join(flags),
+                    }
+                )
 
         sub.obs["subcluster_label"] = sub.obs[chosen_key].astype(str).map(cluster_to_label).astype(str)
         sub.obs["cluster_marker_gene_assignment"] = sub.obs[chosen_key].astype(str).map(cluster_to_marker_label).astype(str)
         sub.obs["subcluster_reason"] = sub.obs[chosen_key].astype(str).map(cluster_to_reason).astype(str)
+        global_subcluster_label.loc[sub.obs_names] = sub.obs["subcluster_label"].astype(str).values
+        global_subcluster_reason.loc[sub.obs_names] = sub.obs["subcluster_reason"].astype(str).values
+        global_subcluster_id.loc[sub.obs_names] = sub.obs[chosen_key].astype(str).map(lambda x: f"{lineage_name}:{x}").values
+        global_cluster_marker_assignment.loc[sub.obs_names] = sub.obs["cluster_marker_gene_assignment"].astype(str).values
         cluster_marker_score_cols = []
         for candidate, cluster_scores in cluster_to_candidate_marker_scores.items():
             safe_candidate = re.sub(r"[^A-Za-z0-9]+", "_", candidate).strip("_").lower()
@@ -813,7 +958,6 @@ for input_row in manifest.itertuples(index=False):
                 "panhuman_azimuth_fine",
                 "cluster_consensus_v3_label",
                 "cluster_marker_gene_assignment",
-                "top_marker_v3_label",
                 "screfmapping_official_label",
                 "subcluster_label",
             ]
@@ -949,6 +1093,10 @@ for input_row in manifest.itertuples(index=False):
     adata.obs["confidence_score"] = annotation_conf.round(4).values
     adata.obs["parent_lineage"] = lineage.astype(str).values
     adata.obs["annotation_reason"] = annotation_reason.astype(str).values
+    adata.obs["local_subcluster_id"] = global_subcluster_id.astype(str).values
+    adata.obs["local_subcluster_label"] = global_subcluster_label.astype(str).values
+    adata.obs["local_subcluster_reason"] = global_subcluster_reason.astype(str).values
+    adata.obs["cluster_marker_gene_assignment"] = global_cluster_marker_assignment.astype(str).values
     adata.obs["annotation_logic_version"] = version
     adata.obs["marker_availability_alert_for_label"] = final_marker_alert.astype(str).values
     adata.obs["source_agreement_n"] = source_agreement_n.values
@@ -962,6 +1110,10 @@ for input_row in manifest.itertuples(index=False):
         "confidence_score",
         "parent_lineage",
         "annotation_reason",
+        "local_subcluster_id",
+        "local_subcluster_label",
+        "local_subcluster_reason",
+        "cluster_marker_gene_assignment",
         "marker_availability_alert_for_label",
         "source_agreement_n",
         "source_informative_n",
@@ -1124,11 +1276,13 @@ subcluster_df = pd.DataFrame(subcluster_rows)
 validation_df = pd.DataFrame(validation_rows)
 concern_df = pd.DataFrame(concern_rows)
 source_disagreement_df = pd.DataFrame(source_disagreement_rows)
+marker_feedback_df = pd.DataFrame(marker_feedback_rows)
 marker_availability_df = pd.DataFrame(marker_availability_rows)
 marker_alert_df = marker_availability_df[marker_availability_df["alert_level"].isin(["critical", "warning"])].copy()
 marker_availability_df.to_csv(tables_dir / "marker_gene_availability.tsv", sep="\t", index=False)
 marker_alert_df.to_csv(tables_dir / "marker_gene_availability_alerts.tsv", sep="\t", index=False)
 pd.DataFrame(subcluster_candidate_score_rows).to_csv(tables_dir / "subcluster_candidate_scores.tsv", sep="\t", index=False)
+marker_feedback_df.to_csv(tables_dir / "marker_assignment_feedback.tsv", sep="\t", index=False)
 pd.DataFrame(subcluster_umap_rows).to_csv(tables_dir / "true_subcluster_umap_summary.tsv", sep="\t", index=False)
 lineage_panel_status_df = pd.DataFrame(lineage_panel_status_rows)
 lineage_panel_status_df.to_csv(tables_dir / "lineage_panel_status.tsv", sep="\t", index=False)
@@ -1213,6 +1367,24 @@ if not source_disagreement_df.empty:
                 "median_source_agreement": f"{row.median_source_agreement_fraction:.3f}",
                 "disagreement_cells": f"{row.source_disagreement_flag_n:,}",
                 "disagreement_fraction": f"{row.source_disagreement_flag_fraction:.3f}",
+            }
+        )
+
+marker_feedback_rows_for_report = []
+if not marker_feedback_df.empty:
+    for row in marker_feedback_df.sort_values(["n_cells", "marker_assignment_score"], ascending=[False, True]).head(20).itertuples(index=False):
+        marker_feedback_rows_for_report.append(
+            {
+                "study": row.study,
+                "lineage": row.lineage,
+                "cluster": row.cluster,
+                "cells": f"{row.n_cells:,}",
+                "chosen_label": row.chosen_label,
+                "marker_assignment": row.cluster_marker_gene_assignment,
+                "marker_score": f"{row.marker_assignment_score:.3f}",
+                "base_score": f"{row.marker_assignment_base_score:.3f}",
+                "penalty": f"{row.marker_assignment_penalty:.3f}",
+                "flags": row.feedback_flags,
             }
         )
 
@@ -1437,6 +1609,7 @@ def report_values(language):
         "SOURCE_DISAGREEMENT": table_or_none(source_disagreement_rows_for_report, ["study", "predicted_cell_type", "cells", "median_source_agreement", "disagreement_cells", "disagreement_fraction"], language),
         "REVIEW_CONCERNS": table_or_none(concern_rows_for_report, ["study", "concern", "cells"], language),
         "LABEL_COMPOSITION": table_or_none(label_rows_for_report, ["study", "predicted_cell_type", "cells"], language),
+        "MARKER_FEEDBACK_TABLE": table_or_none(marker_feedback_rows_for_report, ["study", "lineage", "cluster", "cells", "chosen_label", "marker_assignment", "marker_score", "base_score", "penalty", "flags"], language),
         "SUBCLUSTER_EVIDENCE_TABLE": table_or_none(subcluster_evidence_rows_for_report, ["study", "lineage", "cluster", "cells", "chosen_label", "accepted", "score_margin", "cluster_marker_assignment", "treg_key_any", "treg_key_bonus", "marker_set", "marker_alert"], language),
         "FIGURE_BLOCKS": figure_blocks,
         "FILE_BLOCK": file_block,

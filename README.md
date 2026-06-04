@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-04 12:58:57 EDT
+Updated: 2026-06-04 16:44:18 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -65,7 +65,7 @@ Expected H5AD evidence, when available:
 - `celltypist_v3_label`
 - `panhuman_fine_v3_label`
 - `cluster_consensus_v3_label`
-- `top_marker_v3_label`
+- `top_marker_v3_label` as provenance only; it is not used as a reference-vote or source-overlay label
 - raw CellTypist or Azimuth labels such as `majority_voting_Immune_All_Low` and `panhuman_azimuth_fine`
 - marker score columns or genes sufficient to compute marker scores
 - QC fields such as detected genes, mitochondrial fraction, total counts, and scrublet/doublet calls
@@ -157,14 +157,14 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 1. **Codex input audit**: Codex resolves the dataset identity, checks the requested output location, and verifies that the H5AD path and config are available.
 2. **Evidence extraction**: the deterministic CLI reads reference labels, raw labels, marker information, QC metrics, doublet flags, and optional lineage-scoped scRefMapping evidence.
 3. **Marker registry audit**: `configs/marker_registry.yaml` defines positive, key, negative, and confound markers for candidate ontology labels. Marker availability and key-marker gates are audited before fine labels are accepted.
-4. **Broad lineage assignment**: broad lineage is assigned from CellTypist, Azimuth/Pan-human, cluster/top-marker labels, marker scores, raw labels, and QC context. Prior-version submitted labels are not used as the base annotation.
+4. **Broad lineage assignment**: broad lineage is assigned from CellTypist, Azimuth/Pan-human, cluster consensus, marker scores, raw labels, and QC context. Prior-version submitted labels are not used as the base annotation.
 5. **Lineage-specific subclustering**: B, T/NK, and myeloid lineages are reclustered separately after lineage subset HVG selection, PCA, neighbors, Leiden, and UMAP recomputation so fine labels are judged inside the relevant local structure.
-6. **Candidate scoring**: candidate official labels are scored from local-cluster marker support, reference-label fractions, raw-label fractions, marker availability, key-marker gates, and best-vs-second margins. Updated 2026-06-04 13:52:46 EDT: marker-gene assignment is cluster-level rather than cell-wise, and sparse marker labels such as `Treg` use local-cluster FOXP3/IL2RA/CTLA4 support plus reference support.
+6. **Candidate scoring**: candidate official labels are scored from local-cluster marker support, reference-label fractions, raw-label fractions, marker availability, key-marker gates, negative/confound-marker penalties, and best-vs-second margins. Updated 2026-06-04 16:44:18 EDT: marker-gene assignment is cluster-level rather than cell-wise, sparse marker labels such as `Treg` use local-cluster FOXP3/IL2RA/CTLA4 support plus reference support, and marker-only labels are retained as self-check evidence rather than forced final overrides.
 7. **scRefMapping use**: scRefMapping is allowed only after broad lineage assignment and only inside the appropriate lineage. B references can support B subtype adjudication; CD4T references can support CD4/T subtype adjudication. It cannot vote in broad lineage assignment.
 8. **Ontology-constrained labels**: final labels must be official ontology labels after configured exclusions. Known problematic labels such as `Effector B` are excluded by config when appropriate.
 9. **Doublet and QC handling**: doublet evidence is not a filter. Supported doublets are submitted as `Doublet`; low-QC or mixed-marker cells receive confidence caps or review concerns.
 10. **Confidence calibration**: confidence reflects reference agreement, marker support, subcluster coherence, score margin, QC penalties, and doublet/mixed-lineage flags.
-11. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, source disagreement, interpretation notes, UMAPs, marker dotplots, true lineage-specific subcluster plots, local source-label overlays, cluster marker gate score UMAPs, and output files. The fixed workflow is documented in this README and is not repeated in every report. Updated 2026-06-04 13:52:46 EDT.
+11. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, source disagreement, interpretation notes, UMAPs, marker dotplots, true lineage-specific subcluster plots, local source-label overlays, cluster marker gate score UMAPs, marker assignment feedback, and output files. The fixed workflow is documented in this README and is not repeated in every report. Updated 2026-06-04 16:44:18 EDT.
 12. **Validation**: Codex must confirm submission row counts, official labels, non-missing predictions, H5AD/submission agreement, confidence fields, and report image links.
 13. **Codex report assessment**: after generation, Codex reads the report and updates the dataset-specific assessment when the automated text is too generic.
 14. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
@@ -178,7 +178,7 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 5. Treat scRefMapping as lineage-scoped auxiliary evidence after broad lineage assignment; it must not vote in broad lineage assignment.
 6. Submit `Doublet` only when supported; do not filter cells out silently.
 7. Prefer documented uncertainty over hard-coded local fixes.
-8. Reports must expose global UMAPs, true lineage-specific subcluster UMAPs, local CellTypist/Azimuth/Pan-human/cluster-level marker-gene source-label overlays, cluster marker gate score UMAPs, marker-expression UMAPs, marker dotplots, disagreement, parent-label residuals, confidence, and validation. Updated 2026-06-04 13:52:46 EDT.
+8. Reports must expose global UMAPs, true lineage-specific subcluster UMAPs, local CellTypist/Azimuth/Pan-human/scRefMap/cluster-level marker-gene source-label overlays, cluster marker gate score UMAPs, marker-expression UMAPs, marker dotplots, marker assignment feedback, disagreement, parent-label residuals, confidence, and validation. Updated 2026-06-04 16:44:18 EDT.
 
 ## Validation Contract
 
@@ -239,7 +239,8 @@ python scripts/validate_report_bundle.py --report-root reports/current
   - `reports/current/summary/tables/lineage_subcluster_evidence.tsv.gz`
   - `reports/current/summary/tables/source_disagreement_summary.tsv`
   - `reports/current/summary/tables/lineage_panel_status.tsv`
-- Current method: clean v17 single-dataset annotation. Updated 2026-06-04 13:52:46 EDT. Reports are organized one dataset per directory and include inline UMAPs, marker-expression panels, global and local source-label overlays, true lineage-specific subcluster UMAPs, cluster marker gate score UMAPs, marker-expression UMAPs, marker dotplots, candidate-score heatmaps, and compact evidence tables so each dataset can be reviewed independently.
+  - `reports/current/summary/tables/marker_assignment_feedback.tsv`
+- Current method: clean v18 single-dataset annotation. Updated 2026-06-04 16:44:18 EDT. Reports are organized one dataset per directory and include inline UMAPs, marker-expression panels, global and local source-label overlays, true lineage-specific subcluster UMAPs, cluster marker gate score UMAPs, marker-expression UMAPs, marker dotplots, candidate-score heatmaps, marker assignment feedback with base score and penalty, and compact evidence tables so each dataset can be reviewed independently.
 - Repository policy: Markdown reports and compact review tables are committed. Large generated H5ADs and submission TSVs remain outside the public repository and are available on the Yale server working path.
 
 ## Data Policy

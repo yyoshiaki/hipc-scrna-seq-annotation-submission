@@ -1,6 +1,6 @@
 {
-  "version": "hipc_annotation_clean_v17",
-  "output_root": "outputs/final_annotations/hipc_annotation_clean_v17",
+  "version": "hipc_annotation_clean_v18",
+  "output_root": "outputs/final_annotations/hipc_annotation_clean_v18",
   "report": {
     "default_language": "en",
     "development_languages": ["ja"],
@@ -23,6 +23,10 @@
     "enabled": true,
     "scope_policy": "lineage_scoped_only",
     "references_manifest": "configs/screfmapping_references.tsv",
+    "fallback_result_roots": [
+      "/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/260526_v13_input_contract_repair/screfmap_results",
+      "/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/final_annotations/260522_beta_final_annotation_v11_recursive_screfmapping/screfmapping_results"
+    ],
     "marker_availability_alerts": {
       "critical_present_fraction_lt": 0.30,
       "warning_present_fraction_lt": 0.60,

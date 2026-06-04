@@ -73,6 +73,9 @@ for sub_path in submission_paths:
         panel_status = pd.read_csv(panel_status_path, sep="\t")
     else:
         panel_status = pd.DataFrame(columns=["study", "lineage", "status"])
+    marker_feedback_path = output_root / "tables" / "marker_assignment_feedback.tsv"
+    if not marker_feedback_path.exists():
+        failures.append(f"{study}: missing marker assignment feedback table {marker_feedback_path}")
 
     required_assets = [
         f"umap_{study}_annotation_label.png",
@@ -118,7 +121,7 @@ if not report_paths:
     report_paths = sorted((output_root / "reports").glob("report_*.md"))
 for report in report_paths:
     text = report.read_text()
-    for required_phrase in ["Inline Figures", "Subcluster Marker Score Review", "true subcluster"]:
+    for required_phrase in ["Inline Figures", "Subcluster Marker Score Review", "Marker Assignment Feedback", "true subcluster"]:
         if required_phrase not in text:
             failures.append(f"{report.name}: missing required report phrase {required_phrase}")
     for target in re.findall(r"!\[[^\]]*\]\(([^)]+)\)", text):

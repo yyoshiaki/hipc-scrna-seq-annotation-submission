@@ -36,6 +36,7 @@ summary_tables = {
     "lineage_subcluster_evidence.tsv.gz": [],
     "source_disagreement_summary.tsv": [],
     "lineage_panel_status.tsv": [],
+    "marker_assignment_feedback.tsv": [],
 }
 
 for study in EXPECTED_STUDIES:

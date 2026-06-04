@@ -1,6 +1,6 @@
 # Report Release Checklist
 
-Updated: 2026-06-04 12:58:57 EDT
+Updated: 2026-06-04 16:44:18 EDT
 
 This checklist is mandatory before replacing or pushing any committed report bundle under `reports/current/`.
 
@@ -58,8 +58,10 @@ Before commit or push, all of these must pass:
 - Reports include marker-expression sections.
 - Reports include true lineage-specific subcluster sections.
 - Reports include `Subcluster Marker Score Review`.
-- Each generated B/T-NK/Myeloid lineage panel has true subcluster label UMAPs, local source-label UMAPs for CellTypist/Azimuth/Pan-human/cluster-level marker-gene assignment, QC UMAPs, cluster marker gate score UMAPs, marker-expression UMAPs, marker-score heatmaps, and marker dotplots. Updated 2026-06-04 13:52:46 EDT. Lineages with fewer than 50 assigned cells must be explicitly marked `skipped_lt50` in `lineage_panel_status.tsv` and must not emit broken image links.
+- Reports include `Marker Assignment Feedback` with marker score, base score, and negative/confound-marker penalty columns. Updated 2026-06-04 16:44:18 EDT.
+- Each generated B/T-NK/Myeloid lineage panel has true subcluster label UMAPs, local source-label UMAPs for CellTypist/Azimuth/Pan-human/scRefMap/cluster-level marker-gene assignment, QC UMAPs, cluster marker gate score UMAPs, marker-expression UMAPs, marker-score heatmaps, and marker dotplots. Updated 2026-06-04 16:44:18 EDT. Lineages with fewer than 50 assigned cells must be explicitly marked `skipped_lt50` in `lineage_panel_status.tsv` and must not emit broken image links.
 - Each dataset has B/T-NK/Myeloid true subcluster UMAP coordinate tables and candidate-score tables.
+- Each dataset has `tables/marker_assignment_feedback.tsv`; the summary bundle has `summary/tables/marker_assignment_feedback.tsv`.
 - Reports include compact evidence tables.
 - Old internal version strings must not appear in public current reports: `v13`, `v14`, `v15`, `260526`, `260602_annotation_single`, `marker-gate-applied`, `final_v14`.
 

@@ -1,7 +1,7 @@
 study	concern	n_cells
 vaccination_study_06	High source disagreement for Doublet	1502
-vaccination_study_06	High source disagreement for Memory B Cell	2305
-vaccination_study_06	High source disagreement for Naive B Cell	105
-vaccination_study_06	High source disagreement for Plasma Cell	161
-vaccination_study_06	High dataset-level source disagreement	16255
-vaccination_study_06	warning marker availability for Plasma_ASC	180
+vaccination_study_06	High source disagreement for Naive B Cell	383
+vaccination_study_06	High source disagreement for Plasma Cell	203
+vaccination_study_06	warning marker availability for Plasma_ASC	204
+vaccination_study_06	Large Blood Cell/ambiguous residual remains	1090
+vaccination_study_06	Many low-confidence cells; QC or mixed-marker effects likely remain	11348

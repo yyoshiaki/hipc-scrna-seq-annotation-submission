@@ -25,6 +25,7 @@ REQUIRED_PHRASES_EN = [
     "Label Composition",
     "Cluster Consensus Evidence",
     "Subcluster Marker Score Review",
+    "Marker Assignment Feedback",
     "true subcluster",
 ]
 REQUIRED_PHRASES_JA = [
@@ -33,6 +34,7 @@ REQUIRED_PHRASES_JA = [
     "ラベル構成",
     "Cluster Consensus Evidence",
     "Subcluster Marker Score Review",
+    "Marker Assignment Feedback",
     "true subcluster",
 ]
 REQUIRED_TOPIC_PATTERNS = [
@@ -59,6 +61,7 @@ summary_required = [
     root / "summary/tables/lineage_subcluster_evidence.tsv.gz",
     root / "summary/tables/source_disagreement_summary.tsv",
     root / "summary/tables/lineage_panel_status.tsv",
+    root / "summary/tables/marker_assignment_feedback.tsv",
 ]
 for path in summary_required:
     if not path.exists():
@@ -79,6 +82,7 @@ for study in EXPECTED_STUDIES:
         study_dir / "tables/source_disagreement_summary.tsv",
         study_dir / "tables/subcluster_candidate_scores.tsv",
         study_dir / "tables/lineage_panel_status.tsv",
+        study_dir / "tables/marker_assignment_feedback.tsv",
     ]
     for lineage in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
         required_tables.extend(

@@ -8,7 +8,7 @@
 
 | study | cells | analysis_X_genes | pre_hvg_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_04 | 66,065 | 16,983 | 16,983 | 16,983 | 15 | 0.009 | 575 | 647 | 343 | 0.850 | 1,224 | 2,792 (0.042) | none |
+| vaccination_study_04 | 66,065 | 16,983 | 16,983 | 16,983 | 11 | 0.011 | 718 | 647 | 217 | 0.777 | 1,423 | 2,900 (0.044) | none |
 
 ## 実行概要
 
@@ -19,15 +19,15 @@
 
 ## データセット固有の解釈
 
-- `vaccination_study_04`: 66,065 cells、analysis X/var 16,983 genes、pre-HVG slot 16,983 genes、submitted label 15 種、parent/Blood residual fraction 0.009、median confidence 0.850。
-  - 1,224 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
+- `vaccination_study_04`: 66,065 cells、analysis X/var 16,983 genes、pre-HVG slot 16,983 genes、submitted label 11 種、parent/Blood residual fraction 0.011、median confidence 0.777。
+  - 1,423 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
   - 647 cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。
-  - 575 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
+  - 718 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
   - Marker gene 欠損アラート: Treg。該当 marker set に依存する fine label は慎重に見る。
 
 ## データセット固有の評価
 
-- 全体像: 66,065 cells / analysis X/var 16,983 genes / pre-HVG slot 16,983 genes。parent/Blood residual は 0.009、low-confidence は 1,224 cells、source disagreement flag は 2,792 cells (0.042)。
+- 全体像: 66,065 cells / analysis X/var 16,983 genes / pre-HVG slot 16,983 genes。parent/Blood residual は 0.011、low-confidence は 1,423 cells、source disagreement flag は 2,900 cells (0.044)。
 - 優先確認: low-confidence 領域が QC UMAP と source-disagreement UMAP で同じ場所に集まるかを確認する。
 - 優先確認: `Blood Cell` 残存が孤立 cluster なのか、複数 lineage に分散した曖昧領域なのかを UMAP で確認する。
 - Marker gene 欠損: Treg は confidence cap 対象。該当 label は marker expression UMAP と dotplot で妥当性を確認する。
@@ -43,46 +43,38 @@
 | study | predicted_cell_type | cells | median_source_agreement | disagreement_cells | disagreement_fraction |
 | --- | --- | --- | --- | --- | --- |
 | vaccination_study_04 | Doublet | 647 | 0.000 | 647 | 1.000 |
-| vaccination_study_04 | T Cell | 2 | 0.250 | 2 | 1.000 |
-| vaccination_study_04 | Naive B Cell | 6 | 0.250 | 4 | 0.667 |
-| vaccination_study_04 | CD4 Naive / T Central Memory | 28 | 0.250 | 16 | 0.571 |
-| vaccination_study_04 | NK Cell | 252 | 0.750 | 58 | 0.230 |
-| vaccination_study_04 | Conventional DC 2 | 7,705 | 0.750 | 819 | 0.106 |
-| vaccination_study_04 | Blood Cell | 575 | 0.750 | 30 | 0.052 |
-| vaccination_study_04 | Plasma Cell | 100 | 0.750 | 5 | 0.050 |
-| vaccination_study_04 | Classical Monocyte | 34,276 | 0.750 | 1,008 | 0.029 |
-| vaccination_study_04 | Conventional DC 1 | 1,110 | 0.750 | 31 | 0.028 |
-| vaccination_study_04 | Plasmacytoid DC | 5,505 | 0.750 | 53 | 0.010 |
-| vaccination_study_04 | Non-Classical Monocyte | 15,514 | 0.750 | 119 | 0.008 |
+| vaccination_study_04 | CD4 Naive / T Central Memory | 29 | 0.500 | 11 | 0.379 |
+| vaccination_study_04 | NK Cell | 234 | 1.000 | 46 | 0.197 |
+| vaccination_study_04 | Conventional DC 2 | 7,930 | 1.000 | 1,023 | 0.129 |
+| vaccination_study_04 | Plasma Cell | 109 | 0.750 | 12 | 0.110 |
+| vaccination_study_04 | Blood Cell | 718 | 1.000 | 37 | 0.052 |
+| vaccination_study_04 | Conventional DC 1 | 1,110 | 1.000 | 33 | 0.030 |
+| vaccination_study_04 | Classical Monocyte | 34,011 | 1.000 | 922 | 0.027 |
+| vaccination_study_04 | Plasmacytoid DC | 5,506 | 1.000 | 55 | 0.010 |
+| vaccination_study_04 | Non-Classical Monocyte | 15,554 | 1.000 | 114 | 0.007 |
+| vaccination_study_04 | HSC | 217 | 0.667 | 0 | 0.000 |
 
 ## レビュー優先事項
 
 | study | concern | cells |
 | --- | --- | --- |
-| vaccination_study_04 | High source disagreement for CD4 Naive / T Central Memory | 16 |
 | vaccination_study_04 | High source disagreement for Doublet | 647 |
-| vaccination_study_04 | High source disagreement for Naive B Cell | 4 |
-| vaccination_study_04 | High source disagreement for T Cell | 2 |
 
 ## ラベル構成
 
 | study | predicted_cell_type | cells |
 | --- | --- | --- |
-| vaccination_study_04 | Classical Monocyte | 34,276 |
-| vaccination_study_04 | Non-Classical Monocyte | 15,514 |
-| vaccination_study_04 | Conventional DC 2 | 7,705 |
-| vaccination_study_04 | Plasmacytoid DC | 5,505 |
+| vaccination_study_04 | Classical Monocyte | 34,011 |
+| vaccination_study_04 | Non-Classical Monocyte | 15,554 |
+| vaccination_study_04 | Conventional DC 2 | 7,930 |
+| vaccination_study_04 | Plasmacytoid DC | 5,506 |
 | vaccination_study_04 | Conventional DC 1 | 1,110 |
+| vaccination_study_04 | Blood Cell | 718 |
 | vaccination_study_04 | Doublet | 647 |
-| vaccination_study_04 | Blood Cell | 575 |
-| vaccination_study_04 | HSC | 337 |
-| vaccination_study_04 | NK Cell | 252 |
-| vaccination_study_04 | Plasma Cell | 100 |
-| vaccination_study_04 | CD4 Naive / T Central Memory | 28 |
-| vaccination_study_04 | Naive B Cell | 6 |
-| vaccination_study_04 | Platelet | 6 |
-| vaccination_study_04 | T Cell | 2 |
-| vaccination_study_04 | Memory B Cell | 2 |
+| vaccination_study_04 | NK Cell | 234 |
+| vaccination_study_04 | HSC | 217 |
+| vaccination_study_04 | Plasma Cell | 109 |
+| vaccination_study_04 | CD4 Naive / T Central Memory | 29 |
 
 ## Inline Figures
 
@@ -159,48 +151,75 @@ Tables: `tables/vaccination_study_04_Myeloid_lineage_true_subcluster_umap.tsv.gz
 
 上の lineage-specific panel は、各 lineage subset で HVG 選択、PCA、neighbors、Leiden、UMAP を再計算した true local subcluster analysis から生成しています。Marker gene による fine label の確認は global UMAP だけではなく、この local UMAP、CellTypist/Azimuth/Pan-human/cluster-level marker gene assignment overlay、cluster marker gate score UMAP、marker-expression UMAP、dotplot を主に見ます。Treg など sparse marker label は cell-wise marker winner ではなく、local cluster の FOXP3/IL2RA/CTLA4 など key-marker support と reference support で判定します。
 
+## Marker Assignment Feedback
+
+Marker gene assignment は final label を強制的に上書きするものではなく、cluster-level の自己点検です。この表は marker-only assignment と final/reference-driven label がずれる cluster、marker specificity が弱い cluster、scRefMap が期待される lineage で欠落する cluster を示します。`marker_score` は raw marker base score から negative/confound marker penalty を差し引いた cluster-level marker gate score です。
+
+| study | lineage | cluster | cells | chosen_label | marker_assignment | marker_score | base_score | penalty | flags |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| vaccination_study_04 | Myeloid_lineage | 0 | 5,906 | Non-Classical Monocyte | Intermediate Monocyte | 0.517 | 1.000 | 0.483 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 1 | 4,352 | Classical Monocyte | Intermediate Monocyte | 0.546 | 1.000 | 0.454 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 2 | 3,545 | Classical Monocyte | Intermediate Monocyte | 0.605 | 1.000 | 0.395 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 3 | 3,507 | Classical Monocyte | Intermediate Monocyte | 0.548 | 1.000 | 0.452 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 4 | 3,491 | Classical Monocyte | Intermediate Monocyte | 0.549 | 1.000 | 0.451 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 5 | 3,482 | Classical Monocyte | Intermediate Monocyte | 0.548 | 1.000 | 0.452 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 6 | 3,185 | Classical Monocyte | Intermediate Monocyte | 0.568 | 1.000 | 0.432 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 7 | 2,934 | Classical Monocyte | Intermediate Monocyte | 0.534 | 1.000 | 0.466 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 8 | 2,475 | Plasmacytoid DC | Intermediate Monocyte | 0.550 | 0.998 | 0.449 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 9 | 2,442 | Classical Monocyte | Intermediate Monocyte | 0.568 | 1.000 | 0.432 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 10 | 2,430 | Non-Classical Monocyte | Intermediate Monocyte | 0.544 | 1.000 | 0.456 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 11 | 2,407 | Non-Classical Monocyte | Intermediate Monocyte | 0.514 | 1.000 | 0.486 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 12 | 2,110 | Classical Monocyte | Intermediate Monocyte | 0.592 | 1.000 | 0.408 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 14 | 2,013 | Conventional DC 2 | Intermediate Monocyte | 0.400 | 1.000 | 0.600 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 15 | 1,780 | Conventional DC 2 | Intermediate Monocyte | 0.400 | 1.000 | 0.600 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 16 | 1,777 | Classical Monocyte | Intermediate Monocyte | 0.602 | 1.000 | 0.398 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 17 | 1,700 | Non-Classical Monocyte | Intermediate Monocyte | 0.539 | 1.000 | 0.461 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 18 | 1,662 | Conventional DC 2 | Intermediate Monocyte | 0.400 | 1.000 | 0.600 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 19 | 1,264 | Conventional DC 2 | Intermediate Monocyte | 0.400 | 1.000 | 0.600 | marker_final_disagreement |
+| vaccination_study_04 | Myeloid_lineage | 20 | 1,248 | Non-Classical Monocyte | Intermediate Monocyte | 0.527 | 1.000 | 0.473 | marker_final_disagreement |
+
 ## Cluster Consensus Evidence
 
 | study | lineage | cluster | cells | chosen_label | accepted | score_margin | cluster_marker_assignment | treg_key_any | treg_key_bonus | marker_set | marker_alert |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_04 | B_lineage | 0 | 15 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 1 | 11 | Plasma Cell | True | 2.364 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 2 | 9 | Plasma Cell | True | 2.711 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 3 | 9 | Plasma Cell | True | 1.377 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 4 | 8 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 5 | 8 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 6 | 6 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 7 | 6 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 10 | 4 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 11 | 4 | Naive B Cell | True | 0.386 | Naive B Cell | nan | nan | B_naive | pass |
-| vaccination_study_04 | B_lineage | 12 | 4 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 13 | 4 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 8 | 4 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 9 | 4 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 14 | 2 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 15 | 2 | Naive B Cell | True | 2.372 | Naive B Cell | nan | nan | B_naive | pass |
-| vaccination_study_04 | B_lineage | 16 | 2 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 17 | 2 | Memory B Cell | True | 2.100 | Plasma Cell | nan | nan | B_memory_ABC | pass |
-| vaccination_study_04 | B_lineage | 18 | 2 | Plasma Cell | True | 2.600 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | B_lineage | 19 | 2 | Plasma Cell | True | 2.600 | Naive B Cell | nan | nan | Plasma_ASC | pass |
-| vaccination_study_04 | Myeloid_lineage | 0 | 5,841 | Non-Classical Monocyte | True | 1.595 | Non-Classical Monocyte | nan | nan | not_applicable | pass |
-| vaccination_study_04 | Myeloid_lineage | 1 | 5,555 | Classical Monocyte | True | 2.535 | Classical Monocyte | nan | nan | not_applicable | pass |
-| vaccination_study_04 | Myeloid_lineage | 2 | 4,757 | Classical Monocyte | True | 2.191 | Intermediate Monocyte | nan | nan | not_applicable | pass |
-| vaccination_study_04 | Myeloid_lineage | 3 | 3,925 | Classical Monocyte | True | 2.247 | Classical Monocyte | nan | nan | not_applicable | pass |
-| vaccination_study_04 | Myeloid_lineage | 4 | 3,738 | Conventional DC 2 | True | 1.894 | Intermediate Monocyte | nan | nan | not_applicable | pass |
-| vaccination_study_04 | Myeloid_lineage | 5 | 3,249 | Classical Monocyte | True | 2.562 | Classical Monocyte | nan | nan | not_applicable | pass |
-| vaccination_study_04 | Myeloid_lineage | 6 | 3,204 | Classical Monocyte | True | 2.562 | Classical Monocyte | nan | nan | not_applicable | pass |
-| vaccination_study_04 | Myeloid_lineage | 7 | 3,037 | Classical Monocyte | True | 2.480 | Classical Monocyte | nan | nan | not_applicable | pass |
-| vaccination_study_04 | Myeloid_lineage | 8 | 2,683 | Classical Monocyte | True | 2.593 | Classical Monocyte | nan | nan | not_applicable | pass |
-| vaccination_study_04 | Myeloid_lineage | 9 | 2,474 | Plasmacytoid DC | True | 2.602 | Plasmacytoid DC | nan | nan | not_applicable | pass |
+| vaccination_study_04 | B_lineage | 0 | 12 | Plasma Cell | True | 1.683 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 1 | 11 | Plasma Cell | True | 0.268 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 2 | 11 | Plasma Cell | True | 2.714 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 3 | 10 | Plasma Cell | True | 2.926 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 4 | 8 | Plasma Cell | True | 2.629 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 5 | 6 | Plasma Cell | True | 2.600 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 6 | 6 | Plasma Cell | True | 0.267 | Naive B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 7 | 5 | Plasma Cell | True | 2.446 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 10 | 4 | Plasma Cell | True | 2.500 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 11 | 4 | Plasma Cell | True | 2.065 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 12 | 4 | Plasma Cell | True | 1.268 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 13 | 4 | Plasma Cell | True | 0.368 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 14 | 4 | Plasma Cell | True | 1.818 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 15 | 4 | Plasma Cell | True | 3.000 | Naive B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 8 | 4 | Plasma Cell | True | 2.286 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 9 | 4 | Plasma Cell | True | 1.868 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 16 | 2 | Plasma Cell | True | 1.986 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 17 | 2 | Plasma Cell | True | 1.800 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 18 | 2 | Plasma Cell | True | 1.800 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | B_lineage | 19 | 2 | Plasma Cell | True | 1.800 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| vaccination_study_04 | Myeloid_lineage | 0 | 5,906 | Non-Classical Monocyte | True | 1.663 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 1 | 4,352 | Classical Monocyte | True | 2.228 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 2 | 3,545 | Classical Monocyte | True | 2.396 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 3 | 3,507 | Classical Monocyte | True | 2.452 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 4 | 3,491 | Classical Monocyte | True | 2.296 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 5 | 3,482 | Classical Monocyte | True | 2.405 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 6 | 3,185 | Classical Monocyte | True | 2.432 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 7 | 2,934 | Classical Monocyte | True | 2.466 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 8 | 2,475 | Plasmacytoid DC | True | 2.580 | Intermediate Monocyte | nan | nan | not_applicable | pass |
+| vaccination_study_04 | Myeloid_lineage | 9 | 2,442 | Classical Monocyte | True | 2.413 | Intermediate Monocyte | nan | nan | not_applicable | pass |
 
 ## 出力ファイル
 
-- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/vaccination_study_04/submissions/`
-- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/vaccination_study_04/cellxgene/`
-- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/vaccination_study_04/tables/marker_gene_availability.tsv`
-- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/vaccination_study_04/tables/marker_gene_availability_alerts.tsv`
-- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/vaccination_study_04/tables/lineage_subcluster_evidence.tsv.gz`
-- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/vaccination_study_04/tables/source_disagreement_summary.tsv`
-- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v17/vaccination_study_04/tables/`
+- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/vaccination_study_04/submissions/`
+- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/vaccination_study_04/cellxgene/`
+- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/vaccination_study_04/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/vaccination_study_04/tables/marker_gene_availability_alerts.tsv`
+- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/vaccination_study_04/tables/lineage_subcluster_evidence.tsv.gz`
+- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/vaccination_study_04/tables/source_disagreement_summary.tsv`
+- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/vaccination_study_04/tables/`
 
