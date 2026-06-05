@@ -194,6 +194,21 @@ def canonical_label(label):
 
 
 marker_registry_labels = {canonical_label(label): spec for label, spec in marker_registry_labels.items()}
+terminal_marker_roles = {"terminal", "rare_terminal", "ambiguous_terminal"}
+
+
+def safe_token(value):
+    return re.sub(r"[^A-Za-z0-9]+", "_", str(value)).strip("_").lower()
+
+
+def registry_marker_set_id(label):
+    return f"registry__{safe_token(label)}"
+
+
+def registry_score_name(label):
+    return f"marker_score_registry_{safe_token(label)}"
+
+
 manifest = pd.read_csv(project_path(args.manifest), sep="\t").fillna("")
 version = config["version"]
 report_updated = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d EDT")
@@ -258,35 +273,26 @@ myeloid_labels = {
 other_direct_labels = {"Platelet", "RBC", "HSC"}
 
 score_gene_sets = {
-    "marker_score_b_naive": ["TCL1A", "IGHM", "IGHD", "FCER2"],
-    "marker_score_b_memory": ["CD27", "TNFRSF13B", "AIM2", "FCRL5", "ITGAX", "TBX21"],
-    "marker_score_b_plasma": ["MZB1", "JCHAIN", "XBP1", "PRDM1", "SDC1"],
-    "marker_score_b_plasmablast": ["MZB1", "JCHAIN", "XBP1", "PRDM1", "IRF4", "TNFRSF17", "CD27", "MKI67"],
-    "marker_score_cd4_naive_tcm": ["CD4", "IL7R", "CCR7", "TCF7", "LEF1", "SELL"],
-    "marker_score_cd4_tem": ["CD4", "IL7R", "GZMK", "CCL5", "ANXA1"],
-    "marker_score_cd8_naive_tcm": ["CD8A", "CD8B", "CCR7", "TCF7", "LEF1"],
-    "marker_score_cd8_cytotoxic": ["CD8A", "CD8B", "NKG7", "GNLY", "PRF1", "GZMB", "GZMH"],
-    "marker_score_treg": ["FOXP3", "IL2RA", "CTLA4", "IKZF2"],
-    "marker_score_mait": ["SLC4A10", "KLRB1", "DPP4", "TRAV1-2"],
-    "marker_score_gdt": ["TRDC", "TRGC1", "TRGC2"],
-    "marker_score_nkt": ["CD3D", "CD3E", "TRAC", "NKG7", "GNLY", "KLRD1", "ZBTB16"],
-    "marker_score_nk": ["NKG7", "GNLY", "KLRD1", "FCGR3A", "PRF1"],
-    "marker_score_classical_mono": ["LYZ", "S100A8", "S100A9", "FCN1", "VCAN"],
-    "marker_score_nonclassical_mono": ["FCGR3A", "MS4A7", "CX3CR1", "LST1"],
-    "marker_score_intermediate_mono": ["FCN1", "MS4A7", "HLA-DRA", "LST1"],
-    "marker_score_pdc": ["LILRA4", "CLEC4C", "IRF7", "TCF4"],
-    "marker_score_cdc1": ["CLEC9A", "XCR1", "BATF3"],
-    "marker_score_cdc2": ["CD1C", "FCER1A", "CLEC10A"],
+    registry_score_name(label): list(spec.get("positive", []))
+    for label, spec in marker_registry_labels.items()
+    if spec.get("positive", [])
 }
+
+lineage_candidate_scores = {}
+for registry_label, registry_spec in marker_registry_labels.items():
+    lineage_name = registry_spec.get("applicable_lineage")
+    marker_role = registry_spec.get("marker_role", "")
+    if marker_role not in terminal_marker_roles:
+        continue
+    lineage_candidate_scores.setdefault(lineage_name, {})[registry_label] = f"{registry_score_name(registry_label)}_pct"
 
 lineage_configs = {
     "B_lineage": {
         "parent": "B Cell",
         "resolution": 2.2,
         "candidate_scores": {
-            "Naive B Cell": "marker_score_b_naive_pct",
-            "Memory B Cell": "marker_score_b_memory_pct",
-            "Plasma Cell": "marker_score_b_plasma_pct",
+            label: score_col
+            for label, score_col in lineage_candidate_scores.get("B_lineage", {}).items()
         },
         "raw_bonus": {
             "Naive B Cell": "Naive B",
@@ -298,14 +304,8 @@ lineage_configs = {
         "parent": "T Cell",
         "resolution": 2.6,
         "candidate_scores": {
-            "CD4 Naive / T Central Memory": "marker_score_cd4_naive_tcm_pct",
-            "CD4 T Effector Memory": "marker_score_cd4_tem_pct",
-            "CD8 Naive / T Central Memory": "marker_score_cd8_naive_tcm_pct",
-            "CD8 Cytotoxic / T Effector Memory": "marker_score_cd8_cytotoxic_pct",
-            "Treg": "marker_score_treg_pct",
-            "MAIT Cell": "marker_score_mait_pct",
-            "gdT Cell": "marker_score_gdt_pct",
-            "NK Cell": "marker_score_nk_pct",
+            label: score_col
+            for label, score_col in lineage_candidate_scores.get("T_NK_lineage", {}).items()
         },
         "raw_bonus": {
             "CD4 Naive / T Central Memory": "Tcm/Naive helper|Tfh|Naive CD4",
@@ -322,12 +322,8 @@ lineage_configs = {
         "parent": "Myeloid Cell",
         "resolution": 1.8,
         "candidate_scores": {
-            "Classical Monocyte": "marker_score_classical_mono_pct",
-            "Non-Classical Monocyte": "marker_score_nonclassical_mono_pct",
-            "Intermediate Monocyte": "marker_score_intermediate_mono_pct",
-            "Plasmacytoid DC": "marker_score_pdc_pct",
-            "Conventional DC 1": "marker_score_cdc1_pct",
-            "Conventional DC 2": "marker_score_cdc2_pct",
+            label: score_col
+            for label, score_col in lineage_candidate_scores.get("Myeloid_lineage", {}).items()
         },
         "raw_bonus": {
             "Classical Monocyte": "Classical",
@@ -340,11 +336,6 @@ lineage_configs = {
     },
 }
 
-registry_score_name_overrides = {
-    "Plasmablast": "marker_score_b_plasmablast",
-    "gdT Cell": "marker_score_gdt",
-    "NKT Cell": "marker_score_nkt",
-}
 registry_raw_bonus_patterns = {
     "Plasmablast": "Plasmablast",
     "NKT Cell": "NKT|natural killer T|NK T",
@@ -353,14 +344,10 @@ for registry_label, registry_spec in marker_registry_labels.items():
     candidate = canonical_label(registry_label)
     lineage_name = registry_spec.get("applicable_lineage")
     marker_role = registry_spec.get("marker_role", "")
-    if lineage_name not in lineage_configs or marker_role not in {"terminal", "rare_terminal", "ambiguous_terminal"}:
+    if lineage_name not in lineage_configs or marker_role not in terminal_marker_roles:
         continue
-    score_name = registry_score_name_overrides.get(candidate)
-    if score_name is None:
-        safe_candidate = re.sub(r"[^A-Za-z0-9]+", "_", candidate).strip("_").lower()
-        score_name = f"marker_score_registry_{safe_candidate}"
-    score_gene_sets.setdefault(score_name, list(registry_spec.get("positive", [])))
-    lineage_configs[lineage_name]["candidate_scores"].setdefault(candidate, f"{score_name}_pct")
+    score_gene_sets.setdefault(registry_score_name(candidate), list(registry_spec.get("positive", [])))
+    lineage_configs[lineage_name]["candidate_scores"].setdefault(candidate, f"{registry_score_name(candidate)}_pct")
     lineage_configs[lineage_name]["raw_bonus"].setdefault(candidate, registry_raw_bonus_patterns.get(candidate, re.escape(candidate)))
 
 summary_rows = []
@@ -376,6 +363,12 @@ for label, marker_set in list(label_to_marker_set.items()):
     label_to_marker_set[canonical_label(label)] = marker_set
 marker_set_gene_lookup = {marker_set: list(spec["genes"]) for marker_set, spec in config["marker_sets"].items()}
 marker_set_key_gene_lookup = {marker_set: list(spec.get("critical_genes", [])) for marker_set, spec in config["marker_sets"].items()}
+for registry_label, registry_spec in marker_registry_labels.items():
+    marker_set = registry_marker_set_id(registry_label)
+    marker_set_to_labels[marker_set] = [registry_label]
+    label_to_marker_set[registry_label] = marker_set
+    marker_set_gene_lookup[marker_set] = list(registry_spec.get("positive", []))
+    marker_set_key_gene_lookup[marker_set] = list(registry_spec.get("key", []))
 critical_threshold = float(config["screfmapping"]["marker_availability_alerts"]["critical_present_fraction_lt"])
 warning_threshold = float(config["screfmapping"]["marker_availability_alerts"]["warning_present_fraction_lt"])
 marker_alert_confidence_caps = config["decision_engine"].get("marker_alert_confidence_caps", {"critical": 0.70, "warning": 0.82})
@@ -1263,20 +1256,22 @@ for input_row in manifest.itertuples(index=False):
     sc.pl.umap(adata, color=["source_agreement_fraction", "source_disagreement_n", "source_disagreement_flag"], frameon=False, show=False, save=f"_{study}_annotation_source_disagreement.png")
     plt.close("all")
 
-    focus_markers = [
-        "MS4A1", "CD79A", "TCL1A", "IGHM", "IGHD", "CD27", "TNFRSF13B", "MZB1", "JCHAIN", "XBP1",
-        "CD3D", "CD3E", "CD4", "IL7R", "CCR7", "TCF7", "FOXP3", "IL2RA",
-        "CD8A", "NKG7", "GNLY", "GZMB", "SLC4A10", "TRDC",
-        "LYZ", "S100A8", "S100A9", "FCGR3A", "MS4A7", "LILRA4", "CLEC4C", "CD1C", "FCER1A", "CLEC9A", "XCR1",
-    ]
+    submitted_label_order = submission["predicted_cell_type"].value_counts().index.astype(str).tolist()
+
+    focus_markers = []
+    for label in submitted_label_order:
+        spec = marker_registry_labels.get(label, {})
+        focus_markers.extend(spec.get("key", []))
+        focus_markers.extend(spec.get("positive", [])[:4])
+    focus_markers = list(dict.fromkeys(focus_markers))[:42]
     available_markers = [gene for gene in focus_markers if gene in adata.var_names]
     sc.pl.dotplot(adata, var_names=available_markers, groupby="submission_cell_type", standard_scale="var", dendrogram=False, show=False, save=f"_{study}_annotation_marker_dotplot.png")
     plt.close("all")
 
-    feature_markers = [
-        "MS4A1", "CD79A", "MZB1", "CD3D", "CD4", "CD8A",
-        "NKG7", "GNLY", "LYZ", "S100A8", "FCGR3A", "LILRA4",
-    ]
+    feature_markers = []
+    for label in submitted_label_order:
+        feature_markers.extend(marker_registry_labels.get(label, {}).get("key", [])[:2])
+    feature_markers = list(dict.fromkeys(feature_markers))[:16]
     available_feature_markers = [gene for gene in feature_markers if gene in adata.var_names]
     if available_feature_markers:
         sc.pl.umap(adata, color=available_feature_markers, ncols=4, frameon=False, show=False, save=f"_{study}_annotation_marker_expression.png")

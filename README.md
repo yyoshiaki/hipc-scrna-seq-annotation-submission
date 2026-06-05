@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-05 10:04:20 EDT
+Updated: 2026-06-05 11:41:52 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -79,6 +79,7 @@ Marker registry input:
 - If this registry is missing, incomplete for the ontology labels under consideration, or inappropriate for the tissue/context, Codex should ask to build or revise the registry before producing final labels.
 - LLM-assisted marker curation is allowed only before deterministic scoring. The final run must use a frozen registry, not runtime per-cell LLM decisions.
 - Updated 2026-06-05 10:04:20 EDT: marker registry construction and ambiguous-label handling are documented in `docs/260605_marker_registry_contract.md`. Labels such as `Plasmablast`, `NKT Cell`, and `gdT Cell` should be represented as candidates when present in the ontology/registry, but conservative acceptance policies should prevent noisy over-calling.
+- Updated 2026-06-05 11:41:52 EDT: the v20 refactor plan is documented in `docs/260605_v20_registry_first_refactor_plan.md`. The intended architecture is registry-first: marker biology lives in `configs/marker_registry.yaml`; the deterministic CLI reads the frozen registry and should not reintroduce marker-gene lists in code.
 
 ## Output Contract
 
@@ -157,7 +158,7 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 
 1. **Codex input audit**: Codex resolves the dataset identity, checks the requested output location, and verifies that the H5AD path and config are available.
 2. **Evidence extraction**: the deterministic CLI reads reference labels, raw labels, marker information, QC metrics, doublet flags, and optional lineage-scoped scRefMapping evidence.
-3. **Marker registry audit**: `configs/marker_registry.yaml` defines positive, key, negative, and confound markers for candidate ontology labels. Marker availability and key-marker gates are audited before fine labels are accepted.
+3. **Marker registry audit**: `configs/marker_registry.yaml` defines positive, key, negative, and confound markers for candidate ontology labels. Marker availability and key-marker gates are audited before fine labels are accepted. Updated 2026-06-05 11:41:52 EDT: use `scripts/pipeline/hipc_audit_marker_registry.py` to verify ontology coverage and registry schema before final annotation.
 4. **Broad lineage assignment**: broad lineage is assigned from CellTypist, Azimuth/Pan-human, cluster consensus, marker scores, raw labels, and QC context. Prior-version submitted labels are not used as the base annotation.
 5. **Lineage-specific subclustering**: B, T/NK, and myeloid lineages are reclustered separately after lineage subset HVG selection, PCA, neighbors, Leiden, and UMAP recomputation so fine labels are judged inside the relevant local structure.
 6. **Candidate scoring**: candidate official labels are scored from local-cluster marker support, reference-label fractions, raw-label fractions, marker availability, key-marker gates, negative/confound-marker penalties, and best-vs-second margins. Updated 2026-06-04 16:44:18 EDT: marker-gene assignment is cluster-level rather than cell-wise, sparse marker labels such as `Treg` use local-cluster FOXP3/IL2RA/CTLA4 support plus reference support, and marker-only labels are retained as self-check evidence rather than forced final overrides.

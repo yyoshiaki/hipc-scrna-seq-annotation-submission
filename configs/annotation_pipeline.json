@@ -1,6 +1,6 @@
 {
-  "version": "hipc_annotation_clean_v19",
-  "output_root": "outputs/final_annotations/hipc_annotation_clean_v19",
+  "version": "hipc_annotation_clean_v20_registry_first",
+  "output_root": "outputs/final_annotations/hipc_annotation_clean_v20_registry_first",
   "report": {
     "default_language": "en",
     "development_languages": ["ja"],
