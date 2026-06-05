@@ -1386,11 +1386,126 @@ concern_df = pd.DataFrame(concern_rows)
 source_disagreement_df = pd.DataFrame(source_disagreement_rows)
 marker_feedback_df = pd.DataFrame(marker_feedback_rows)
 marker_availability_df = pd.DataFrame(marker_availability_rows)
+llm_review_rows = []
+if not marker_feedback_df.empty:
+    parent_like_labels = {
+        "Blood Cell",
+        "Leukocyte",
+        "Lymphoid Cell",
+        "B Cell",
+        "T Cell",
+        "CD4 T Cell (ab)",
+        "CD8 T Cell (ab)",
+        "Myeloid Cell",
+        "Monocyte",
+        "DC",
+        "Granulocyte",
+    }
+    ambiguous_marker_labels = {"Plasmablast", "Plasma Cell", "NKT Cell", "gdT Cell", "MAIT Cell", "Treg"}
+    for row in marker_feedback_df.itertuples(index=False):
+        chosen_label = str(row.chosen_label)
+        marker_assignment = str(row.cluster_marker_gene_assignment)
+        raw_marker_winner = str(row.cluster_marker_raw_winner)
+        assignment_reason = str(row.cluster_marker_assignment_reason)
+        n_cells = int(row.n_cells)
+        review_reasons = []
+        priority_score = 0
+        if chosen_label in parent_like_labels:
+            review_reasons.append("parent_or_broad_final_label")
+            priority_score += 3
+        if marker_assignment != chosen_label:
+            review_reasons.append("marker_assignment_disagrees_with_final")
+            priority_score += 2
+        if raw_marker_winner != marker_assignment:
+            review_reasons.append("raw_marker_winner_changed_by_policy")
+            priority_score += 1
+        if raw_marker_winner in ambiguous_marker_labels and chosen_label != raw_marker_winner:
+            review_reasons.append("ambiguous_or_missing_label_candidate")
+            priority_score += 2
+        if str(row.top_screfmapping).startswith("not_available"):
+            review_reasons.append("screfmapping_not_available")
+            priority_score += 1
+        if float(row.best_total_score) < 0.75 or float(row.score_margin) < 0.10:
+            review_reasons.append("low_total_score_or_margin")
+            priority_score += 2
+        if n_cells >= 1000:
+            priority_score += 2
+        elif n_cells >= 300:
+            priority_score += 1
+        if not review_reasons:
+            review_reasons.append("spot_check")
+        if priority_score >= 7:
+            priority = "high"
+        elif priority_score >= 4:
+            priority = "medium"
+        else:
+            priority = "low"
+        suggested_action = "accept"
+        if "parent_or_broad_final_label" in review_reasons:
+            suggested_action = "check_if_finer_official_label_is_supported"
+        elif "ambiguous_or_missing_label_candidate" in review_reasons:
+            suggested_action = "evaluate_ontology_gap_or_conservative_policy"
+        elif "marker_assignment_disagrees_with_final" in review_reasons:
+            suggested_action = "review_marker_vs_reference_disagreement"
+        evidence_packet = (
+            f"Study={row.study}; lineage={row.lineage}; cluster={row.cluster}; cells={n_cells}; "
+            f"final={chosen_label}; marker_assignment={marker_assignment}; raw_marker_winner={raw_marker_winner}; "
+            f"assignment_reason={assignment_reason}; marker_score={float(row.marker_assignment_score):.3f}; "
+            f"best_total_score={float(row.best_total_score):.3f}; score_margin={float(row.score_margin):.3f}; "
+            f"CellTypist={row.top_celltypist}; PanHuman={row.top_panhuman_fine}; scRefMap={row.top_screfmapping}; "
+            f"review_reasons={','.join(review_reasons)}."
+        )
+        llm_review_rows.append(
+            {
+                "study": row.study,
+                "lineage": row.lineage,
+                "cluster": row.cluster,
+                "n_cells": n_cells,
+                "review_priority": priority,
+                "priority_score": priority_score,
+                "review_reasons": ";".join(review_reasons),
+                "suggested_action": suggested_action,
+                "final_label": chosen_label,
+                "marker_assignment": marker_assignment,
+                "raw_marker_winner": raw_marker_winner,
+                "assignment_reason": assignment_reason,
+                "marker_score": float(row.marker_assignment_score),
+                "best_total_score": float(row.best_total_score),
+                "score_margin": float(row.score_margin),
+                "top_celltypist": row.top_celltypist,
+                "top_panhuman_fine": row.top_panhuman_fine,
+                "top_screfmapping": row.top_screfmapping,
+                "llm_review_packet": evidence_packet,
+            }
+        )
+llm_review_df = pd.DataFrame(llm_review_rows)
 marker_alert_df = marker_availability_df[marker_availability_df["alert_level"].isin(["critical", "warning"])].copy()
 marker_availability_df.to_csv(tables_dir / "marker_gene_availability.tsv", sep="\t", index=False)
 marker_alert_df.to_csv(tables_dir / "marker_gene_availability_alerts.tsv", sep="\t", index=False)
 pd.DataFrame(subcluster_candidate_score_rows).to_csv(tables_dir / "subcluster_candidate_scores.tsv", sep="\t", index=False)
 marker_feedback_df.to_csv(tables_dir / "marker_assignment_feedback.tsv", sep="\t", index=False)
+llm_review_df.to_csv(tables_dir / "llm_subcluster_review_queue.tsv", sep="\t", index=False)
+if not llm_review_df.empty:
+    prompt_lines = [
+        "# LLM Subcluster Review Queue",
+        "",
+        "Use these packets as a review layer. Do not directly mutate per-cell labels. Return dataset-specific concerns, ontology-gap hypotheses, and general policy updates to test in the deterministic pipeline.",
+        "",
+    ]
+    for row in llm_review_df.sort_values(["priority_score", "n_cells"], ascending=False).head(30).itertuples(index=False):
+        prompt_lines.extend(
+            [
+                f"## {row.study} {row.lineage} cluster {row.cluster}",
+                "",
+                f"- Priority: {row.review_priority} ({row.priority_score})",
+                f"- Suggested action: {row.suggested_action}",
+                f"- Evidence packet: {row.llm_review_packet}",
+                "",
+                "Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?",
+                "",
+            ]
+        )
+    (tables_dir / "llm_subcluster_review_prompts.md").write_text("\n".join(prompt_lines), encoding="utf-8")
 pd.DataFrame(subcluster_umap_rows).to_csv(tables_dir / "true_subcluster_umap_summary.tsv", sep="\t", index=False)
 lineage_panel_status_df = pd.DataFrame(lineage_panel_status_rows)
 lineage_panel_status_df.to_csv(tables_dir / "lineage_panel_status.tsv", sep="\t", index=False)
@@ -1515,6 +1630,25 @@ if not subcluster_df.empty:
                 "treg_key_bonus": f"{getattr(row, 'Treg_key_marker_bonus', 0.0):.3f}",
                 "marker_set": row.marker_set,
                 "marker_alert": row.marker_availability_alert,
+            }
+        )
+
+llm_review_rows_for_report = []
+if not llm_review_df.empty:
+    for row in llm_review_df.sort_values(["priority_score", "n_cells"], ascending=False).head(20).itertuples(index=False):
+        llm_review_rows_for_report.append(
+            {
+                "study": row.study,
+                "lineage": row.lineage,
+                "cluster": row.cluster,
+                "cells": f"{row.n_cells:,}",
+                "priority": row.review_priority,
+                "reasons": row.review_reasons,
+                "suggested_action": row.suggested_action,
+                "final_label": row.final_label,
+                "marker_assignment": row.marker_assignment,
+                "raw_marker_winner": row.raw_marker_winner,
+                "score_margin": f"{row.score_margin:.3f}",
             }
         )
 
@@ -1721,6 +1855,7 @@ def report_values(language):
         "LABEL_COMPOSITION": table_or_none(label_rows_for_report, ["study", "predicted_cell_type", "cells"], language),
         "MARKER_FEEDBACK_TABLE": table_or_none(marker_feedback_rows_for_report, ["study", "lineage", "cluster", "cells", "chosen_label", "marker_assignment", "raw_marker_winner", "assignment_reason", "marker_score", "base_score", "penalty", "flags"], language),
         "SUBCLUSTER_EVIDENCE_TABLE": table_or_none(subcluster_evidence_rows_for_report, ["study", "lineage", "cluster", "cells", "chosen_label", "accepted", "score_margin", "cluster_marker_assignment", "treg_key_any", "treg_key_bonus", "marker_set", "marker_alert"], language),
+        "LLM_REVIEW_QUEUE": table_or_none(llm_review_rows_for_report, ["study", "lineage", "cluster", "cells", "priority", "reasons", "suggested_action", "final_label", "marker_assignment", "raw_marker_winner", "score_margin"], language),
         "FIGURE_BLOCKS": figure_blocks,
         "FILE_BLOCK": file_block,
         "LLM_REVIEW_PROMPT": llm_review_prompt,

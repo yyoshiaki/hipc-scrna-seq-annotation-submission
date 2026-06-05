@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-05 11:41:52 EDT
+Updated: 2026-06-05 12:50:43 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -80,6 +80,7 @@ Marker registry input:
 - LLM-assisted marker curation is allowed only before deterministic scoring. The final run must use a frozen registry, not runtime per-cell LLM decisions.
 - Updated 2026-06-05 10:04:20 EDT: marker registry construction and ambiguous-label handling are documented in `docs/260605_marker_registry_contract.md`. Labels such as `Plasmablast`, `NKT Cell`, and `gdT Cell` should be represented as candidates when present in the ontology/registry, but conservative acceptance policies should prevent noisy over-calling.
 - Updated 2026-06-05 11:41:52 EDT: the v20 refactor plan is documented in `docs/260605_v20_registry_first_refactor_plan.md`. The intended architecture is registry-first: marker biology lives in `configs/marker_registry.yaml`; the deterministic CLI reads the frozen registry and should not reintroduce marker-gene lists in code.
+- Updated 2026-06-05 12:50:43 EDT: v21 adds a subcluster-level LLM review layer. The deterministic pipeline writes `tables/llm_subcluster_review_queue.tsv` and `tables/llm_subcluster_review_prompts.md`; Codex/LLM reviews these packets for ontology-gap hypotheses and general policy updates, but does not directly mutate per-cell labels.
 
 ## Output Contract
 
@@ -166,10 +167,11 @@ scRefMapping is intentionally **not** connected to broad lineage assignment. It 
 8. **Ontology-constrained labels**: final labels must be official ontology labels after configured exclusions. Known problematic labels such as `Effector B` are excluded by config when appropriate.
 9. **Doublet and QC handling**: doublet evidence is not a filter. Supported doublets are submitted as `Doublet`; low-QC or mixed-marker cells receive confidence caps or review concerns.
 10. **Confidence calibration**: confidence reflects reference agreement, marker support, subcluster coherence, score margin, QC penalties, and doublet/mixed-lineage flags.
-11. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, source disagreement, interpretation notes, UMAPs, marker dotplots, true lineage-specific subcluster plots, local source-label overlays, cluster marker gate score UMAPs, marker assignment feedback, and output files. The fixed workflow is documented in this README and is not repeated in every report. Updated 2026-06-04 16:44:18 EDT.
-12. **Validation**: Codex must confirm submission row counts, official labels, non-missing predictions, H5AD/submission agreement, confidence fields, and report image links.
-13. **Codex report assessment**: after generation, Codex reads the report and updates the dataset-specific assessment when the automated text is too generic.
-14. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
+11. **LLM review queue**: Updated 2026-06-05 12:50:43 EDT. The pipeline exports subcluster evidence packets for Codex/LLM review. The review layer may propose ontology-gap notes or general registry/config policy updates, but per-cell labels are changed only by rerunning the deterministic pipeline.
+12. **Report generation**: reports are generated from Markdown templates in `skills/hipc-annotation/templates/` and focus on dataset-specific summary, marker availability alerts, source disagreement, interpretation notes, UMAPs, marker dotplots, true lineage-specific subcluster plots, local source-label overlays, cluster marker gate score UMAPs, marker assignment feedback, LLM review queue, and output files. The fixed workflow is documented in this README and is not repeated in every report. Updated 2026-06-05 12:50:43 EDT.
+13. **Validation**: Codex must confirm submission row counts, official labels, non-missing predictions, H5AD/submission agreement, confidence fields, and report image links.
+14. **Codex report assessment**: after generation, Codex reads the report and LLM review queue, then updates the dataset-specific assessment when the automated text is too generic.
+15. **Codex review response**: Codex returns output paths, validation status, and notable review concerns. It should not hand commands back to the user unless blocked.
 
 ## Core Principles
 

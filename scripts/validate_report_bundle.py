@@ -26,6 +26,7 @@ REQUIRED_PHRASES_EN = [
     "Cluster Consensus Evidence",
     "Subcluster Marker Score Review",
     "Marker Assignment Feedback",
+    "LLM Review Queue",
     "true subcluster",
 ]
 REQUIRED_PHRASES_JA = [
@@ -35,6 +36,7 @@ REQUIRED_PHRASES_JA = [
     "Cluster Consensus Evidence",
     "Subcluster Marker Score Review",
     "Marker Assignment Feedback",
+    "LLM Review Queue",
     "true subcluster",
 ]
 REQUIRED_TOPIC_PATTERNS = [
@@ -83,6 +85,7 @@ for study in EXPECTED_STUDIES:
         study_dir / "tables/subcluster_candidate_scores.tsv",
         study_dir / "tables/lineage_panel_status.tsv",
         study_dir / "tables/marker_assignment_feedback.tsv",
+        study_dir / "tables/llm_subcluster_review_queue.tsv",
     ]
     for lineage in ["B_lineage", "T_NK_lineage", "Myeloid_lineage"]:
         required_tables.extend(

@@ -50,6 +50,12 @@ Marker gene assignment は final label を強制的に上書きするもので�
 
 {{MARKER_FEEDBACK_TABLE}}
 
+## LLM Review Queue
+
+この表は Codex/LLM が読むための subcluster-level review queue です。LLM はこの evidence を読んで、final label が妥当か、ontology にちょうどよい label がないのか、registry / conservative policy を一般ルールとして更新すべきかを提案します。LLM の出力で per-cell label を直接書き換えず、採用する場合は registry/config を更新して deterministic pipeline を再実行します。
+
+{{LLM_REVIEW_QUEUE}}
+
 ## Cluster Consensus Evidence
 
 {{SUBCLUSTER_EVIDENCE_TABLE}}

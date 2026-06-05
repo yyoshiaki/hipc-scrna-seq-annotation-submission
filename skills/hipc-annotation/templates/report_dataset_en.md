@@ -50,6 +50,12 @@ Marker-gene assignment is a cluster-level self-check rather than a forced final-
 
 {{MARKER_FEEDBACK_TABLE}}
 
+## LLM Review Queue
+
+This table is the subcluster-level review queue for Codex/LLM. The LLM should use this evidence to decide whether the final label is reasonable, whether the subcluster suggests an ontology gap, or whether a general registry/conservative-policy update should be tested. The LLM must not directly mutate per-cell labels; accepted changes should update registry/config rules and then rerun the deterministic pipeline.
+
+{{LLM_REVIEW_QUEUE}}
+
 ## Cluster Consensus Evidence
 
 {{SUBCLUSTER_EVIDENCE_TABLE}}

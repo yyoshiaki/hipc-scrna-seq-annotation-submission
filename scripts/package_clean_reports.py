@@ -37,6 +37,7 @@ summary_tables = {
     "source_disagreement_summary.tsv": [],
     "lineage_panel_status.tsv": [],
     "marker_assignment_feedback.tsv": [],
+    "llm_subcluster_review_queue.tsv": [],
 }
 
 for study in EXPECTED_STUDIES:

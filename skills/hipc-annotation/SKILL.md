@@ -25,9 +25,10 @@ The report templates are part of this skill at `templates/report_dataset_en.md` 
 6. Run `scripts/pipeline/hipc_audit_marker_registry.py` after marker registry edits. Do not proceed to final annotation if ontology coverage or schema validation fails.
 7. Run the bundled helper `scripts/run_one.sh` from the repository root.
 8. Let `run_one.sh` call the deterministic CLI and validator. Do not skip validation.
-9. Read `references/report_authoring_contract.md`, inspect the generated report, and revise the `Dataset-Specific Assessment` section when the automated assessment is too generic.
-10. Inspect the generated report for obvious broken paths, stale metadata, missing UMAPs/dotplots, misleading file paths, or generic interpretation text.
-11. Report completion only after validation passes, or report the exact failing validation item.
+9. Inspect `tables/llm_subcluster_review_queue.tsv` and `tables/llm_subcluster_review_prompts.md` when present. Use them as a review layer, not as direct label-edit instructions.
+10. Read `references/report_authoring_contract.md`, inspect the generated report, and revise the `Dataset-Specific Assessment` section when the automated assessment is too generic.
+11. Inspect the generated report for obvious broken paths, stale metadata, missing UMAPs/dotplots, misleading file paths, or generic interpretation text.
+12. Report completion only after validation passes, or report the exact failing validation item.
 
 For multiple datasets, Codex should repeat this single-dataset workflow per dataset. Do not add a batch CLI unless explicitly requested.
 
@@ -102,7 +103,8 @@ The intended generalized workflow is:
 2. Add notes and conservative policies for labels that are expected to be hard to distinguish, such as plasma cell vs plasmablast, NKT vs NK/cytotoxic T, or gdT vs cytotoxic/MAIT-like T cells.
 3. Freeze the registry and audit it.
 4. Run deterministic annotation against one dataset.
-5. Let Codex review the generated evidence and report, but not mutate labels by ad hoc per-dataset rules.
+5. Let Codex review the generated subcluster evidence queue and report, but not mutate labels by ad hoc per-dataset rules.
+6. If the review finds a useful general improvement, encode it as a marker registry, source-support, QC, or ontology policy update, then rerun deterministic annotation.
 
 Implementation guardrail:
 
