@@ -410,6 +410,13 @@ for input_row in manifest.itertuples(index=False):
     study = input_row.study_id
     h5ad = project_path(input_row.input_h5ad)
     adata = sc.read_h5ad(h5ad)
+    for gene_column in ["feature_name", "SYMBOL", "features"]:
+        if gene_column in adata.var.columns:
+            candidate_names = pd.Index(adata.var[gene_column].astype(str))
+            non_numeric_fraction = (~candidate_names.str.match(r"^\d+$")).mean()
+            if non_numeric_fraction > 0.50:
+                adata.var_names = candidate_names
+                break
     adata.var_names_make_unique()
     adata.obs_names_make_unique()
     obs = adata.obs.copy()
@@ -421,15 +428,20 @@ for input_row in manifest.itertuples(index=False):
 
     matrix_values = adata.X.data if sparse.issparse(adata.X) else np.asarray(adata.X).ravel()
     if matrix_values.size:
-        sample_values = matrix_values[: min(matrix_values.size, 200000)]
+        rng = np.random.default_rng(0)
+        sample_size = min(matrix_values.size, 200000)
+        sample_idx = rng.choice(matrix_values.size, size=sample_size, replace=False)
+        sample_values = matrix_values[sample_idx]
         count_like_input = bool(
             np.nanmin(sample_values) >= 0
-            and np.nanmax(sample_values) > 20
+            and np.nanmax(sample_values) >= 5
             and np.mean(np.isclose(sample_values, np.round(sample_values))) > 0.95
         )
     else:
         count_like_input = False
     if count_like_input:
+        if "counts" not in adata.layers:
+            adata.layers["counts"] = adata.X.copy()
         sc.pp.normalize_total(adata, target_sum=1e4)
         sc.pp.log1p(adata)
         if adata.raw is None:
@@ -1589,6 +1601,9 @@ for input_row in manifest.itertuples(index=False):
     if int(submission["confidence_score"].lt(0.60).sum()) > 10000:
         concern_rows.append({"study": study, "concern": "Many low-confidence cells; QC or mixed-marker effects likely remain", "n_cells": int(submission["confidence_score"].lt(0.60).sum())})
 
+    adata.raw = None
+    adata.obs.index.name = None
+    adata.var.index.name = None
     adata.write_h5ad(cxg_dir / f"{study}.final_annotation.cxg.h5ad", compression="gzip")
     del adata
 

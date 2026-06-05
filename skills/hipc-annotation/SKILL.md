@@ -72,6 +72,13 @@ Required:
 - official ontology TSV from config
 - annotation config
 
+For the Team04 clean beta submission run, use `configs/manifest.team04.current_clean.tsv`.
+Do not use the old mixed development manifests as clean inputs. `infection_study_07`
+is excluded from the clean active manifest because the current Team04 distribution
+does not provide raw/unfiltered counts for that study. `vaccination_study_10`
+remains a flagged transformed-input fallback unless a corrected raw-count file is
+provided upstream.
+
 Expected evidence when available:
 
 - CellTypist labels

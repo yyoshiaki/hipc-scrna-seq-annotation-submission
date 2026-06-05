@@ -1,6 +1,6 @@
 {
-  "version": "hipc_annotation_final_v22_source_effectiveness_all_targets",
-  "output_root": "outputs/final_annotations/hipc_annotation_final_v22_source_effectiveness_all_targets",
+  "version": "hipc_annotation_current_clean_beta",
+  "output_root": "outputs/final_annotations/hipc_annotation_current_clean_beta",
   "report": {
     "default_language": "en",
     "development_languages": [

@@ -12,7 +12,6 @@ DEFAULT_EXPECTED_STUDIES = [
     "infection_study_03",
     "infection_study_04",
     "infection_study_06",
-    "infection_study_07",
     "vaccination_study_01",
     "vaccination_study_04",
     "vaccination_study_06",
