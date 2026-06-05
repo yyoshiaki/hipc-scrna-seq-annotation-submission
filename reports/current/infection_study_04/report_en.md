@@ -190,48 +190,75 @@ Marker-gene assignment is a cluster-level self-check rather than a forced final-
 | infection_study_04 | B_lineage | 9 | 344 | Memory B Cell | Naive B Cell | Naive B Cell | raw_marker_winner | 0.606 | 0.860 | 0.255 | marker_final_disagreement |
 | infection_study_04 | T_NK_lineage | 27 | 231 | MAIT Cell | MAIT Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.854 | 0.927 | 0.074 | screfmapping_missing_for_scope |
 
+## LLM Review Queue
+
+This table is the subcluster-level review queue for Codex/LLM. The LLM should use this evidence to decide whether the final label is reasonable, whether the subcluster suggests an ontology gap, or whether a general registry/conservative-policy update should be tested. The LLM must not directly mutate per-cell labels; accepted changes should update registry/config rules and then rerun the deterministic pipeline.
+
+| study | lineage | cluster | cells | priority | reasons | suggested_action | final_label | marker_assignment | raw_marker_winner | score_margin |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| infection_study_04 | T_NK_lineage | 5 | 1,042 | high | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 0.086 |
+| infection_study_04 | T_NK_lineage | 1 | 1,421 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 1.531 |
+| infection_study_04 | T_NK_lineage | 10 | 902 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 2.218 |
+| infection_study_04 | T_NK_lineage | 13 | 795 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 0.579 |
+| infection_study_04 | T_NK_lineage | 14 | 762 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 1.666 |
+| infection_study_04 | T_NK_lineage | 15 | 754 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 1.302 |
+| infection_study_04 | T_NK_lineage | 16 | 713 | medium | marker_assignment_disagrees_with_final;screfmapping_not_available | review_marker_vs_reference_disagreement | CD4 Naive / T Central Memory | CD8 Naive / T Central Memory | CD8 Naive / T Central Memory | 0.865 |
+| infection_study_04 | T_NK_lineage | 23 | 388 | medium | marker_assignment_disagrees_with_final;screfmapping_not_available | review_marker_vs_reference_disagreement | NK Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 0.186 |
+| infection_study_04 | T_NK_lineage | 27 | 231 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | MAIT Cell | MAIT Cell | NKT Cell | 0.456 |
+| infection_study_04 | T_NK_lineage | 30 | 213 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 0.633 |
+| infection_study_04 | T_NK_lineage | 0 | 1,687 | low | screfmapping_not_available | accept | NK Cell | NK Cell | NK Cell | 2.794 |
+| infection_study_04 | T_NK_lineage | 4 | 1,203 | low | screfmapping_not_available | accept | NK Cell | NK Cell | NK Cell | 1.846 |
+| infection_study_04 | T_NK_lineage | 6 | 1,007 | low | screfmapping_not_available | accept | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 1.579 |
+| infection_study_04 | T_NK_lineage | 12 | 800 | low | raw_marker_winner_changed_by_policy;screfmapping_not_available | accept | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | CD8 Naive / T Central Memory | 1.370 |
+| infection_study_04 | B_lineage | 4 | 443 | low | marker_assignment_disagrees_with_final | review_marker_vs_reference_disagreement | Memory B Cell | Naive B Cell | Naive B Cell | 0.510 |
+| infection_study_04 | B_lineage | 9 | 344 | low | marker_assignment_disagrees_with_final | review_marker_vs_reference_disagreement | Memory B Cell | Naive B Cell | Naive B Cell | 0.758 |
+| infection_study_04 | Myeloid_lineage | 25 | 78 | low | marker_assignment_disagrees_with_final;screfmapping_not_available | review_marker_vs_reference_disagreement | Neutrophil | Classical Monocyte | Classical Monocyte | 0.578 |
+| infection_study_04 | T_NK_lineage | 7 | 937 | low | screfmapping_not_available | accept | NK Cell | NK Cell | NK Cell | 2.656 |
+| infection_study_04 | T_NK_lineage | 11 | 891 | low | screfmapping_not_available | accept | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 1.431 |
+| infection_study_04 | T_NK_lineage | 19 | 511 | low | screfmapping_not_available | accept | NK Cell | NK Cell | NK Cell | 2.728 |
+
 ## Cluster Consensus Evidence
 
 | study | lineage | cluster | cells | chosen_label | accepted | score_margin | cluster_marker_assignment | treg_key_any | treg_key_bonus | marker_set | marker_alert |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_04 | B_lineage | 0 | 681 | Naive B Cell | True | 4.476 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_04 | B_lineage | 1 | 574 | Plasma Cell | True | 2.389 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 2 | 469 | Naive B Cell | True | 4.341 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_04 | B_lineage | 3 | 446 | Plasma Cell | True | 3.458 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 4 | 443 | Memory B Cell | True | 0.510 | Naive B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_04 | B_lineage | 5 | 439 | Plasma Cell | True | 3.480 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 6 | 404 | Memory B Cell | True | 2.985 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_04 | B_lineage | 7 | 403 | Memory B Cell | True | 2.372 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_04 | B_lineage | 8 | 360 | Plasma Cell | True | 2.998 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 9 | 344 | Memory B Cell | True | 0.758 | Naive B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_04 | B_lineage | 10 | 341 | Plasma Cell | True | 0.334 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 11 | 268 | Plasma Cell | True | 2.158 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 12 | 266 | Plasma Cell | True | 1.421 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 13 | 251 | Plasma Cell | True | 1.299 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 14 | 224 | Naive B Cell | True | 1.443 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_04 | B_lineage | 15 | 194 | Plasma Cell | True | 2.431 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 16 | 102 | Plasma Cell | True | 1.943 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 17 | 81 | Plasma Cell | True | 2.338 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | B_lineage | 18 | 47 | Plasma Cell | True | 0.699 | Plasma Cell | nan | nan | Plasma_ASC | warning |
-| infection_study_04 | Myeloid_lineage | 0 | 1,341 | Classical Monocyte | True | 2.334 | Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 1 | 900 | Classical Monocyte | True | 2.674 | Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 2 | 836 | Classical Monocyte | True | 2.382 | Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 3 | 831 | Classical Monocyte | True | 2.467 | Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 4 | 767 | Classical Monocyte | True | 2.581 | Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 5 | 738 | Non-Classical Monocyte | True | 2.201 | Non-Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 6 | 659 | Classical Monocyte | True | 2.683 | Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 7 | 625 | Classical Monocyte | True | 2.282 | Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 8 | 598 | Classical Monocyte | True | 2.211 | Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 9 | 572 | Classical Monocyte | True | 2.558 | Classical Monocyte | nan | nan | not_applicable | pass |
-| infection_study_04 | Myeloid_lineage | 10 | 558 | Classical Monocyte | True | 2.609 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_04 | B_lineage | 0 | 681 | Naive B Cell | True | 4.476 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_04 | B_lineage | 1 | 574 | Plasma Cell | True | 2.389 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 2 | 469 | Naive B Cell | True | 4.341 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_04 | B_lineage | 3 | 446 | Plasma Cell | True | 3.458 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 4 | 443 | Memory B Cell | True | 0.510 | Naive B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_04 | B_lineage | 5 | 439 | Plasma Cell | True | 3.480 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 6 | 404 | Memory B Cell | True | 2.985 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_04 | B_lineage | 7 | 403 | Memory B Cell | True | 2.372 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_04 | B_lineage | 8 | 360 | Plasma Cell | True | 2.998 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 9 | 344 | Memory B Cell | True | 0.758 | Naive B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_04 | B_lineage | 10 | 341 | Plasma Cell | True | 0.334 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 11 | 268 | Plasma Cell | True | 2.158 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 12 | 266 | Plasma Cell | True | 1.421 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 13 | 251 | Plasma Cell | True | 1.299 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 14 | 224 | Naive B Cell | True | 1.443 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_04 | B_lineage | 15 | 194 | Plasma Cell | True | 2.431 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 16 | 102 | Plasma Cell | True | 1.943 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 17 | 81 | Plasma Cell | True | 2.338 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | B_lineage | 18 | 47 | Plasma Cell | True | 0.699 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_04 | Myeloid_lineage | 0 | 1,341 | Classical Monocyte | True | 2.334 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 1 | 900 | Classical Monocyte | True | 2.674 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 2 | 836 | Classical Monocyte | True | 2.382 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 3 | 831 | Classical Monocyte | True | 2.467 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 4 | 767 | Classical Monocyte | True | 2.581 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 5 | 738 | Non-Classical Monocyte | True | 2.201 | Non-Classical Monocyte | nan | nan | registry__non_classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 6 | 659 | Classical Monocyte | True | 2.683 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 7 | 625 | Classical Monocyte | True | 2.282 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 8 | 598 | Classical Monocyte | True | 2.211 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 9 | 572 | Classical Monocyte | True | 2.558 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_04 | Myeloid_lineage | 10 | 558 | Classical Monocyte | True | 2.609 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
 
 ## Output Files
 
-- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_04/submissions/`
-- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_04/cellxgene/`
-- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_04/tables/marker_gene_availability.tsv`
-- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_04/tables/marker_gene_availability_alerts.tsv`
-- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_04/tables/lineage_subcluster_evidence.tsv.gz`
-- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_04/tables/source_disagreement_summary.tsv`
-- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_04/tables/`
+- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_04/submissions/`
+- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_04/cellxgene/`
+- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_04/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_04/tables/marker_gene_availability_alerts.tsv`
+- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_04/tables/lineage_subcluster_evidence.tsv.gz`
+- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_04/tables/source_disagreement_summary.tsv`
+- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_04/tables/`
 

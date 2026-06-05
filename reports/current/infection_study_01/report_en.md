@@ -190,48 +190,75 @@ Marker-gene assignment is a cluster-level self-check rather than a forced final-
 | infection_study_01 | T_NK_lineage | 24 | 477 | NK Cell | NK Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.904 | 1.000 | 0.096 | screfmapping_missing_for_scope |
 | infection_study_01 | T_NK_lineage | 25 | 456 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | CD8 Naive / T Central Memory | source_supported_marker_tiebreak | 0.576 | 1.000 | 0.424 | screfmapping_missing_for_scope |
 
+## LLM Review Queue
+
+This table is the subcluster-level review queue for Codex/LLM. The LLM should use this evidence to decide whether the final label is reasonable, whether the subcluster suggests an ontology gap, or whether a general registry/conservative-policy update should be tested. The LLM must not directly mutate per-cell labels; accepted changes should update registry/config rules and then rerun the deterministic pipeline.
+
+| study | lineage | cluster | cells | priority | reasons | suggested_action | final_label | marker_assignment | raw_marker_winner | score_margin |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| infection_study_01 | T_NK_lineage | 1 | 1,305 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 1.855 |
+| infection_study_01 | T_NK_lineage | 4 | 1,036 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 2.050 |
+| infection_study_01 | T_NK_lineage | 5 | 1,001 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 2.424 |
+| infection_study_01 | B_lineage | 26 | 40 | medium | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available | check_if_finer_official_label_is_supported | B Cell | Memory B Cell | Memory B Cell | 2.227 |
+| infection_study_01 | T_NK_lineage | 6 | 969 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 1.456 |
+| infection_study_01 | T_NK_lineage | 7 | 927 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 2.531 |
+| infection_study_01 | T_NK_lineage | 8 | 925 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 1.534 |
+| infection_study_01 | T_NK_lineage | 9 | 880 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 2.530 |
+| infection_study_01 | T_NK_lineage | 11 | 851 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 1.508 |
+| infection_study_01 | T_NK_lineage | 12 | 695 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | MAIT Cell | MAIT Cell | NKT Cell | 0.856 |
+| infection_study_01 | T_NK_lineage | 14 | 687 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 1.488 |
+| infection_study_01 | T_NK_lineage | 15 | 670 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 2.271 |
+| infection_study_01 | T_NK_lineage | 16 | 605 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 1.547 |
+| infection_study_01 | T_NK_lineage | 17 | 584 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 1.583 |
+| infection_study_01 | T_NK_lineage | 21 | 498 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 1.470 |
+| infection_study_01 | T_NK_lineage | 22 | 497 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 2.389 |
+| infection_study_01 | T_NK_lineage | 24 | 477 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 0.928 |
+| infection_study_01 | T_NK_lineage | 26 | 446 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 0.927 |
+| infection_study_01 | T_NK_lineage | 28 | 401 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | 0.389 |
+| infection_study_01 | T_NK_lineage | 29 | 396 | medium | raw_marker_winner_changed_by_policy;ambiguous_or_missing_label_candidate;screfmapping_not_available | evaluate_ontology_gap_or_conservative_policy | NK Cell | NK Cell | NKT Cell | 2.496 |
+
 ## Cluster Consensus Evidence
 
 | study | lineage | cluster | cells | chosen_label | accepted | score_margin | cluster_marker_assignment | treg_key_any | treg_key_bonus | marker_set | marker_alert |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_01 | B_lineage | 0 | 528 | Naive B Cell | True | 4.100 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 1 | 445 | Naive B Cell | True | 4.521 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 2 | 391 | Naive B Cell | True | 4.250 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 3 | 363 | Memory B Cell | True | 2.668 | Naive B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | B_lineage | 4 | 348 | Naive B Cell | True | 3.982 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 5 | 328 | Naive B Cell | True | 4.533 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 6 | 318 | Memory B Cell | True | 3.752 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | B_lineage | 7 | 309 | Memory B Cell | True | 4.238 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | B_lineage | 8 | 309 | Memory B Cell | True | 3.307 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | B_lineage | 9 | 302 | Naive B Cell | True | 3.918 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 10 | 294 | Naive B Cell | True | 4.284 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 11 | 292 | Naive B Cell | True | 4.407 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 12 | 249 | Memory B Cell | True | 3.237 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | B_lineage | 13 | 228 | Memory B Cell | True | 3.674 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | B_lineage | 14 | 227 | Naive B Cell | True | 4.323 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 15 | 218 | Naive B Cell | True | 2.901 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 16 | 217 | Naive B Cell | True | 1.713 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 17 | 216 | Memory B Cell | True | 3.602 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | B_lineage | 18 | 190 | Naive B Cell | True | 3.850 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 19 | 170 | Naive B Cell | True | 4.100 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 20 | 152 | Naive B Cell | True | 3.306 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 21 | 102 | Memory B Cell | True | 3.994 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | B_lineage | 22 | 92 | Naive B Cell | True | 0.524 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 23 | 85 | Plasma Cell | True | 3.100 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| infection_study_01 | B_lineage | 24 | 43 | Plasmablast | True | 0.968 | Plasmablast | nan | nan | Plasma_ASC | pass |
-| infection_study_01 | B_lineage | 25 | 42 | Plasma Cell | True | 0.930 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| infection_study_01 | B_lineage | 26 | 40 | B Cell | False | 2.227 | Memory B Cell | nan | nan | Plasma_ASC | pass |
-| infection_study_01 | B_lineage | 27 | 39 | Naive B Cell | True | 1.375 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 28 | 26 | Memory B Cell | True | 3.450 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | Myeloid_lineage | 0 | 1,695 | Classical Monocyte | True | 2.489 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_01 | B_lineage | 0 | 528 | Naive B Cell | True | 4.100 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 1 | 445 | Naive B Cell | True | 4.521 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 2 | 391 | Naive B Cell | True | 4.250 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 3 | 363 | Memory B Cell | True | 2.668 | Naive B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_01 | B_lineage | 4 | 348 | Naive B Cell | True | 3.982 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 5 | 328 | Naive B Cell | True | 4.533 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 6 | 318 | Memory B Cell | True | 3.752 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_01 | B_lineage | 7 | 309 | Memory B Cell | True | 4.238 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_01 | B_lineage | 8 | 309 | Memory B Cell | True | 3.307 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_01 | B_lineage | 9 | 302 | Naive B Cell | True | 3.918 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 10 | 294 | Naive B Cell | True | 4.284 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 11 | 292 | Naive B Cell | True | 4.407 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 12 | 249 | Memory B Cell | True | 3.237 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_01 | B_lineage | 13 | 228 | Memory B Cell | True | 3.674 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_01 | B_lineage | 14 | 227 | Naive B Cell | True | 4.323 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 15 | 218 | Naive B Cell | True | 2.901 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 16 | 217 | Naive B Cell | True | 1.713 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 17 | 216 | Memory B Cell | True | 3.602 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_01 | B_lineage | 18 | 190 | Naive B Cell | True | 3.850 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 19 | 170 | Naive B Cell | True | 4.100 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 20 | 152 | Naive B Cell | True | 3.306 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 21 | 102 | Memory B Cell | True | 3.994 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_01 | B_lineage | 22 | 92 | Naive B Cell | True | 0.524 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 23 | 85 | Plasma Cell | True | 3.100 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_01 | B_lineage | 24 | 43 | Plasmablast | True | 0.968 | Plasmablast | nan | nan | registry__plasmablast | pass |
+| infection_study_01 | B_lineage | 25 | 42 | Plasma Cell | True | 0.930 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_01 | B_lineage | 26 | 40 | B Cell | False | 2.227 | Memory B Cell | nan | nan | registry__plasmablast | pass |
+| infection_study_01 | B_lineage | 27 | 39 | Naive B Cell | True | 1.375 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_01 | B_lineage | 28 | 26 | Memory B Cell | True | 3.450 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
+| infection_study_01 | Myeloid_lineage | 0 | 1,695 | Classical Monocyte | True | 2.489 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
 
 ## Output Files
 
-- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/submissions/`
-- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/cellxgene/`
-- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/marker_gene_availability.tsv`
-- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/marker_gene_availability_alerts.tsv`
-- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/lineage_subcluster_evidence.tsv.gz`
-- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/source_disagreement_summary.tsv`
-- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/`
+- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_01/submissions/`
+- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_01/cellxgene/`
+- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_01/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_01/tables/marker_gene_availability_alerts.tsv`
+- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_01/tables/lineage_subcluster_evidence.tsv.gz`
+- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_01/tables/source_disagreement_summary.tsv`
+- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v21/infection_study_01/tables/`
 
