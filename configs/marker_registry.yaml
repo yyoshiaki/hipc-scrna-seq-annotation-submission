@@ -1,4 +1,4 @@
-version: 260527_v14_marker_registry
+version: 260605_v19_marker_registry
 description: >
   Ontology-aware marker registry for HIPC single-cell annotation.
   LLM-assisted marker proposals are fixed here before deterministic scoring.
@@ -175,7 +175,7 @@ labels:
     confound: [KLRD1, FCGR3A]
     notes: distinguish from NK by retaining TCR/CD3 program
     provenance: curated
-  ydT Cell:
+  gdT Cell:
     broad_lineage: T/NK
     applicable_lineage: T_NK_lineage
     marker_role: terminal
@@ -183,7 +183,8 @@ labels:
     key: [TRDC, TRGC1, TRGC2]
     negative: [MS4A1, LST1]
     confound: [NKG7, GNLY]
-    notes: official file says ydT; interpret as gamma-delta T cell
+    aliases: [ydT Cell]
+    notes: official thread confirmed ydT should be gdT; keep ydT as an input alias only
     provenance: curated_with_ontology_note
   MAIT Cell:
     broad_lineage: T/NK
@@ -203,6 +204,11 @@ labels:
     key: [CD3D, NKG7, ZBTB16]
     negative: [MS4A1, LST1]
     confound: [CD8A, CD8B]
+    candidate_policy:
+      conservative_accept: true
+      min_marker_gate: 0.60
+      min_support_sum: 0.80
+      min_key_marker_any_fraction: 0.15
     notes: difficult in gene-only PBMC data; require both T and NK programs
     provenance: curated
   B Cell:
@@ -239,11 +245,18 @@ labels:
     broad_lineage: B
     applicable_lineage: B_lineage
     marker_role: terminal
-    positive: [MZB1, XBP1, PRDM1, JCHAIN, IRF4, TNFRSF17, CD27, MKI67]
-    key: [MZB1, XBP1, JCHAIN]
+    positive: [MZB1, XBP1, PRDM1, JCHAIN, IRF4, TNFRSF17, CD27, MKI67, TOP2A, STMN1, PCLAF]
+    key: [MZB1, XBP1, JCHAIN, MKI67]
     negative: [MS4A1, LST1, CD3D]
     confound: [LILRA4, CLEC4C, IRF7]
-    notes: official distinction from plasma cells can be weak without proliferation/surface markers
+    candidate_policy:
+      conservative_accept: true
+      min_marker_gate: 0.55
+      min_support_sum: 0.90
+      min_key_marker_any_fraction: 0.20
+      required_any_markers: [MKI67, TOP2A, STMN1, PCLAF]
+      min_required_any_fraction: 0.03
+    notes: difficult to separate from plasma cells in gene-only PBMC data; require antibody-secreting support plus a proliferation/immature program before accepting as Plasmablast
     provenance: curated
   Naive B Cell:
     broad_lineage: B

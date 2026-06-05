@@ -30,10 +30,13 @@ def mean_expr_score(adata, genes):
     return pd.Series(values, index=adata.obs_names)
 
 
-def source_fraction(frame, columns, label):
+def source_fraction(frame, columns, label, label_aliases=None):
+    labels = [label]
+    if label_aliases and label in label_aliases:
+        labels = list(dict.fromkeys(label_aliases[label]))
     hit = pd.Series(False, index=frame.index)
     for column in columns:
-        hit |= frame[column].astype(str).eq(label)
+        hit |= frame[column].astype(str).isin(labels)
     return float(hit.mean())
 
 
@@ -182,6 +185,15 @@ project_root = Path.cwd()
 config = json.loads(project_path(args.config).read_text())
 marker_registry = yaml.safe_load(project_path(config["marker_registry"]["path"]).read_text())
 marker_registry_labels = marker_registry.get("labels", {})
+label_alias_to_canonical = {"ydT Cell": "gdT Cell"}
+canonical_to_source_labels = {"gdT Cell": ["gdT Cell", "ydT Cell"]}
+
+
+def canonical_label(label):
+    return label_alias_to_canonical.get(str(label), str(label))
+
+
+marker_registry_labels = {canonical_label(label): spec for label, spec in marker_registry_labels.items()}
 manifest = pd.read_csv(project_path(args.manifest), sep="\t").fillna("")
 version = config["version"]
 report_updated = datetime.now(ZoneInfo("America/New_York")).strftime("%Y-%m-%d EDT")
@@ -203,6 +215,7 @@ for path in [submission_dir, tables_dir, cxg_dir, figures_dir, report_dir, asset
 
 ontology = pd.read_csv(project_path(config["ontology"]["path"]), sep="\t")
 official_set = set(ontology["Celltype"].astype(str))
+official_set |= {canonical_label(label) for label in official_set}
 submit_allowed = official_set - set(config["ontology"].get("excluded_submission_labels", []))
 
 sc.settings.figdir = str(figures_dir)
@@ -224,6 +237,7 @@ t_labels = {
     "CD8 Cytotoxic / T Effector Memory",
     "Treg",
     "MAIT Cell",
+    "gdT Cell",
     "ydT Cell",
     "NKT Cell",
     "NK Cell",
@@ -247,6 +261,7 @@ score_gene_sets = {
     "marker_score_b_naive": ["TCL1A", "IGHM", "IGHD", "FCER2"],
     "marker_score_b_memory": ["CD27", "TNFRSF13B", "AIM2", "FCRL5", "ITGAX", "TBX21"],
     "marker_score_b_plasma": ["MZB1", "JCHAIN", "XBP1", "PRDM1", "SDC1"],
+    "marker_score_b_plasmablast": ["MZB1", "JCHAIN", "XBP1", "PRDM1", "IRF4", "TNFRSF17", "CD27", "MKI67"],
     "marker_score_cd4_naive_tcm": ["CD4", "IL7R", "CCR7", "TCF7", "LEF1", "SELL"],
     "marker_score_cd4_tem": ["CD4", "IL7R", "GZMK", "CCL5", "ANXA1"],
     "marker_score_cd8_naive_tcm": ["CD8A", "CD8B", "CCR7", "TCF7", "LEF1"],
@@ -254,6 +269,7 @@ score_gene_sets = {
     "marker_score_treg": ["FOXP3", "IL2RA", "CTLA4", "IKZF2"],
     "marker_score_mait": ["SLC4A10", "KLRB1", "DPP4", "TRAV1-2"],
     "marker_score_gdt": ["TRDC", "TRGC1", "TRGC2"],
+    "marker_score_nkt": ["CD3D", "CD3E", "TRAC", "NKG7", "GNLY", "KLRD1", "ZBTB16"],
     "marker_score_nk": ["NKG7", "GNLY", "KLRD1", "FCGR3A", "PRF1"],
     "marker_score_classical_mono": ["LYZ", "S100A8", "S100A9", "FCN1", "VCAN"],
     "marker_score_nonclassical_mono": ["FCGR3A", "MS4A7", "CX3CR1", "LST1"],
@@ -275,7 +291,7 @@ lineage_configs = {
         "raw_bonus": {
             "Naive B Cell": "Naive B",
             "Memory B Cell": "Memory B|Age-associated B|ABC",
-            "Plasma Cell": "Plasma|Plasmablast",
+            "Plasma Cell": "Plasma Cell|^Plasma$",
         },
     },
     "T_NK_lineage": {
@@ -288,7 +304,7 @@ lineage_configs = {
             "CD8 Cytotoxic / T Effector Memory": "marker_score_cd8_cytotoxic_pct",
             "Treg": "marker_score_treg_pct",
             "MAIT Cell": "marker_score_mait_pct",
-            "ydT Cell": "marker_score_gdt_pct",
+            "gdT Cell": "marker_score_gdt_pct",
             "NK Cell": "marker_score_nk_pct",
         },
         "raw_bonus": {
@@ -298,7 +314,7 @@ lineage_configs = {
             "CD8 Cytotoxic / T Effector Memory": "Tem/Temra cytotoxic|Tem/Trm cytotoxic|GZMB CD8|GZMK CD8",
             "Treg": "Regulatory T|Treg",
             "MAIT Cell": "MAIT",
-            "ydT Cell": "gdT|ydT|gamma",
+            "gdT Cell": "gdT|ydT|gamma",
             "NK Cell": "NK",
         },
     },
@@ -324,6 +340,29 @@ lineage_configs = {
     },
 }
 
+registry_score_name_overrides = {
+    "Plasmablast": "marker_score_b_plasmablast",
+    "gdT Cell": "marker_score_gdt",
+    "NKT Cell": "marker_score_nkt",
+}
+registry_raw_bonus_patterns = {
+    "Plasmablast": "Plasmablast",
+    "NKT Cell": "NKT|natural killer T|NK T",
+}
+for registry_label, registry_spec in marker_registry_labels.items():
+    candidate = canonical_label(registry_label)
+    lineage_name = registry_spec.get("applicable_lineage")
+    marker_role = registry_spec.get("marker_role", "")
+    if lineage_name not in lineage_configs or marker_role not in {"terminal", "rare_terminal", "ambiguous_terminal"}:
+        continue
+    score_name = registry_score_name_overrides.get(candidate)
+    if score_name is None:
+        safe_candidate = re.sub(r"[^A-Za-z0-9]+", "_", candidate).strip("_").lower()
+        score_name = f"marker_score_registry_{safe_candidate}"
+    score_gene_sets.setdefault(score_name, list(registry_spec.get("positive", [])))
+    lineage_configs[lineage_name]["candidate_scores"].setdefault(candidate, f"{score_name}_pct")
+    lineage_configs[lineage_name]["raw_bonus"].setdefault(candidate, registry_raw_bonus_patterns.get(candidate, re.escape(candidate)))
+
 summary_rows = []
 label_rows = []
 reason_rows = []
@@ -333,6 +372,8 @@ concern_rows = []
 
 marker_set_to_labels = {marker_set: spec["official_labels"] for marker_set, spec in config["marker_sets"].items()}
 label_to_marker_set = {label: marker_set for marker_set, labels in marker_set_to_labels.items() for label in labels}
+for label, marker_set in list(label_to_marker_set.items()):
+    label_to_marker_set[canonical_label(label)] = marker_set
 marker_set_gene_lookup = {marker_set: list(spec["genes"]) for marker_set, spec in config["marker_sets"].items()}
 marker_set_key_gene_lookup = {marker_set: list(spec.get("critical_genes", [])) for marker_set, spec in config["marker_sets"].items()}
 critical_threshold = float(config["screfmapping"]["marker_availability_alerts"]["critical_present_fraction_lt"])
@@ -420,6 +461,9 @@ for input_row in manifest.itertuples(index=False):
             if column not in obs.columns:
                 obs[column] = "not_available" if not column.endswith("prob") else 0.0
                 adata.obs[column] = obs[column].values
+    for column in ref_cols + raw_cols + ["screfmapping_official_label"]:
+        obs[column] = obs[column].astype(str).map(canonical_label)
+        adata.obs[column] = obs[column].values
 
     for score_name, genes in score_gene_sets.items():
         obs[score_name] = mean_expr_score(adata, genes)
@@ -487,6 +531,8 @@ for input_row in manifest.itertuples(index=False):
     global_subcluster_reason = pd.Series("not_in_lineage", index=obs.index, dtype="object")
     global_subcluster_id = pd.Series("not_in_lineage", index=obs.index, dtype="object")
     global_cluster_marker_assignment = pd.Series("not_available", index=obs.index, dtype="object")
+    global_cluster_marker_raw_winner = pd.Series("not_available", index=obs.index, dtype="object")
+    global_cluster_marker_assignment_reason = pd.Series("not_available", index=obs.index, dtype="object")
 
     for direct_label in sorted(other_direct_labels):
         direct_votes = pd.Series(0, index=obs.index, dtype="int64")
@@ -579,6 +625,8 @@ for input_row in manifest.itertuples(index=False):
 
         cluster_to_label = {}
         cluster_to_marker_label = {}
+        cluster_to_marker_raw_label = {}
+        cluster_to_marker_reason = {}
         cluster_to_conf = {}
         cluster_to_reason = {}
         cluster_to_candidate_marker_scores = {candidate: {} for candidate in lineage_config["candidate_scores"]}
@@ -589,10 +637,10 @@ for input_row in manifest.itertuples(index=False):
             cluster_expr = lineage_expr.loc[cluster_frame.index] if not lineage_expr.empty else pd.DataFrame(index=cluster_frame.index)
             candidate_rows = []
             for candidate, score_col in lineage_config["candidate_scores"].items():
-                ref_frac = source_fraction(cluster_frame, ref_cols, candidate)
+                ref_frac = source_fraction(cluster_frame, ref_cols, candidate, canonical_to_source_labels)
                 raw_frac = raw_fraction(cluster_frame, raw_cols, lineage_config["raw_bonus"][candidate])
                 marker_pct = float(pd.to_numeric(cluster_frame[score_col], errors="coerce").median())
-                scref_frac = source_fraction(cluster_frame, ["screfmapping_official_label"], candidate)
+                scref_frac = source_fraction(cluster_frame, ["screfmapping_official_label"], candidate, canonical_to_source_labels)
                 registry_spec = marker_registry_labels.get(candidate, {})
                 marker_set = label_to_marker_set.get(candidate, "")
                 registry_positive = list(registry_spec.get("positive", []))
@@ -609,10 +657,15 @@ for input_row in manifest.itertuples(index=False):
                     key_genes = list(dict.fromkeys(marker_set_key_gene_lookup.get(marker_set, [])))
                 negative_genes = list(dict.fromkeys(registry_spec.get("negative", [])))
                 confound_genes = [gene for gene in dict.fromkeys(registry_spec.get("confound", [])) if gene not in set(marker_genes)]
+                candidate_policy = dict(registry_spec.get("candidate_policy", {}))
                 available_key_genes = [gene for gene in key_genes if gene in cluster_expr.columns]
                 marker_metrics = cluster_marker_metrics(cluster_expr, lineage_positive, marker_genes, key_genes)
                 negative_any_fraction, negative_mean_positive_fraction, available_negative_genes = marker_positive_fraction(cluster_expr, negative_genes)
                 confound_any_fraction, confound_mean_positive_fraction, available_confound_genes = marker_positive_fraction(cluster_expr, confound_genes)
+                required_any_fraction, required_mean_positive_fraction, available_required_genes = marker_positive_fraction(
+                    cluster_expr,
+                    list(candidate_policy.get("required_any_markers", [])),
+                )
                 negative_marker_penalty = min(
                     0.50,
                     (0.38 * negative_any_fraction) + (0.22 * negative_mean_positive_fraction),
@@ -678,6 +731,9 @@ for input_row in manifest.itertuples(index=False):
                         "confound_marker_mean_positive_fraction": confound_mean_positive_fraction,
                         "available_negative_markers": ";".join(available_negative_genes),
                         "available_confound_markers": ";".join(available_confound_genes),
+                        "available_policy_required_markers": ";".join(available_required_genes),
+                        "policy_required_any_fraction": required_any_fraction,
+                        "policy_required_mean_positive_fraction": required_mean_positive_fraction,
                         "screfmapping_fraction": scref_frac,
                         "total_score": total_score,
                         **marker_metrics,
@@ -719,6 +775,9 @@ for input_row in manifest.itertuples(index=False):
                     "confound_marker_mean_positive_fraction": float(candidate_row.confound_marker_mean_positive_fraction),
                     "available_negative_markers": candidate_row.available_negative_markers,
                     "available_confound_markers": candidate_row.available_confound_markers,
+                    "available_policy_required_markers": candidate_row.available_policy_required_markers,
+                    "policy_required_any_fraction": float(candidate_row.policy_required_any_fraction),
+                    "policy_required_mean_positive_fraction": float(candidate_row.policy_required_mean_positive_fraction),
                     "ref_fraction": float(candidate_row.ref_fraction),
                     "raw_fraction": float(candidate_row.raw_fraction),
                     "screfmapping_fraction": float(candidate_row.screfmapping_fraction),
@@ -748,6 +807,14 @@ for input_row in manifest.itertuples(index=False):
                 )
             if lineage_name == "Myeloid_lineage" and best["candidate"] in {"Plasmacytoid DC", "Conventional DC 1", "Conventional DC 2"}:
                 accepted = accepted and ((float(best["marker_discriminative_score"]) >= 0.60) or (float(best["ref_fraction"]) >= 0.35))
+            best_registry_spec = marker_registry_labels.get(str(best["candidate"]), {})
+            best_policy = dict(best_registry_spec.get("candidate_policy", {}))
+            if accepted and best_policy.get("conservative_accept", False):
+                support_sum = float(best["ref_fraction"]) + float(best["raw_fraction"]) + float(best["screfmapping_fraction"])
+                accepted = accepted and float(best["marker_gate_score"]) >= float(best_policy.get("min_marker_gate", 0.55))
+                accepted = accepted and support_sum >= float(best_policy.get("min_support_sum", 0.70))
+                accepted = accepted and float(best["key_marker_any_fraction"]) >= float(best_policy.get("min_key_marker_any_fraction", 0.10))
+                accepted = accepted and float(best["policy_required_any_fraction"]) >= float(best_policy.get("min_required_any_fraction", 0.0))
 
             marker_set = label_to_marker_set.get(str(best["candidate"]), "not_applicable")
             marker_alert = study_marker_alert.get(marker_set, "pass")
@@ -762,9 +829,43 @@ for input_row in manifest.itertuples(index=False):
             if marker_alert == "warning" and single_scref_rescue:
                 accepted = False
 
-            chosen_label = str(best["candidate"]) if accepted else lineage_config["parent"]
+            chosen_label = canonical_label(str(best["candidate"]) if accepted else lineage_config["parent"])
             cluster_to_label[cluster_id] = chosen_label
-            cluster_to_marker_label[cluster_id] = str(marker_best["candidate"])
+            marker_raw_label = canonical_label(marker_best["candidate"])
+            marker_label = marker_raw_label
+            marker_reason = "raw_marker_winner"
+            marker_raw_spec = marker_registry_labels.get(marker_raw_label, {})
+            marker_raw_policy = dict(marker_raw_spec.get("candidate_policy", {}))
+            marker_raw_support_sum = (
+                float(marker_best["ref_fraction"])
+                + float(marker_best["raw_fraction"])
+                + float(marker_best["screfmapping_fraction"])
+            )
+            if marker_raw_policy.get("conservative_accept", False):
+                raw_policy_support_min = float(marker_raw_policy.get("min_support_sum", 0.70))
+                raw_policy_marker_min = float(marker_raw_policy.get("min_marker_gate", 0.55))
+                raw_policy_required_min = float(marker_raw_policy.get("min_required_any_fraction", 0.0))
+                raw_policy_failed = (
+                    marker_raw_support_sum < raw_policy_support_min
+                    or float(marker_best["marker_gate_score"]) < raw_policy_marker_min
+                    or float(marker_best["policy_required_any_fraction"]) < raw_policy_required_min
+                )
+                if raw_policy_failed and accepted:
+                    marker_label = chosen_label
+                    marker_reason = "conservative_policy_blocks_raw_marker_winner"
+            if marker_label != chosen_label and accepted:
+                best_support_sum = float(best["ref_fraction"]) + float(best["raw_fraction"]) + float(best["screfmapping_fraction"])
+                marker_margin_over_final = float(marker_best["marker_gate_score"]) - float(best["marker_gate_score"])
+                if (
+                    float(best["marker_gate_score"]) >= 0.35
+                    and marker_margin_over_final <= 0.25
+                    and best_support_sum >= 0.70
+                ):
+                    marker_label = chosen_label
+                    marker_reason = "source_supported_marker_tiebreak"
+            cluster_to_marker_raw_label[cluster_id] = marker_raw_label
+            cluster_to_marker_label[cluster_id] = marker_label
+            cluster_to_marker_reason[cluster_id] = marker_reason
             purity = max(float(best["ref_fraction"]), float(best["raw_fraction"]), float(best["marker_discriminative_score"]))
             margin = float(best["total_score"]) - second_score
             support_terms = [
@@ -854,6 +955,8 @@ for input_row in manifest.itertuples(index=False):
                         "n_cells": int(cluster_mask.sum()),
                         "chosen_label": chosen_label,
                         "cluster_marker_gene_assignment": cluster_to_marker_label[cluster_id],
+                        "cluster_marker_raw_winner": cluster_to_marker_raw_label[cluster_id],
+                        "cluster_marker_assignment_reason": cluster_to_marker_reason[cluster_id],
                         "marker_assignment_score": float(marker_best["marker_gate_score"]),
                         "marker_assignment_base_score": float(marker_best["marker_base_score"]),
                         "marker_assignment_penalty": float(marker_best["marker_penalty"]),
@@ -870,11 +973,15 @@ for input_row in manifest.itertuples(index=False):
 
         sub.obs["subcluster_label"] = sub.obs[chosen_key].astype(str).map(cluster_to_label).astype(str)
         sub.obs["cluster_marker_gene_assignment"] = sub.obs[chosen_key].astype(str).map(cluster_to_marker_label).astype(str)
+        sub.obs["cluster_marker_raw_winner"] = sub.obs[chosen_key].astype(str).map(cluster_to_marker_raw_label).astype(str)
+        sub.obs["cluster_marker_assignment_reason"] = sub.obs[chosen_key].astype(str).map(cluster_to_marker_reason).astype(str)
         sub.obs["subcluster_reason"] = sub.obs[chosen_key].astype(str).map(cluster_to_reason).astype(str)
         global_subcluster_label.loc[sub.obs_names] = sub.obs["subcluster_label"].astype(str).values
         global_subcluster_reason.loc[sub.obs_names] = sub.obs["subcluster_reason"].astype(str).values
         global_subcluster_id.loc[sub.obs_names] = sub.obs[chosen_key].astype(str).map(lambda x: f"{lineage_name}:{x}").values
         global_cluster_marker_assignment.loc[sub.obs_names] = sub.obs["cluster_marker_gene_assignment"].astype(str).values
+        global_cluster_marker_raw_winner.loc[sub.obs_names] = sub.obs["cluster_marker_raw_winner"].astype(str).values
+        global_cluster_marker_assignment_reason.loc[sub.obs_names] = sub.obs["cluster_marker_assignment_reason"].astype(str).values
         cluster_marker_score_cols = []
         for candidate, cluster_scores in cluster_to_candidate_marker_scores.items():
             safe_candidate = re.sub(r"[^A-Za-z0-9]+", "_", candidate).strip("_").lower()
@@ -1036,8 +1143,9 @@ for input_row in manifest.itertuples(index=False):
     source_vote_labels = []
     for label in sorted((b_labels | t_labels | myeloid_labels | other_direct_labels) & submit_allowed):
         votes = pd.Series(0, index=obs.index, dtype="int64")
+        vote_labels = canonical_to_source_labels.get(label, [label])
         for column in ref_cols:
-            votes += obs[column].astype(str).eq(label).astype(int)
+            votes += obs[column].astype(str).isin(vote_labels).astype(int)
         source_vote_labels.append((label, votes))
     fallback_mask = lineage.eq("Ambiguous") & ~doublet
     for label, votes in source_vote_labels:
@@ -1054,6 +1162,7 @@ for input_row in manifest.itertuples(index=False):
     annotation_conf.loc[(low_qc | mixed) & ~doublet] = annotation_conf.loc[(low_qc | mixed) & ~doublet].clip(0.05, 0.65)
 
     annotation_label.loc[annotation_label.eq("Effector B")] = "B Cell"
+    annotation_label = annotation_label.map(canonical_label)
     annotation_label = annotation_label.where(annotation_label.isin(submit_allowed), "Blood Cell")
     annotation_label.loc[doublet] = "Doublet"
     annotation_reason.loc[doublet] = "doublet_override"
@@ -1097,6 +1206,8 @@ for input_row in manifest.itertuples(index=False):
     adata.obs["local_subcluster_label"] = global_subcluster_label.astype(str).values
     adata.obs["local_subcluster_reason"] = global_subcluster_reason.astype(str).values
     adata.obs["cluster_marker_gene_assignment"] = global_cluster_marker_assignment.astype(str).values
+    adata.obs["cluster_marker_raw_winner"] = global_cluster_marker_raw_winner.astype(str).values
+    adata.obs["cluster_marker_assignment_reason"] = global_cluster_marker_assignment_reason.astype(str).values
     adata.obs["annotation_logic_version"] = version
     adata.obs["marker_availability_alert_for_label"] = final_marker_alert.astype(str).values
     adata.obs["source_agreement_n"] = source_agreement_n.values
@@ -1114,6 +1225,8 @@ for input_row in manifest.itertuples(index=False):
         "local_subcluster_label",
         "local_subcluster_reason",
         "cluster_marker_gene_assignment",
+        "cluster_marker_raw_winner",
+        "cluster_marker_assignment_reason",
         "marker_availability_alert_for_label",
         "source_agreement_n",
         "source_informative_n",
@@ -1381,6 +1494,8 @@ if not marker_feedback_df.empty:
                 "cells": f"{row.n_cells:,}",
                 "chosen_label": row.chosen_label,
                 "marker_assignment": row.cluster_marker_gene_assignment,
+                "raw_marker_winner": row.cluster_marker_raw_winner,
+                "assignment_reason": row.cluster_marker_assignment_reason,
                 "marker_score": f"{row.marker_assignment_score:.3f}",
                 "base_score": f"{row.marker_assignment_base_score:.3f}",
                 "penalty": f"{row.marker_assignment_penalty:.3f}",
@@ -1609,7 +1724,7 @@ def report_values(language):
         "SOURCE_DISAGREEMENT": table_or_none(source_disagreement_rows_for_report, ["study", "predicted_cell_type", "cells", "median_source_agreement", "disagreement_cells", "disagreement_fraction"], language),
         "REVIEW_CONCERNS": table_or_none(concern_rows_for_report, ["study", "concern", "cells"], language),
         "LABEL_COMPOSITION": table_or_none(label_rows_for_report, ["study", "predicted_cell_type", "cells"], language),
-        "MARKER_FEEDBACK_TABLE": table_or_none(marker_feedback_rows_for_report, ["study", "lineage", "cluster", "cells", "chosen_label", "marker_assignment", "marker_score", "base_score", "penalty", "flags"], language),
+        "MARKER_FEEDBACK_TABLE": table_or_none(marker_feedback_rows_for_report, ["study", "lineage", "cluster", "cells", "chosen_label", "marker_assignment", "raw_marker_winner", "assignment_reason", "marker_score", "base_score", "penalty", "flags"], language),
         "SUBCLUSTER_EVIDENCE_TABLE": table_or_none(subcluster_evidence_rows_for_report, ["study", "lineage", "cluster", "cells", "chosen_label", "accepted", "score_margin", "cluster_marker_assignment", "treg_key_any", "treg_key_bonus", "marker_set", "marker_alert"], language),
         "FIGURE_BLOCKS": figure_blocks,
         "FILE_BLOCK": file_block,

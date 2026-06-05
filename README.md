@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-04 16:44:18 EDT
+Updated: 2026-06-05 10:04:20 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark independent annotation workflow.
 
@@ -78,6 +78,7 @@ Marker registry input:
 - `configs/marker_registry.yaml` is the static marker-reference registry used for marker scoring.
 - If this registry is missing, incomplete for the ontology labels under consideration, or inappropriate for the tissue/context, Codex should ask to build or revise the registry before producing final labels.
 - LLM-assisted marker curation is allowed only before deterministic scoring. The final run must use a frozen registry, not runtime per-cell LLM decisions.
+- Updated 2026-06-05 10:04:20 EDT: marker registry construction and ambiguous-label handling are documented in `docs/260605_marker_registry_contract.md`. Labels such as `Plasmablast`, `NKT Cell`, and `gdT Cell` should be represented as candidates when present in the ontology/registry, but conservative acceptance policies should prevent noisy over-calling.
 
 ## Output Contract
 

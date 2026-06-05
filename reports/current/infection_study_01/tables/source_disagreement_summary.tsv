@@ -4,7 +4,7 @@ infection_study_01	Blood Cell	279	0.6666666666666666	105	0.3763440860215054
 infection_study_01	CD4 Naive / T Central Memory	4743	0.5	1898	0.400168669618385
 infection_study_01	CD4 T Effector Memory	778	0.6666666666666666	224	0.2879177377892031
 infection_study_01	CD8 Cytotoxic / T Effector Memory	8855	1.0	802	0.09057029926595143
-infection_study_01	Classical Monocyte	17386	1.0	911	0.05239848153686875
+infection_study_01	Classical Monocyte	17372	1.0	908	0.05226801749942436
 infection_study_01	Conventional DC 1	33	0.6666666666666666	1	0.030303030303030304
 infection_study_01	Conventional DC 2	440	1.0	35	0.07954545454545454
 infection_study_01	Doublet	1278	0.0	1278	1.0
@@ -13,8 +13,10 @@ infection_study_01	MAIT Cell	936	0.3333333333333333	473	0.5053418803418803
 infection_study_01	Memory B Cell	2120	0.75	92	0.04339622641509434
 infection_study_01	NK Cell	9740	1.0	1499	0.15390143737166326
 infection_study_01	Naive B Cell	4233	1.0	246	0.058114812189936214
+infection_study_01	Neutrophil	14	0.3333333333333333	14	1.0
 infection_study_01	Non-Classical Monocyte	1916	1.0	124	0.06471816283924843
-infection_study_01	Plasma Cell	170	0.5	45	0.2647058823529412
+infection_study_01	Plasma Cell	127	1.0	4	0.031496062992125984
+infection_study_01	Plasmablast	43	0.25	43	1.0
 infection_study_01	Plasmacytoid DC	102	0.6666666666666666	16	0.1568627450980392
 infection_study_01	Platelet	1347	1.0	0	0.0
 infection_study_01	Treg	520	0.0	320	0.6153846153846154

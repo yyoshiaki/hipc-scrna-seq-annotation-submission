@@ -46,7 +46,7 @@ The lineage-specific panels above are generated from true local subcluster analy
 
 ## Marker Assignment Feedback
 
-Marker-gene assignment is a cluster-level self-check rather than a forced final-label override. This table highlights clusters where marker-only assignment disagrees with the final/reference-driven label, marker specificity is weak, or scRefMap is missing in a lineage where it is expected. `marker_score` is the final cluster-level marker gate after subtracting negative/confound-marker penalties from the raw marker base score.
+Marker-gene assignment is a cluster-level self-check rather than a forced final-label override. `raw_marker_winner` is the marker-score-only winner, while `marker_assignment` is the marker-based assignment after conservative policy and source-supported tie-break adjudication. This table highlights clusters where marker assignment disagrees with the final/reference-driven label, marker specificity is weak, or scRefMap is missing in a lineage where it is expected. `marker_score` is the final cluster-level marker gate after subtracting negative/confound-marker penalties from the raw marker base score.
 
 {{MARKER_FEEDBACK_TABLE}}
 

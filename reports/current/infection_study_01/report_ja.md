@@ -1,6 +1,6 @@
 # HIPC データセットアノテーションレポート: infection_study_01
 
-更新日: 2026-06-04 EDT
+更新日: 2026-06-05 EDT
 
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
@@ -8,7 +8,7 @@
 
 | study | cells | analysis_X_genes | pre_hvg_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_01 | 54,924 | 33,538 | 33,538 | 33,538 | 19 | 0.006 | 279 | 1,278 | 1,355 | 0.777 | 7,918 | 8,109 (0.148) | none |
+| infection_study_01 | 54,924 | 33,538 | 33,538 | 33,538 | 21 | 0.006 | 279 | 1,278 | 1,355 | 0.777 | 7,918 | 8,122 (0.148) | none |
 
 ## 実行概要
 
@@ -19,14 +19,14 @@
 
 ## データセット固有の解釈
 
-- `infection_study_01`: 54,924 cells、analysis X/var 33,538 genes、pre-HVG slot 33,538 genes、submitted label 19 種、parent/Blood residual fraction 0.006、median confidence 0.777。
+- `infection_study_01`: 54,924 cells、analysis X/var 33,538 genes、pre-HVG slot 33,538 genes、submitted label 21 種、parent/Blood residual fraction 0.006、median confidence 0.777。
   - 7,918 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
   - 1,278 cells は `Doublet` として提出。mixed-lineage marker expression と scrublet support を確認する。
   - 279 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
 
 ## データセット固有の評価
 
-- 全体像: 54,924 cells / analysis X/var 33,538 genes / pre-HVG slot 33,538 genes。parent/Blood residual は 0.006、low-confidence は 7,918 cells、source disagreement flag は 8,109 cells (0.148)。
+- 全体像: 54,924 cells / analysis X/var 33,538 genes / pre-HVG slot 33,538 genes。parent/Blood residual は 0.006、low-confidence は 7,918 cells、source disagreement flag は 8,122 cells (0.148)。
 - 優先確認: low-confidence 領域が QC UMAP と source-disagreement UMAP で同じ場所に集まるかを確認する。
 - 優先確認: `Blood Cell` 残存が孤立 cluster なのか、複数 lineage に分散した曖昧領域なのかを UMAP で確認する。
 
@@ -39,17 +39,17 @@
 | study | predicted_cell_type | cells | median_source_agreement | disagreement_cells | disagreement_fraction |
 | --- | --- | --- | --- | --- | --- |
 | infection_study_01 | Doublet | 1,278 | 0.000 | 1,278 | 1.000 |
+| infection_study_01 | Plasmablast | 43 | 0.250 | 43 | 1.000 |
 | infection_study_01 | B Cell | 40 | 0.000 | 40 | 1.000 |
+| infection_study_01 | Neutrophil | 14 | 0.333 | 14 | 1.000 |
 | infection_study_01 | Treg | 520 | 0.000 | 320 | 0.615 |
 | infection_study_01 | MAIT Cell | 936 | 0.333 | 473 | 0.505 |
 | infection_study_01 | CD4 Naive / T Central Memory | 4,743 | 0.500 | 1,898 | 0.400 |
 | infection_study_01 | Blood Cell | 279 | 0.667 | 105 | 0.376 |
 | infection_study_01 | CD4 T Effector Memory | 778 | 0.667 | 224 | 0.288 |
-| infection_study_01 | Plasma Cell | 170 | 0.500 | 45 | 0.265 |
 | infection_study_01 | Plasmacytoid DC | 102 | 0.667 | 16 | 0.157 |
 | infection_study_01 | NK Cell | 9,740 | 1.000 | 1,499 | 0.154 |
 | infection_study_01 | CD8 Cytotoxic / T Effector Memory | 8,855 | 1.000 | 802 | 0.091 |
-| infection_study_01 | Conventional DC 2 | 440 | 1.000 | 35 | 0.080 |
 
 ## レビュー優先事項
 
@@ -58,13 +58,15 @@
 | infection_study_01 | High source disagreement for B Cell | 40 |
 | infection_study_01 | High source disagreement for Doublet | 1,278 |
 | infection_study_01 | High source disagreement for MAIT Cell | 473 |
+| infection_study_01 | High source disagreement for Neutrophil | 14 |
+| infection_study_01 | High source disagreement for Plasmablast | 43 |
 | infection_study_01 | High source disagreement for Treg | 320 |
 
 ## ラベル構成
 
 | study | predicted_cell_type | cells |
 | --- | --- | --- |
-| infection_study_01 | Classical Monocyte | 17,386 |
+| infection_study_01 | Classical Monocyte | 17,372 |
 | infection_study_01 | NK Cell | 9,740 |
 | infection_study_01 | CD8 Cytotoxic / T Effector Memory | 8,855 |
 | infection_study_01 | CD4 Naive / T Central Memory | 4,743 |
@@ -78,10 +80,12 @@
 | infection_study_01 | Treg | 520 |
 | infection_study_01 | Conventional DC 2 | 440 |
 | infection_study_01 | Blood Cell | 279 |
-| infection_study_01 | Plasma Cell | 170 |
+| infection_study_01 | Plasma Cell | 127 |
 | infection_study_01 | Plasmacytoid DC | 102 |
+| infection_study_01 | Plasmablast | 43 |
 | infection_study_01 | B Cell | 40 |
 | infection_study_01 | Conventional DC 1 | 33 |
+| infection_study_01 | Neutrophil | 14 |
 | infection_study_01 | HSC | 8 |
 
 ## Inline Figures
@@ -161,30 +165,30 @@ Tables: `tables/infection_study_01_Myeloid_lineage_true_subcluster_umap.tsv.gz`,
 
 ## Marker Assignment Feedback
 
-Marker gene assignment は final label を強制的に上書きするものではなく、cluster-level の自己点検です。この表は marker-only assignment と final/reference-driven label がずれる cluster、marker specificity が弱い cluster、scRefMap が期待される lineage で欠落する cluster を示します。`marker_score` は raw marker base score から negative/confound marker penalty を差し引いた cluster-level marker gate score です。
+Marker gene assignment は final label を強制的に上書きするものではなく、cluster-level の自己点検です。`raw_marker_winner` は marker score だけの勝者、`marker_assignment` は conservative policy と source-supported tie-break を通した marker-based assignment です。この表は marker assignment と final/reference-driven label がずれる cluster、marker specificity が弱い cluster、scRefMap が期待される lineage で欠落する cluster を示します。`marker_score` は raw marker base score から negative/confound marker penalty を差し引いた cluster-level marker gate score です。
 
-| study | lineage | cluster | cells | chosen_label | marker_assignment | marker_score | base_score | penalty | flags |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_01 | Myeloid_lineage | 1 | 1,533 | Classical Monocyte | Intermediate Monocyte | 0.522 | 1.000 | 0.478 | marker_final_disagreement |
-| infection_study_01 | Myeloid_lineage | 2 | 1,499 | Classical Monocyte | Intermediate Monocyte | 0.548 | 1.000 | 0.452 | marker_final_disagreement |
-| infection_study_01 | Myeloid_lineage | 3 | 1,385 | Non-Classical Monocyte | Intermediate Monocyte | 0.469 | 1.000 | 0.531 | marker_final_disagreement |
-| infection_study_01 | Myeloid_lineage | 4 | 1,383 | Classical Monocyte | Intermediate Monocyte | 0.481 | 1.000 | 0.519 | marker_final_disagreement |
-| infection_study_01 | Myeloid_lineage | 5 | 1,344 | Classical Monocyte | Intermediate Monocyte | 0.472 | 1.000 | 0.528 | marker_final_disagreement |
-| infection_study_01 | T_NK_lineage | 1 | 1,305 | NK Cell | NK Cell | 0.498 | 1.000 | 0.502 | screfmapping_missing_for_scope |
-| infection_study_01 | T_NK_lineage | 2 | 1,300 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 0.540 | 1.000 | 0.460 | screfmapping_missing_for_scope |
-| infection_study_01 | Myeloid_lineage | 6 | 1,202 | Classical Monocyte | Intermediate Monocyte | 0.450 | 1.000 | 0.550 | marker_final_disagreement |
-| infection_study_01 | T_NK_lineage | 4 | 1,036 | NK Cell | NK Cell | 0.561 | 1.000 | 0.439 | screfmapping_missing_for_scope |
-| infection_study_01 | T_NK_lineage | 5 | 1,001 | NK Cell | NK Cell | 0.699 | 1.000 | 0.301 | screfmapping_missing_for_scope |
-| infection_study_01 | Myeloid_lineage | 8 | 978 | Classical Monocyte | Intermediate Monocyte | 0.507 | 1.000 | 0.493 | marker_final_disagreement |
-| infection_study_01 | T_NK_lineage | 6 | 969 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 0.746 | 1.000 | 0.254 | screfmapping_missing_for_scope |
-| infection_study_01 | T_NK_lineage | 7 | 927 | NK Cell | NK Cell | 0.757 | 1.000 | 0.243 | screfmapping_missing_for_scope |
-| infection_study_01 | T_NK_lineage | 8 | 925 | CD8 Cytotoxic / T Effector Memory | CD8 Naive / T Central Memory | 0.497 | 1.000 | 0.503 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_01 | T_NK_lineage | 9 | 880 | NK Cell | NK Cell | 0.744 | 1.000 | 0.256 | screfmapping_missing_for_scope |
-| infection_study_01 | Myeloid_lineage | 9 | 857 | Classical Monocyte | Intermediate Monocyte | 0.479 | 1.000 | 0.521 | marker_final_disagreement |
-| infection_study_01 | T_NK_lineage | 11 | 851 | CD8 Cytotoxic / T Effector Memory | CD8 Naive / T Central Memory | 0.495 | 1.000 | 0.505 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_01 | Myeloid_lineage | 10 | 793 | Classical Monocyte | Intermediate Monocyte | 0.513 | 1.000 | 0.487 | marker_final_disagreement |
-| infection_study_01 | T_NK_lineage | 12 | 695 | MAIT Cell | MAIT Cell | 0.501 | 1.000 | 0.499 | screfmapping_missing_for_scope |
-| infection_study_01 | T_NK_lineage | 14 | 687 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 0.536 | 1.000 | 0.464 | screfmapping_missing_for_scope |
+| study | lineage | cluster | cells | chosen_label | marker_assignment | raw_marker_winner | assignment_reason | marker_score | base_score | penalty | flags |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| infection_study_01 | T_NK_lineage | 1 | 1,305 | NK Cell | NK Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.864 | 1.000 | 0.136 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 2 | 1,300 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.540 | 1.000 | 0.460 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 4 | 1,036 | NK Cell | NK Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.931 | 1.000 | 0.069 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 5 | 1,001 | NK Cell | NK Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.875 | 1.000 | 0.125 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 6 | 969 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.876 | 1.000 | 0.124 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 7 | 927 | NK Cell | NK Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.826 | 1.000 | 0.174 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 8 | 925 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.531 | 1.000 | 0.469 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 9 | 880 | NK Cell | NK Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.815 | 1.000 | 0.185 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 11 | 851 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.584 | 1.000 | 0.416 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 12 | 695 | MAIT Cell | MAIT Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.837 | 1.000 | 0.163 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 14 | 687 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.613 | 1.000 | 0.387 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 15 | 670 | NK Cell | NK Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.899 | 1.000 | 0.101 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 16 | 605 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.567 | 1.000 | 0.433 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 17 | 584 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.523 | 1.000 | 0.477 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 19 | 577 | CD4 T Effector Memory | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | raw_marker_winner | 0.818 | 1.000 | 0.182 | marker_final_disagreement |
+| infection_study_01 | T_NK_lineage | 21 | 498 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.724 | 1.000 | 0.276 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 22 | 497 | NK Cell | NK Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.860 | 1.000 | 0.140 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 23 | 481 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.510 | 1.000 | 0.490 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 24 | 477 | NK Cell | NK Cell | NKT Cell | conservative_policy_blocks_raw_marker_winner | 0.904 | 1.000 | 0.096 | screfmapping_missing_for_scope |
+| infection_study_01 | T_NK_lineage | 25 | 456 | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | CD8 Naive / T Central Memory | source_supported_marker_tiebreak | 0.576 | 1.000 | 0.424 | screfmapping_missing_for_scope |
 
 ## Cluster Consensus Evidence
 
@@ -195,14 +199,14 @@ Marker gene assignment は final label を強制的に上書きするもので�
 | infection_study_01 | B_lineage | 2 | 391 | Naive B Cell | True | 4.250 | Naive B Cell | nan | nan | B_naive | pass |
 | infection_study_01 | B_lineage | 3 | 363 | Memory B Cell | True | 2.668 | Naive B Cell | nan | nan | B_memory_ABC | pass |
 | infection_study_01 | B_lineage | 4 | 348 | Naive B Cell | True | 3.982 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 5 | 328 | Naive B Cell | True | 4.538 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 6 | 318 | Memory B Cell | True | 3.843 | Memory B Cell | nan | nan | B_memory_ABC | pass |
+| infection_study_01 | B_lineage | 5 | 328 | Naive B Cell | True | 4.533 | Naive B Cell | nan | nan | B_naive | pass |
+| infection_study_01 | B_lineage | 6 | 318 | Memory B Cell | True | 3.752 | Memory B Cell | nan | nan | B_memory_ABC | pass |
 | infection_study_01 | B_lineage | 7 | 309 | Memory B Cell | True | 4.238 | Memory B Cell | nan | nan | B_memory_ABC | pass |
 | infection_study_01 | B_lineage | 8 | 309 | Memory B Cell | True | 3.307 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | B_lineage | 9 | 302 | Naive B Cell | True | 3.958 | Naive B Cell | nan | nan | B_naive | pass |
+| infection_study_01 | B_lineage | 9 | 302 | Naive B Cell | True | 3.918 | Naive B Cell | nan | nan | B_naive | pass |
 | infection_study_01 | B_lineage | 10 | 294 | Naive B Cell | True | 4.284 | Naive B Cell | nan | nan | B_naive | pass |
 | infection_study_01 | B_lineage | 11 | 292 | Naive B Cell | True | 4.407 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 12 | 249 | Memory B Cell | True | 3.237 | Naive B Cell | nan | nan | B_memory_ABC | pass |
+| infection_study_01 | B_lineage | 12 | 249 | Memory B Cell | True | 3.237 | Memory B Cell | nan | nan | B_memory_ABC | pass |
 | infection_study_01 | B_lineage | 13 | 228 | Memory B Cell | True | 3.674 | Memory B Cell | nan | nan | B_memory_ABC | pass |
 | infection_study_01 | B_lineage | 14 | 227 | Naive B Cell | True | 4.323 | Naive B Cell | nan | nan | B_naive | pass |
 | infection_study_01 | B_lineage | 15 | 218 | Naive B Cell | True | 2.901 | Naive B Cell | nan | nan | B_naive | pass |
@@ -213,21 +217,21 @@ Marker gene assignment は final label を強制的に上書きするもので�
 | infection_study_01 | B_lineage | 20 | 152 | Naive B Cell | True | 3.306 | Naive B Cell | nan | nan | B_naive | pass |
 | infection_study_01 | B_lineage | 21 | 102 | Memory B Cell | True | 3.994 | Memory B Cell | nan | nan | B_memory_ABC | pass |
 | infection_study_01 | B_lineage | 22 | 92 | Naive B Cell | True | 0.524 | Naive B Cell | nan | nan | B_naive | pass |
-| infection_study_01 | B_lineage | 23 | 85 | Plasma Cell | True | 3.587 | Memory B Cell | nan | nan | Plasma_ASC | pass |
-| infection_study_01 | B_lineage | 24 | 43 | Plasma Cell | True | 2.382 | Plasma Cell | nan | nan | Plasma_ASC | pass |
-| infection_study_01 | B_lineage | 25 | 42 | Plasma Cell | True | 3.365 | Memory B Cell | nan | nan | Plasma_ASC | pass |
-| infection_study_01 | B_lineage | 26 | 40 | B Cell | False | 0.627 | Memory B Cell | nan | nan | Plasma_ASC | pass |
+| infection_study_01 | B_lineage | 23 | 85 | Plasma Cell | True | 3.100 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| infection_study_01 | B_lineage | 24 | 43 | Plasmablast | True | 0.968 | Plasmablast | nan | nan | Plasma_ASC | pass |
+| infection_study_01 | B_lineage | 25 | 42 | Plasma Cell | True | 0.930 | Plasma Cell | nan | nan | Plasma_ASC | pass |
+| infection_study_01 | B_lineage | 26 | 40 | B Cell | False | 2.227 | Memory B Cell | nan | nan | Plasma_ASC | pass |
 | infection_study_01 | B_lineage | 27 | 39 | Naive B Cell | True | 1.375 | Naive B Cell | nan | nan | B_naive | pass |
 | infection_study_01 | B_lineage | 28 | 26 | Memory B Cell | True | 3.450 | Memory B Cell | nan | nan | B_memory_ABC | pass |
-| infection_study_01 | Myeloid_lineage | 0 | 1,695 | Classical Monocyte | True | 2.619 | Classical Monocyte | nan | nan | not_applicable | pass |
+| infection_study_01 | Myeloid_lineage | 0 | 1,695 | Classical Monocyte | True | 2.489 | Classical Monocyte | nan | nan | not_applicable | pass |
 
 ## 出力ファイル
 
-- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/infection_study_01/submissions/`
-- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/infection_study_01/cellxgene/`
-- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/infection_study_01/tables/marker_gene_availability.tsv`
-- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/infection_study_01/tables/marker_gene_availability_alerts.tsv`
-- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/infection_study_01/tables/lineage_subcluster_evidence.tsv.gz`
-- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/infection_study_01/tables/source_disagreement_summary.tsv`
-- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v18_obsfix/infection_study_01/tables/`
+- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/submissions/`
+- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/cellxgene/`
+- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/marker_gene_availability_alerts.tsv`
+- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/lineage_subcluster_evidence.tsv.gz`
+- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/source_disagreement_summary.tsv`
+- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_clean_v19/infection_study_01/tables/`
 

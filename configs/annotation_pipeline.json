@@ -1,6 +1,6 @@
 {
-  "version": "hipc_annotation_clean_v18",
-  "output_root": "outputs/final_annotations/hipc_annotation_clean_v18",
+  "version": "hipc_annotation_clean_v19",
+  "output_root": "outputs/final_annotations/hipc_annotation_clean_v19",
   "report": {
     "default_language": "en",
     "development_languages": ["ja"],
@@ -49,6 +49,16 @@
       "official_labels": ["Treg"],
       "genes": ["FOXP3", "IL2RA", "CTLA4", "IKZF2", "TIGIT", "TNFRSF18", "CCR8"],
       "critical_genes": ["FOXP3", "IL2RA", "CTLA4"]
+    },
+    "gdT": {
+      "official_labels": ["gdT Cell"],
+      "genes": ["CD3D", "CD3E", "TRDC", "TRGC1", "TRGC2", "TRDV2"],
+      "critical_genes": ["TRDC", "TRGC1", "TRGC2"]
+    },
+    "NKT": {
+      "official_labels": ["NKT Cell"],
+      "genes": ["CD3D", "CD3E", "TRAC", "NKG7", "GNLY", "KLRD1", "ZBTB16"],
+      "critical_genes": ["CD3D", "NKG7", "ZBTB16"]
     },
     "B_naive": {
       "official_labels": ["Naive B Cell"],
