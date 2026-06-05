@@ -1,7 +1,6 @@
 study	concern	n_cells
-infection_study_04	High source disagreement for Blood Cell	898
-infection_study_04	High source disagreement for Doublet	132
-infection_study_04	High source disagreement for MAIT Cell	481
-infection_study_04	High source disagreement for Neutrophil	78
-infection_study_04	warning marker availability for Plasma_ASC	3369
-infection_study_04	Large Blood Cell/ambiguous residual remains	1660
+infection_study_04	High source disagreement for Blood Cell	436
+infection_study_04	High source disagreement for Doublet	61
+infection_study_04	High source disagreement for Neutrophil	195
+infection_study_04	High dataset-level source disagreement	9576
+infection_study_04	warning marker availability for Plasma_ASC	3150

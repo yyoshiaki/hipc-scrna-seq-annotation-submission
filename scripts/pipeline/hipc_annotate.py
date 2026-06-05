@@ -15,6 +15,9 @@ import pandas as pd
 import scanpy as sc
 import yaml
 from scipy import sparse
+from sklearn.cluster import MiniBatchKMeans
+from sklearn.decomposition import TruncatedSVD
+from sklearn.preprocessing import StandardScaler
 
 
 # Reused small utilities keep repeated scoring blocks readable.
@@ -172,6 +175,16 @@ def render_template(path, values):
     for key, value in values.items():
         text = text.replace("{{" + key + "}}", str(value))
     return text
+
+
+def write_placeholder_figure(path, title, message):
+    fig, ax = plt.subplots(figsize=(6, 3))
+    ax.axis("off")
+    ax.text(0.5, 0.62, title, ha="center", va="center", fontsize=12, weight="bold")
+    ax.text(0.5, 0.38, message, ha="center", va="center", fontsize=9, wrap=True)
+    fig.tight_layout()
+    fig.savefig(path, dpi=180)
+    plt.close(fig)
 
 
 parser = argparse.ArgumentParser(description="HIPC independent annotation runner")
@@ -382,6 +395,7 @@ subcluster_candidate_score_rows = []
 subcluster_umap_rows = []
 lineage_panel_status_rows = []
 marker_feedback_rows = []
+source_effectiveness_rows = []
 
 evidence_aliases = {
     "celltypist_v3_label": ["celltypist_label", "majority_voting", "majority_voting_Immune_All_Low"],
@@ -396,8 +410,89 @@ for input_row in manifest.itertuples(index=False):
     study = input_row.study_id
     h5ad = project_path(input_row.input_h5ad)
     adata = sc.read_h5ad(h5ad)
+    adata.var_names_make_unique()
+    adata.obs_names_make_unique()
     obs = adata.obs.copy()
 
+    for canonical, aliases in evidence_aliases.items():
+        fill_obs_alias(obs, canonical, aliases, "not_available")
+        if canonical not in adata.obs.columns:
+            adata.obs[canonical] = obs[canonical].values
+
+    matrix_values = adata.X.data if sparse.issparse(adata.X) else np.asarray(adata.X).ravel()
+    if matrix_values.size:
+        sample_values = matrix_values[: min(matrix_values.size, 200000)]
+        count_like_input = bool(
+            np.nanmin(sample_values) >= 0
+            and np.nanmax(sample_values) > 20
+            and np.mean(np.isclose(sample_values, np.round(sample_values))) > 0.95
+        )
+    else:
+        count_like_input = False
+    if count_like_input:
+        sc.pp.normalize_total(adata, target_sum=1e4)
+        sc.pp.log1p(adata)
+        if adata.raw is None:
+            adata.raw = adata
+
+    required_qc_columns = ["n_genes_by_counts", "total_counts", "pct_counts_mt"]
+    if any(column not in adata.obs.columns for column in required_qc_columns):
+        adata.var["mt"] = adata.var_names.astype(str).str.startswith("MT-")
+        adata.var["ribo"] = adata.var_names.astype(str).str.startswith(("RPS", "RPL"))
+        adata.var["hb"] = adata.var_names.astype(str).str.contains("^HB[^(P)]", regex=True)
+        sc.pp.calculate_qc_metrics(
+            adata,
+            qc_vars=["mt", "ribo", "hb"],
+            percent_top=None,
+            log1p=False,
+            inplace=True,
+        )
+
+    if "X_umap" not in adata.obsm:
+        if adata.n_obs > 200000:
+            rng = np.random.default_rng(0)
+            sample_n = min(60000, adata.n_obs)
+            sample_idx = np.sort(rng.choice(adata.n_obs, size=sample_n, replace=False))
+            hvg_reference = adata[sample_idx].copy()
+            n_top_genes = min(2000, max(500, hvg_reference.n_vars - 1))
+            sc.pp.highly_variable_genes(hvg_reference, n_top_genes=n_top_genes, flavor="seurat")
+            selected_genes = hvg_reference.var_names[hvg_reference.var["highly_variable"]].tolist()
+            if len(selected_genes) < 100:
+                selected_genes = hvg_reference.var_names[: min(2000, hvg_reference.n_vars)].tolist()
+            matrix = adata[:, selected_genes].X
+            n_comps = min(30, adata.n_obs - 1, len(selected_genes) - 1)
+            pcs = TruncatedSVD(n_components=n_comps, random_state=0).fit_transform(matrix)
+            adata.obsm["X_umap"] = StandardScaler().fit_transform(pcs[:, :2])
+            n_clusters = min(40, max(8, adata.n_obs // 20000))
+            clusters = MiniBatchKMeans(
+                n_clusters=n_clusters,
+                random_state=0,
+                batch_size=8192,
+                n_init="auto",
+            ).fit_predict(pcs[:, : min(15, pcs.shape[1])])
+            adata.obs["fallback_leiden"] = pd.Series(clusters, index=adata.obs_names).astype(str).values
+            del hvg_reference, matrix, pcs, clusters
+        else:
+            embedding = adata.copy()
+            n_top_genes = min(3000, max(500, embedding.n_vars - 1))
+            sc.pp.highly_variable_genes(embedding, n_top_genes=n_top_genes, flavor="seurat")
+            if int(embedding.var["highly_variable"].sum()) >= 100:
+                embedding = embedding[:, embedding.var["highly_variable"]].copy()
+            sc.pp.scale(embedding, max_value=10)
+            if sparse.issparse(embedding.X):
+                embedding.X.data = np.nan_to_num(embedding.X.data, nan=0.0, posinf=10.0, neginf=-10.0)
+            else:
+                embedding.X = np.nan_to_num(embedding.X, nan=0.0, posinf=10.0, neginf=-10.0)
+            n_comps = min(30, embedding.n_obs - 1, embedding.n_vars - 1)
+            sc.tl.pca(embedding, n_comps=n_comps, svd_solver="arpack")
+            sc.pp.neighbors(embedding, n_neighbors=15, n_pcs=n_comps)
+            sc.tl.leiden(embedding, resolution=1.0, key_added="fallback_leiden")
+            sc.tl.umap(embedding, min_dist=0.35)
+            adata.obsm["X_umap"] = embedding.obsm["X_umap"].copy()
+            adata.obs["fallback_leiden"] = embedding.obs["fallback_leiden"].astype(str).values
+            del embedding
+
+    obs = adata.obs.copy()
     for canonical, aliases in evidence_aliases.items():
         fill_obs_alias(obs, canonical, aliases, "not_available")
         if canonical not in adata.obs.columns:
@@ -492,6 +587,21 @@ for input_row in manifest.itertuples(index=False):
         if column in obs.columns:
             my_signal += pd.to_numeric(obs[column], errors="coerce").fillna(0).ge(0.50).astype(int)
 
+    for registry_label, registry_spec in marker_registry_labels.items():
+        score_pct_column = f"{registry_score_name(registry_label)}_pct"
+        if score_pct_column not in obs.columns:
+            continue
+        marker_hit = pd.to_numeric(obs[score_pct_column], errors="coerce").fillna(0).ge(0.88).astype(int)
+        lineage_name_for_marker = registry_spec.get("applicable_lineage", "")
+        if lineage_name_for_marker == "B_lineage":
+            b_signal += marker_hit
+        elif lineage_name_for_marker == "T_NK_lineage":
+            t_signal += marker_hit
+        elif lineage_name_for_marker == "Myeloid_lineage":
+            my_signal += marker_hit
+        elif lineage_name_for_marker == "Other_lineage":
+            other_signal += marker_hit
+
     lineage_scores = pd.DataFrame(
         {
             "B_lineage": b_signal,
@@ -572,18 +682,31 @@ for input_row in manifest.itertuples(index=False):
         sub.var["highly_variable"] = sub.var["highly_variable"] & (~excluded)
         if int(sub.var["highly_variable"].sum()) >= 100:
             sub = sub[:, sub.var["highly_variable"]].copy()
-        sc.pp.scale(sub, max_value=10)
-        if sparse.issparse(sub.X):
-            sub.X.data = np.nan_to_num(sub.X.data, nan=0.0, posinf=10.0, neginf=-10.0)
-        else:
-            sub.X = np.nan_to_num(sub.X, nan=0.0, posinf=10.0, neginf=-10.0)
-
-        n_comps = min(30, sub.n_obs - 1, sub.n_vars - 1)
-        sc.tl.pca(sub, n_comps=n_comps, svd_solver="arpack")
-        sc.pp.neighbors(sub, n_neighbors=20, n_pcs=n_comps)
         chosen_key = f"leiden_{lineage_config['resolution']}"
-        sc.tl.leiden(sub, resolution=lineage_config["resolution"], key_added=chosen_key)
-        sc.tl.umap(sub, min_dist=0.35)
+        if sub.n_obs > 50000:
+            n_comps = min(30, sub.n_obs - 1, sub.n_vars - 1)
+            pcs = TruncatedSVD(n_components=n_comps, random_state=0).fit_transform(sub.X)
+            sub.obsm["X_umap"] = StandardScaler().fit_transform(pcs[:, :2])
+            n_clusters = min(50, max(10, sub.n_obs // 15000))
+            sub.obs[chosen_key] = MiniBatchKMeans(
+                n_clusters=n_clusters,
+                random_state=0,
+                batch_size=8192,
+                n_init="auto",
+            ).fit_predict(pcs[:, : min(15, pcs.shape[1])]).astype(str)
+            del pcs
+        else:
+            sc.pp.scale(sub, max_value=10)
+            if sparse.issparse(sub.X):
+                sub.X.data = np.nan_to_num(sub.X.data, nan=0.0, posinf=10.0, neginf=-10.0)
+            else:
+                sub.X = np.nan_to_num(sub.X, nan=0.0, posinf=10.0, neginf=-10.0)
+
+            n_comps = min(30, sub.n_obs - 1, sub.n_vars - 1)
+            sc.tl.pca(sub, n_comps=n_comps, svd_solver="arpack")
+            sc.pp.neighbors(sub, n_neighbors=20, n_pcs=n_comps)
+            sc.tl.leiden(sub, resolution=lineage_config["resolution"], key_added=chosen_key)
+            sc.tl.umap(sub, min_dist=0.35)
 
         cluster_values = pd.Series("not_in_lineage", index=adata.obs_names, dtype="object")
         cluster_values.loc[sub.obs_names] = sub.obs[chosen_key].astype(str).map(lambda x: f"{lineage_name}:{x}").values
@@ -1103,9 +1226,16 @@ for input_row in manifest.itertuples(index=False):
             sub_plot.obs["subcluster_reason"] = sub.obs["subcluster_reason"].astype(str).values
             sc.pl.umap(sub_plot, color=lineage_marker_genes, ncols=4, wspace=0.45, frameon=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_marker_expression.png")
             plt.close("all")
-            sc.pl.dotplot(sub_plot, var_names=lineage_marker_genes, groupby="subcluster_label", standard_scale="var", dendrogram=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_marker_dotplot.png")
-            plt.close("all")
             dotplot_png = figures_dir / f"dotplot__{study}_{lineage_name}_true_subcluster_marker_dotplot.png"
+            if sub_plot.obs["subcluster_label"].astype(str).nunique() >= 2:
+                sc.pl.dotplot(sub_plot, var_names=lineage_marker_genes, groupby="subcluster_label", standard_scale="var", dendrogram=False, show=False, save=f"_{study}_{lineage_name}_true_subcluster_marker_dotplot.png")
+                plt.close("all")
+            else:
+                write_placeholder_figure(
+                    dotplot_png,
+                    f"{study} {lineage_name} marker dotplot unavailable",
+                    "Only one local subcluster label is available, so Scanpy dotplot is not informative.",
+                )
             if dotplot_png.exists():
                 asset_dir.joinpath(f"dotplot_{study}_{lineage_name}_true_subcluster_marker_dotplot.png").write_bytes(dotplot_png.read_bytes())
             del sub_plot
@@ -1178,6 +1308,76 @@ for input_row in manifest.itertuples(index=False):
     source_disagreement_n = (source_informative_n - source_agreement_n).clip(lower=0)
     source_agreement_fraction = (source_agreement_n / source_informative_n.replace(0, np.nan)).fillna(0.0)
     source_disagreement_flag = source_disagreement_n.ge(2) & source_agreement_fraction.lt(0.50)
+
+    source_eval = pd.DataFrame(index=obs.index)
+    source_eval["final_label"] = annotation_label.astype(str)
+    source_eval["confidence_score"] = annotation_conf.astype(float)
+    source_definitions = [
+        ("CellTypist", "celltypist_v3_label"),
+        ("Pan-human Azimuth", "panhuman_fine_v3_label"),
+        ("Cluster consensus", "cluster_consensus_v3_label"),
+        ("scRefMapping", "screfmapping_official_label"),
+        ("Cluster marker assignment", "cluster_marker_gene_assignment"),
+    ]
+    source_match_masks = []
+    for source_name, column in source_definitions:
+        if column == "cluster_marker_gene_assignment":
+            values = global_cluster_marker_assignment.astype(str)
+        elif column in obs.columns:
+            values = obs[column].astype(str)
+        else:
+            values = pd.Series("not_available", index=obs.index, dtype="object")
+        values = values.map(canonical_label)
+        informative = values.ne("not_available") & values.ne("nan") & values.ne("None")
+        exact_match = informative & values.eq(source_eval["final_label"])
+        source_match_masks.append((source_name, exact_match))
+        high_conf = source_eval["confidence_score"].ge(0.75)
+        if int(informative.sum()):
+            source_effectiveness_rows.append(
+                {
+                    "study": study,
+                    "source": source_name,
+                    "source_column": column,
+                    "n_cells": int(source_eval.shape[0]),
+                    "informative_cells": int(informative.sum()),
+                    "coverage_fraction": float(informative.mean()),
+                    "final_concordant_cells": int(exact_match.sum()),
+                    "final_concordance_over_informative": float(exact_match.sum() / informative.sum()),
+                    "final_concordance_over_all": float(exact_match.mean()),
+                    "discordant_informative_cells": int((informative & ~exact_match).sum()),
+                    "discordant_fraction_over_informative": float((informative & ~exact_match).sum() / informative.sum()),
+                    "high_confidence_informative_cells": int((informative & high_conf).sum()),
+                    "high_confidence_concordance_over_informative": float((exact_match & high_conf).sum() / max(int((informative & high_conf).sum()), 1)),
+                    "top_labels": "; ".join([f"{k}:{v}" for k, v in values[informative].value_counts().head(8).items()]),
+                }
+            )
+        else:
+            source_effectiveness_rows.append(
+                {
+                    "study": study,
+                    "source": source_name,
+                    "source_column": column,
+                    "n_cells": int(source_eval.shape[0]),
+                    "informative_cells": 0,
+                    "coverage_fraction": 0.0,
+                    "final_concordant_cells": 0,
+                    "final_concordance_over_informative": 0.0,
+                    "final_concordance_over_all": 0.0,
+                    "discordant_informative_cells": 0,
+                    "discordant_fraction_over_informative": 0.0,
+                    "high_confidence_informative_cells": 0,
+                    "high_confidence_concordance_over_informative": 0.0,
+                    "top_labels": "not_available",
+                }
+            )
+    if source_match_masks:
+        match_matrix = pd.concat([mask.rename(name) for name, mask in source_match_masks], axis=1)
+        unique_support_n = match_matrix.sum(axis=1).eq(1)
+        for row in source_effectiveness_rows[-len(source_match_masks):]:
+            source_name = row["source"]
+            exact_match = match_matrix[source_name]
+            row["unique_support_cells"] = int((exact_match & unique_support_n).sum())
+            row["unique_support_fraction_over_all"] = float((exact_match & unique_support_n).mean())
 
     submission = pd.DataFrame(
         {
@@ -1265,17 +1465,32 @@ for input_row in manifest.itertuples(index=False):
         focus_markers.extend(spec.get("positive", [])[:4])
     focus_markers = list(dict.fromkeys(focus_markers))[:42]
     available_markers = [gene for gene in focus_markers if gene in adata.var_names]
-    sc.pl.dotplot(adata, var_names=available_markers, groupby="submission_cell_type", standard_scale="var", dendrogram=False, show=False, save=f"_{study}_annotation_marker_dotplot.png")
-    plt.close("all")
+    dotplot_png = figures_dir / f"dotplot__{study}_annotation_marker_dotplot.png"
+    if available_markers and adata.obs["submission_cell_type"].astype(str).nunique() >= 2:
+        sc.pl.dotplot(adata, var_names=available_markers, groupby="submission_cell_type", standard_scale="var", dendrogram=False, show=False, save=f"_{study}_annotation_marker_dotplot.png")
+        plt.close("all")
+    else:
+        write_placeholder_figure(
+            dotplot_png,
+            f"{study} submitted-label marker dotplot unavailable",
+            "There are too few submitted labels or available registry markers for an informative Scanpy dotplot.",
+        )
 
     feature_markers = []
     for label in submitted_label_order:
         feature_markers.extend(marker_registry_labels.get(label, {}).get("key", [])[:2])
     feature_markers = list(dict.fromkeys(feature_markers))[:16]
     available_feature_markers = [gene for gene in feature_markers if gene in adata.var_names]
+    marker_expression_png = figures_dir / f"umap_{study}_annotation_marker_expression.png"
     if available_feature_markers:
         sc.pl.umap(adata, color=available_feature_markers, ncols=4, frameon=False, show=False, save=f"_{study}_annotation_marker_expression.png")
         plt.close("all")
+    else:
+        write_placeholder_figure(
+            marker_expression_png,
+            f"{study} marker-expression UMAP unavailable",
+            "No submitted-label key markers from the registry are available for this dataset/label set.",
+        )
 
     for figure_name in [
         f"umap_{study}_annotation_label.png",
@@ -1384,6 +1599,7 @@ subcluster_df = pd.DataFrame(subcluster_rows)
 validation_df = pd.DataFrame(validation_rows)
 concern_df = pd.DataFrame(concern_rows)
 source_disagreement_df = pd.DataFrame(source_disagreement_rows)
+source_effectiveness_df = pd.DataFrame(source_effectiveness_rows)
 marker_feedback_df = pd.DataFrame(marker_feedback_rows)
 marker_availability_df = pd.DataFrame(marker_availability_rows)
 llm_review_rows = []
@@ -1517,6 +1733,7 @@ subcluster_df.to_csv(tables_dir / "lineage_subcluster_evidence.tsv.gz", sep="\t"
 validation_df.to_csv(tables_dir / "final_annotation_validation.tsv", sep="\t", index=False)
 concern_df.to_csv(tables_dir / "review_concerns.tsv", sep="\t", index=False)
 source_disagreement_df.to_csv(tables_dir / "source_disagreement_summary.tsv", sep="\t", index=False)
+source_effectiveness_df.to_csv(tables_dir / "source_effectiveness_summary.tsv", sep="\t", index=False)
 
 (output_root / "final_annotation_summary.json").write_text(
     json.dumps({"version": version, "manifest": str(project_path(args.manifest)), "summary": summary_df.to_dict(orient="records")}, indent=2),
@@ -1532,6 +1749,26 @@ plt.tight_layout()
 fig.savefig(asset_dir / "figure_01_annotation_parent_or_blood_fraction.png", dpi=180)
 fig.savefig(figures_dir / "figure_01_annotation_parent_or_blood_fraction.pdf")
 plt.close(fig)
+
+if not source_effectiveness_df.empty:
+    plot_df = source_effectiveness_df.sort_values("final_concordance_over_informative", ascending=True)
+    fig, ax = plt.subplots(figsize=(7, max(3.5, 0.42 * plot_df.shape[0])))
+    ax.barh(plot_df["source"], plot_df["final_concordance_over_informative"], color="#4C78A8")
+    for y, row in enumerate(plot_df.itertuples(index=False)):
+        ax.text(
+            min(float(row.final_concordance_over_informative) + 0.02, 0.98),
+            y,
+            f"coverage={float(row.coverage_fraction):.2f}",
+            va="center",
+            fontsize=8,
+        )
+    ax.set_xlim(0, 1)
+    ax.set_xlabel("Concordance with final label among informative cells")
+    ax.set_ylabel("")
+    plt.tight_layout()
+    fig.savefig(asset_dir / "figure_02_source_effectiveness.png", dpi=180)
+    fig.savefig(figures_dir / "figure_02_source_effectiveness.pdf")
+    plt.close(fig)
 
 asset_link_root = "assets"
 requested_languages = [language.strip() for language in args.report_languages.split(",") if language.strip()]
@@ -1590,6 +1827,22 @@ if not source_disagreement_df.empty:
                 "median_source_agreement": f"{row.median_source_agreement_fraction:.3f}",
                 "disagreement_cells": f"{row.source_disagreement_flag_n:,}",
                 "disagreement_fraction": f"{row.source_disagreement_flag_fraction:.3f}",
+            }
+        )
+
+source_effectiveness_rows_for_report = []
+if not source_effectiveness_df.empty:
+    for row in source_effectiveness_df.sort_values(["coverage_fraction", "final_concordance_over_informative"], ascending=False).itertuples(index=False):
+        source_effectiveness_rows_for_report.append(
+            {
+                "study": row.study,
+                "source": row.source,
+                "informative_cells": f"{int(row.informative_cells):,}",
+                "coverage": f"{float(row.coverage_fraction):.3f}",
+                "final_concordance": f"{float(row.final_concordance_over_informative):.3f}",
+                "high_conf_concordance": f"{float(row.high_confidence_concordance_over_informative):.3f}",
+                "unique_support": f"{int(getattr(row, 'unique_support_cells', 0)):,}",
+                "discordant": f"{int(row.discordant_informative_cells):,}",
             }
         )
 
@@ -1670,6 +1923,8 @@ for study in summary_df["study"]:
             f"![{study} QC and confidence]({asset_link_root}/umap_{study}_annotation_qc_confidence.png)",
             "",
             f"![{study} source agreement and disagreement]({asset_link_root}/umap_{study}_annotation_source_disagreement.png)",
+            "",
+            f"![{study} annotation-source effectiveness]({asset_link_root}/figure_02_source_effectiveness.png)",
             "",
             f"![{study} marker expression UMAPs]({asset_link_root}/umap_{study}_annotation_marker_expression.png)",
             "",
@@ -1774,6 +2029,7 @@ def report_values(language):
                 f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
                 f"- Subcluster evidence: `{output_root_display}/tables/lineage_subcluster_evidence.tsv.gz`",
                 f"- Source disagreement summary: `{output_root_display}/tables/source_disagreement_summary.tsv`",
+                f"- Source effectiveness summary: `{output_root_display}/tables/source_effectiveness_summary.tsv`",
                 f"- Diagnostics tables: `{output_root_display}/tables/`",
             ]
         )
@@ -1832,6 +2088,7 @@ def report_values(language):
                 f"- Marker availability alerts: `{output_root_display}/tables/marker_gene_availability_alerts.tsv`",
                 f"- Subcluster evidence: `{output_root_display}/tables/lineage_subcluster_evidence.tsv.gz`",
                 f"- Source disagreement summary: `{output_root_display}/tables/source_disagreement_summary.tsv`",
+                f"- Source effectiveness summary: `{output_root_display}/tables/source_effectiveness_summary.tsv`",
                 f"- Diagnostics tables: `{output_root_display}/tables/`",
             ]
         )
@@ -1851,6 +2108,7 @@ def report_values(language):
         "INTERPRETATION_NOTES": "\n".join(interpretation_lines),
         "MARKER_ALERTS": table_or_none(marker_alert_rows, ["study", "marker_set", "alert", "present_fraction", "missing_critical_markers", "missing_genes"], language),
         "SOURCE_DISAGREEMENT": table_or_none(source_disagreement_rows_for_report, ["study", "predicted_cell_type", "cells", "median_source_agreement", "disagreement_cells", "disagreement_fraction"], language),
+        "SOURCE_EFFECTIVENESS": table_or_none(source_effectiveness_rows_for_report, ["study", "source", "informative_cells", "coverage", "final_concordance", "high_conf_concordance", "unique_support", "discordant"], language),
         "REVIEW_CONCERNS": table_or_none(concern_rows_for_report, ["study", "concern", "cells"], language),
         "LABEL_COMPOSITION": table_or_none(label_rows_for_report, ["study", "predicted_cell_type", "cells"], language),
         "MARKER_FEEDBACK_TABLE": table_or_none(marker_feedback_rows_for_report, ["study", "lineage", "cluster", "cells", "chosen_label", "marker_assignment", "raw_marker_winner", "assignment_reason", "marker_score", "base_score", "penalty", "flags"], language),

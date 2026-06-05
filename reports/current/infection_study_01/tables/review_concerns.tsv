@@ -1,7 +1,6 @@
 study	concern	n_cells
-infection_study_01	High source disagreement for B Cell	40
-infection_study_01	High source disagreement for Doublet	1278
-infection_study_01	High source disagreement for MAIT Cell	473
-infection_study_01	High source disagreement for Neutrophil	14
-infection_study_01	High source disagreement for Plasmablast	43
-infection_study_01	High source disagreement for Treg	320
+infection_study_01	High source disagreement for Blood Cell	178
+infection_study_01	High source disagreement for Doublet	981
+infection_study_01	High source disagreement for Plasmablast	44
+infection_study_01	warning marker availability for B_memory_ABC	2100
+infection_study_01	warning marker availability for Plasma_ASC	172

@@ -1,4 +1,4 @@
 study	lineage	n_cells	status	reason
-vaccination_study_06	B_lineage	4023	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_06	T_NK_lineage	50804	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_06	Myeloid_lineage	46	skipped_lt50	fewer than 50 cells assigned to this broad lineage
+vaccination_study_06	B_lineage	2686	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_06	T_NK_lineage	51180	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_06	Myeloid_lineage	542	generated	true lineage-specific subcluster UMAP generated

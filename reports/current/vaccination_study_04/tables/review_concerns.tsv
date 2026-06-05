@@ -1,2 +1,11 @@
 study	concern	n_cells
-vaccination_study_04	High source disagreement for Doublet	647
+vaccination_study_04	High source disagreement for B Cell	23
+vaccination_study_04	High source disagreement for Blood Cell	474
+vaccination_study_04	High source disagreement for Doublet	1249
+vaccination_study_04	High source disagreement for Memory B Cell	2
+vaccination_study_04	High source disagreement for NK Cell	341
+vaccination_study_04	High source disagreement for Naive B Cell	3
+vaccination_study_04	High source disagreement for T Cell	74
+vaccination_study_04	critical marker availability for B_naive	4
+vaccination_study_04	warning marker availability for B_memory_ABC	2
+vaccination_study_04	warning marker availability for Plasma_ASC	97

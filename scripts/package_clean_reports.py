@@ -4,22 +4,39 @@ import shutil
 from pathlib import Path
 
 import pandas as pd
+from pandas.errors import EmptyDataError
 
 
-EXPECTED_STUDIES = [
+DEFAULT_EXPECTED_STUDIES = [
     "infection_study_01",
+    "infection_study_03",
     "infection_study_04",
+    "infection_study_06",
+    "infection_study_07",
+    "vaccination_study_01",
     "vaccination_study_04",
     "vaccination_study_06",
     "vaccination_study_09",
+    "vaccination_study_10",
 ]
+
+
+def read_optional_table(path):
+    if path.stat().st_size <= 1:
+        return pd.DataFrame()
+    try:
+        return pd.read_csv(path, sep="\t")
+    except EmptyDataError:
+        return pd.DataFrame()
 
 
 parser = argparse.ArgumentParser(description="Package clean single-dataset HIPC outputs into reports/current.")
 parser.add_argument("--run-root", required=True, help="Directory containing one clean output directory per study.")
 parser.add_argument("--report-root", default="reports/current")
 parser.add_argument("--replace", action="store_true", help="Replace the report root after building a staging directory.")
+parser.add_argument("--studies", default=",".join(DEFAULT_EXPECTED_STUDIES), help="Comma-separated study IDs to package.")
 args = parser.parse_args()
+expected_studies = [study.strip() for study in args.studies.split(",") if study.strip()]
 
 run_root = Path(args.run_root).resolve()
 report_root = Path(args.report_root)
@@ -35,12 +52,13 @@ summary_tables = {
     "final_annotation_label_counts.tsv": [],
     "lineage_subcluster_evidence.tsv.gz": [],
     "source_disagreement_summary.tsv": [],
+    "source_effectiveness_summary.tsv": [],
     "lineage_panel_status.tsv": [],
     "marker_assignment_feedback.tsv": [],
     "llm_subcluster_review_queue.tsv": [],
 }
 
-for study in EXPECTED_STUDIES:
+for study in expected_studies:
     source = run_root / study
     if not source.exists():
         raise SystemExit(f"Missing clean study output: {source}")
@@ -65,7 +83,7 @@ for study in EXPECTED_STUDIES:
         table_path = source / "tables" / table_name
         if not table_path.exists():
             raise SystemExit(f"Missing summary table for {study}: {table_path}")
-        summary_tables[table_name].append(pd.read_csv(table_path, sep="\t"))
+        summary_tables[table_name].append(read_optional_table(table_path))
 
 for table_name, frames in summary_tables.items():
     pd.concat(frames, ignore_index=True).to_csv(staging_root / "summary/tables" / table_name, sep="\t", index=False)
@@ -82,7 +100,7 @@ summary_ja = [
     "この bundle は clean single-dataset output から package したものです。各 dataset directory には deterministic annotation pipeline が生成した report、assets、tables だけを含めています。",
     "",
 ]
-for study in EXPECTED_STUDIES:
+for study in expected_studies:
     summary_en.append(f"- [{study} English](../{study}/report_en.md), [Japanese](../{study}/report_ja.md)")
     summary_ja.append(f"- [{study} English](../{study}/report_en.md), [Japanese](../{study}/report_ja.md)")
 (staging_root / "summary/report_en.md").write_text("\n".join(summary_en) + "\n", encoding="utf-8")

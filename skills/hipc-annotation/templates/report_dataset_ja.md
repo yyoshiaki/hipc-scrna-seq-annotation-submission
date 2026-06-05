@@ -28,6 +28,12 @@
 
 {{SOURCE_DISAGREEMENT}}
 
+## アノテーションソース効果
+
+この表は外部 ground truth に対する正解率ではありません。各 annotation source がどれだけの細胞で情報を持ち、final label とどれだけ一致したかを示す監査用統計です。`coverage` は source が `not_available` 以外を返した割合、`final_concordance` は informative cells の中で final label と一致した割合、`unique_support` はその source だけが final label と一致した細胞数です。
+
+{{SOURCE_EFFECTIVENESS}}
+
 ## レビュー優先事項
 
 {{REVIEW_CONCERNS}}

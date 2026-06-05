@@ -2,11 +2,27 @@
 
 Use these packets as a review layer. Do not directly mutate per-cell labels. Return dataset-specific concerns, ontology-gap hypotheses, and general policy updates to test in the deterministic pipeline.
 
+## vaccination_study_06 Myeloid_lineage cluster 1
+
+- Priority: high (7)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=1; cells=58; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=0.616; best_total_score=0.616; score_margin=0.049; CellTypist=CD4 Naive / T Central Memory:32; CD4 T Effector Memory:16; B Cell:5; Treg:1; T Cell:1; PanHuman=Blood Cell:23; CD4 Naive / T Central Memory:13; CD4 T Cell (ab):8; Treg:5; Memory B Cell:4; scRefMap=CD4 Naive / T Central Memory:47; Treg:3; not_available:3; Memory B Cell:3; Naive B Cell:2; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 Myeloid_lineage cluster 6
+
+- Priority: high (7)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=6; cells=45; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=0.550; best_total_score=0.550; score_margin=0.116; CellTypist=CD4 Naive / T Central Memory:37; CD8 Cytotoxic / T Effector Memory:2; Naive B Cell:2; CD4 T Effector Memory:2; Memory B Cell:1; PanHuman=Blood Cell:19; CD4 Naive / T Central Memory:13; Treg:5; CD4 T Effector Memory:5; CD4 T Cell (ab):2; scRefMap=CD4 Naive / T Central Memory:31; not_available:8; Treg:4; CD4 T Effector Memory:1; Naive B Cell:1; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
 ## vaccination_study_06 T_NK_lineage cluster 3
 
 - Priority: medium (6)
 - Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=3; cells=2956; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.927; best_total_score=3.377; score_margin=2.450; CellTypist=NK Cell:2770; CD8 Cytotoxic / T Effector Memory:144; Blood Cell:26; CD4 T Effector Memory:5; T Cell:4; PanHuman=NK Cell:2302; Blood Cell:626; CD8 Cytotoxic / T Effector Memory:17; MAIT Cell:6; CD8 T Cell (ab):5; scRefMap=not_available:2955; CD4 T Effector Memory:1; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=3; cells=3230; final=CD8 Cytotoxic / T Effector Memory; marker_assignment=CD8 Cytotoxic / T Effector Memory; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.664; best_total_score=2.948; score_margin=2.223; CellTypist=CD8 Cytotoxic / T Effector Memory:3083; NK Cell:82; CD4 T Effector Memory:46; MAIT Cell:17; CD4 Naive / T Central Memory:1; PanHuman=CD8 Cytotoxic / T Effector Memory:2165; Blood Cell:493; NK Cell:319; gdT Cell:97; CD8 T Cell (ab):81; scRefMap=not_available:3191; CD4 T Effector Memory:35; CD4 Naive / T Central Memory:3; Treg:1; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
@@ -14,15 +30,23 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 - Priority: medium (6)
 - Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=5; cells=2655; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.872; best_total_score=3.330; score_margin=2.458; CellTypist=NK Cell:2206; CD8 Cytotoxic / T Effector Memory:274; CD4 Naive / T Central Memory:57; Blood Cell:46; Plasma Cell:22; PanHuman=Blood Cell:1380; NK Cell:1085; CD8 Cytotoxic / T Effector Memory:104; CD8 T Cell (ab):26; gdT Cell:19; scRefMap=not_available:2635; CD4 T Effector Memory:17; CD4 Naive / T Central Memory:3; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=5; cells=3181; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.921; best_total_score=3.364; score_margin=2.443; CellTypist=NK Cell:2990; CD8 Cytotoxic / T Effector Memory:190; MAIT Cell:1; PanHuman=NK Cell:2502; Blood Cell:358; T Cell:265; CD8 Cytotoxic / T Effector Memory:44; CD8 T Cell (ab):10; scRefMap=not_available:3181; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_06 T_NK_lineage cluster 8
+## vaccination_study_06 T_NK_lineage cluster 6
 
 - Priority: medium (6)
 - Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=8; cells=2424; final=CD8 Cytotoxic / T Effector Memory; marker_assignment=CD8 Cytotoxic / T Effector Memory; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.631; best_total_score=2.023; score_margin=1.392; CellTypist=CD8 Cytotoxic / T Effector Memory:2235; CD4 T Effector Memory:75; Blood Cell:25; gdT Cell:21; NK Cell:18; PanHuman=CD8 Cytotoxic / T Effector Memory:1682; Blood Cell:425; CD4 T Cell (ab):125; CD8 T Cell (ab):71; gdT Cell:66; scRefMap=not_available:2295; CD4 T Effector Memory:118; CD4 Naive / T Central Memory:11; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=6; cells=2915; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.860; best_total_score=3.118; score_margin=2.099; CellTypist=NK Cell:2472; CD8 Cytotoxic / T Effector Memory:404; MAIT Cell:24; CD4 Naive / T Central Memory:14; B Cell:1; PanHuman=NK Cell:1087; Blood Cell:937; T Cell:552; CD8 Cytotoxic / T Effector Memory:230; gdT Cell:28; scRefMap=not_available:2861; CD4 T Effector Memory:41; CD4 Naive / T Central Memory:13; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 T_NK_lineage cluster 14
+
+- Priority: medium (6)
+- Suggested action: evaluate_ontology_gap_or_conservative_policy
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=14; cells=2123; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.916; best_total_score=3.162; score_margin=1.656; CellTypist=NK Cell:1190; CD8 Cytotoxic / T Effector Memory:798; gdT Cell:132; MAIT Cell:2; T Cell:1; PanHuman=NK Cell:1749; Blood Cell:189; T Cell:86; CD8 Cytotoxic / T Effector Memory:77; CD8 T Cell (ab):17; scRefMap=not_available:2121; CD4 Naive / T Central Memory:1; CD4 T Effector Memory:1; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
@@ -30,119 +54,143 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 - Priority: medium (6)
 - Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=15; cells=1632; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.900; best_total_score=3.355; score_margin=2.455; CellTypist=NK Cell:1571; CD8 Cytotoxic / T Effector Memory:31; Blood Cell:24; CD4 Naive / T Central Memory:2; gdT Cell:1; PanHuman=NK Cell:1332; Blood Cell:265; CD8 Cytotoxic / T Effector Memory:32; CD8 T Cell (ab):2; gdT Cell:1; scRefMap=not_available:1631; CD4 T Effector Memory:1; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=15; cells=1538; final=MAIT Cell; marker_assignment=MAIT Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.778; best_total_score=2.590; score_margin=1.387; CellTypist=MAIT Cell:1046; CD8 Cytotoxic / T Effector Memory:338; CD4 T Effector Memory:138; NK Cell:11; CD4 Naive / T Central Memory:4; PanHuman=MAIT Cell:476; Blood Cell:342; CD4 T Cell (ab):296; CD8 Cytotoxic / T Effector Memory:188; gdT Cell:102; scRefMap=not_available:1380; CD4 T Effector Memory:97; CD4 Naive / T Central Memory:59; Treg:2; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_06 T_NK_lineage cluster 17
+## vaccination_study_06 T_NK_lineage cluster 16
 
 - Priority: medium (6)
 - Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=17; cells=1383; final=MAIT Cell; marker_assignment=MAIT Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.793; best_total_score=2.839; score_margin=2.025; CellTypist=MAIT Cell:1032; CD8 Cytotoxic / T Effector Memory:179; CD4 T Effector Memory:98; Blood Cell:43; NK Cell:10; PanHuman=MAIT Cell:499; Blood Cell:340; CD4 T Cell (ab):237; gdT Cell:118; CD8 Cytotoxic / T Effector Memory:68; scRefMap=not_available:1280; CD4 T Effector Memory:91; CD4 Naive / T Central Memory:11; Plasma Cell:1; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=16; cells=1460; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.848; best_total_score=2.907; score_margin=1.683; CellTypist=NK Cell:1169; CD8 Cytotoxic / T Effector Memory:278; gdT Cell:11; CD4 Naive / T Central Memory:2; PanHuman=NK Cell:526; Blood Cell:426; CD8 Cytotoxic / T Effector Memory:220; T Cell:210; CD8 T Cell (ab):49; scRefMap=not_available:1431; CD4 T Effector Memory:26; CD4 Naive / T Central Memory:3; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_06 T_NK_lineage cluster 18
+## vaccination_study_06 Myeloid_lineage cluster 7
 
 - Priority: medium (6)
-- Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=18; cells=1292; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.873; best_total_score=3.304; score_margin=2.431; CellTypist=NK Cell:1051; CD8 Cytotoxic / T Effector Memory:107; gdT Cell:71; Blood Cell:31; CD4 Naive / T Central Memory:9; PanHuman=Blood Cell:575; NK Cell:557; CD8 Cytotoxic / T Effector Memory:110; CD8 T Cell (ab):36; gdT Cell:7; scRefMap=not_available:1281; CD4 T Effector Memory:11; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=7; cells=39; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=0.954; best_total_score=0.954; score_margin=0.231; CellTypist=Memory B Cell:38; CD8 Cytotoxic / T Effector Memory:1; PanHuman=Blood Cell:27; Memory B Cell:5; T Cell:4; B Cell:1; Treg:1; scRefMap=not_available:24; CD4 Naive / T Central Memory:7; Treg:4; Memory B Cell:2; Naive B Cell:2; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_06 T_NK_lineage cluster 20
+## vaccination_study_06 Myeloid_lineage cluster 9
 
-- Priority: medium (5)
-- Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=20; cells=967; final=CD8 Cytotoxic / T Effector Memory; marker_assignment=CD8 Cytotoxic / T Effector Memory; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.564; best_total_score=2.050; score_margin=1.486; CellTypist=CD8 Cytotoxic / T Effector Memory:935; NK Cell:11; gdT Cell:8; CD4 T Effector Memory:6; Blood Cell:5; PanHuman=CD8 Cytotoxic / T Effector Memory:747; Blood Cell:139; CD8 T Cell (ab):64; NK Cell:11; Treg:3; scRefMap=not_available:967; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 T_NK_lineage cluster 22
-
-- Priority: medium (5)
-- Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=22; cells=859; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.955; best_total_score=3.024; score_margin=1.849; CellTypist=CD8 Cytotoxic / T Effector Memory:358; NK Cell:278; gdT Cell:156; Blood Cell:66; Plasma Cell:1; PanHuman=NK Cell:747; Blood Cell:79; CD8 Cytotoxic / T Effector Memory:23; CD8 T Cell (ab):9; gdT Cell:1; scRefMap=not_available:859; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 T_NK_lineage cluster 24
-
-- Priority: medium (5)
-- Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=24; cells=698; final=CD8 Cytotoxic / T Effector Memory; marker_assignment=CD8 Cytotoxic / T Effector Memory; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.624; best_total_score=1.986; score_margin=1.362; CellTypist=CD8 Cytotoxic / T Effector Memory:645; gdT Cell:29; NK Cell:18; CD4 T Effector Memory:3; Treg:1; PanHuman=CD8 Cytotoxic / T Effector Memory:478; Blood Cell:152; NK Cell:25; CD8 T Cell (ab):25; gdT Cell:15; scRefMap=not_available:692; CD4 Naive / T Central Memory:5; CD4 T Effector Memory:1; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 T_NK_lineage cluster 25
-
-- Priority: medium (5)
-- Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=25; cells=596; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.926; best_total_score=2.554; score_margin=0.656; CellTypist=CD8 Cytotoxic / T Effector Memory:477; NK Cell:95; gdT Cell:18; Blood Cell:2; T Cell:2; PanHuman=NK Cell:374; Blood Cell:144; CD8 Cytotoxic / T Effector Memory:75; CD8 T Cell (ab):2; gdT Cell:1; scRefMap=not_available:596; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 T_NK_lineage cluster 26
-
-- Priority: medium (5)
-- Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=26; cells=429; final=CD8 Cytotoxic / T Effector Memory; marker_assignment=CD8 Cytotoxic / T Effector Memory; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.681; best_total_score=2.186; score_margin=1.479; CellTypist=CD8 Cytotoxic / T Effector Memory:319; NK Cell:46; gdT Cell:25; Blood Cell:12; CD4 Naive / T Central Memory:10; PanHuman=CD8 Cytotoxic / T Effector Memory:213; Blood Cell:156; CD8 T Cell (ab):29; Treg:10; gdT Cell:7; scRefMap=not_available:416; CD4 T Effector Memory:12; CD4 Naive / T Central Memory:1; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+- Priority: medium (6)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=9; cells=35; final=Myeloid Cell; marker_assignment=Conventional DC 2; raw_marker_winner=Conventional DC 2; assignment_reason=raw_marker_winner; marker_score=0.581; best_total_score=0.959; score_margin=0.378; CellTypist=NK Cell:22; CD8 Cytotoxic / T Effector Memory:10; gdT Cell:1; CD4 Naive / T Central Memory:1; Memory B Cell:1; PanHuman=Blood Cell:27; NK Cell:5; T Cell:1; CD8 Cytotoxic / T Effector Memory:1; Memory B Cell:1; scRefMap=not_available:32; CD4 T Effector Memory:2; Naive B Cell:1; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
 ## vaccination_study_06 T_NK_lineage cluster 2
 
-- Priority: low (3)
-- Suggested action: accept
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=2; cells=3197; final=CD8 Cytotoxic / T Effector Memory; marker_assignment=CD8 Cytotoxic / T Effector Memory; raw_marker_winner=CD8 Cytotoxic / T Effector Memory; assignment_reason=raw_marker_winner; marker_score=0.597; best_total_score=2.163; score_margin=1.403; CellTypist=CD8 Cytotoxic / T Effector Memory:2464; CD4 Naive / T Central Memory:233; NK Cell:222; Blood Cell:94; gdT Cell:85; PanHuman=CD8 Cytotoxic / T Effector Memory:1433; Blood Cell:1147; CD4 T Cell (ab):113; NK Cell:102; CD4 T Effector Memory:100; scRefMap=not_available:2749; CD4 T Effector Memory:401; CD4 Naive / T Central Memory:42; Treg:5; review_reasons=screfmapping_not_available.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 B_lineage cluster 1
-
-- Priority: low (3)
-- Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=1; cells=334; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.171; best_total_score=2.804; score_margin=1.131; CellTypist=Memory B Cell:157; Naive B Cell:100; B Cell:38; Plasma Cell:11; CD8 Cytotoxic / T Effector Memory:11; PanHuman=Memory B Cell:320; Blood Cell:10; Plasma Cell:2; B Cell:1; Naive B Cell:1; scRefMap=Naive B Cell:199; Memory B Cell:74; Plasma Cell:55; not_available:5; CD4 Naive / T Central Memory:1; review_reasons=marker_assignment_disagrees_with_final.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 B_lineage cluster 2
-
-- Priority: low (3)
-- Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=2; cells=318; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.864; best_total_score=2.928; score_margin=0.331; CellTypist=Memory B Cell:172; Naive B Cell:109; B Cell:29; CD8 Cytotoxic / T Effector Memory:4; Plasma Cell:2; PanHuman=Memory B Cell:317; Blood Cell:1; scRefMap=Naive B Cell:223; Memory B Cell:87; Plasma Cell:6; not_available:1; CD4 Naive / T Central Memory:1; review_reasons=marker_assignment_disagrees_with_final.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 B_lineage cluster 5
-
-- Priority: low (3)
+- Priority: medium (5)
 - Suggested action: evaluate_ontology_gap_or_conservative_policy
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=5; cells=278; final=Memory B Cell; marker_assignment=Memory B Cell; raw_marker_winner=Plasmablast; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.244; best_total_score=3.198; score_margin=2.761; CellTypist=B Cell:251; Blood Cell:23; Memory B Cell:2; CD4 Naive / T Central Memory:1; Naive B Cell:1; PanHuman=Memory B Cell:275; Blood Cell:3; scRefMap=Memory B Cell:145; Naive B Cell:99; Plasma Cell:19; not_available:15; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate.
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=2; cells=3407; final=CD4 Naive / T Central Memory; marker_assignment=CD4 Naive / T Central Memory; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.314; best_total_score=3.317; score_margin=2.947; CellTypist=CD4 Naive / T Central Memory:3049; CD8 Cytotoxic / T Effector Memory:147; Treg:63; NK Cell:59; MAIT Cell:52; PanHuman=CD4 Naive / T Central Memory:1236; Blood Cell:936; Treg:373; T Cell:267; CD4 T Cell (ab):254; scRefMap=CD4 Naive / T Central Memory:2000; not_available:1024; CD4 T Effector Memory:293; Treg:90; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
 ## vaccination_study_06 T_NK_lineage cluster 7
 
-- Priority: low (2)
-- Suggested action: accept
-- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=7; cells=2496; final=CD4 Naive / T Central Memory; marker_assignment=CD4 Naive / T Central Memory; raw_marker_winner=CD4 Naive / T Central Memory; assignment_reason=raw_marker_winner; marker_score=0.328; best_total_score=2.743; score_margin=2.054; CellTypist=CD4 Naive / T Central Memory:1813; CD4 T Effector Memory:307; CD8 Cytotoxic / T Effector Memory:126; Blood Cell:115; Treg:43; PanHuman=CD4 T Effector Memory:646; Blood Cell:623; Treg:443; CD4 T Cell (ab):432; CD4 Naive / T Central Memory:328; scRefMap=CD4 Naive / T Central Memory:1711; not_available:364; CD4 T Effector Memory:337; Treg:84; review_reasons=spot_check.
+- Priority: medium (5)
+- Suggested action: evaluate_ontology_gap_or_conservative_policy
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=7; cells=2893; final=CD4 Naive / T Central Memory; marker_assignment=CD4 Naive / T Central Memory; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.319; best_total_score=3.338; score_margin=2.577; CellTypist=CD4 Naive / T Central Memory:2531; CD8 Cytotoxic / T Effector Memory:118; CD4 T Effector Memory:103; MAIT Cell:65; Treg:61; PanHuman=Blood Cell:624; CD4 T Effector Memory:582; Treg:566; CD4 T Cell (ab):462; CD4 Naive / T Central Memory:435; scRefMap=CD4 Naive / T Central Memory:1867; not_available:526; CD4 T Effector Memory:388; Treg:112; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_06 B_lineage cluster 3
+## vaccination_study_06 T_NK_lineage cluster 18
 
-- Priority: low (2)
-- Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=3; cells=296; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.570; best_total_score=2.935; score_margin=1.249; CellTypist=B Cell:112; Naive B Cell:86; Memory B Cell:64; Blood Cell:17; Plasma Cell:9; PanHuman=Memory B Cell:294; Blood Cell:1; Plasma Cell:1; scRefMap=Plasma Cell:103; Naive B Cell:89; Memory B Cell:87; not_available:17; review_reasons=marker_assignment_disagrees_with_final.
+- Priority: medium (5)
+- Suggested action: evaluate_ontology_gap_or_conservative_policy
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=18; cells=894; final=CD8 Cytotoxic / T Effector Memory; marker_assignment=CD8 Cytotoxic / T Effector Memory; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.582; best_total_score=3.077; score_margin=2.496; CellTypist=CD8 Cytotoxic / T Effector Memory:890; NK Cell:4; PanHuman=CD8 Cytotoxic / T Effector Memory:677; Blood Cell:120; CD8 T Cell (ab):54; NK Cell:39; T Cell:2; scRefMap=not_available:894; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_06 B_lineage cluster 4
+## vaccination_study_06 Myeloid_lineage cluster 0
+
+- Priority: medium (5)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=0; cells=83; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=1.000; best_total_score=1.000; score_margin=0.276; CellTypist=B Cell:38; Memory B Cell:33; Naive B Cell:11; CD4 Naive / T Central Memory:1; PanHuman=Memory B Cell:79; Blood Cell:4; scRefMap=Naive B Cell:51; Memory B Cell:28; not_available:3; CD4 Naive / T Central Memory:1; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 Myeloid_lineage cluster 2
+
+- Priority: medium (5)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=2; cells=57; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=0.897; best_total_score=0.897; score_margin=0.113; CellTypist=Memory B Cell:21; CD4 Naive / T Central Memory:19; B Cell:13; Naive B Cell:2; CD8 Cytotoxic / T Effector Memory:2; PanHuman=Blood Cell:32; Memory B Cell:22; CD4 T Cell (ab):1; Platelet:1; T Cell:1; scRefMap=Naive B Cell:20; not_available:19; CD4 Naive / T Central Memory:7; CD4 T Effector Memory:5; Treg:4; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 Myeloid_lineage cluster 3
+
+- Priority: medium (5)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=3; cells=55; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=0.872; best_total_score=0.872; score_margin=0.159; CellTypist=Memory B Cell:32; B Cell:14; CD4 Naive / T Central Memory:4; NK Cell:3; CD8 Cytotoxic / T Effector Memory:1; PanHuman=Memory B Cell:31; Blood Cell:20; CD4 T Effector Memory:1; Plasma Cell:1; Treg:1; scRefMap=Naive B Cell:21; not_available:13; Memory B Cell:12; CD4 Naive / T Central Memory:5; Treg:3; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 Myeloid_lineage cluster 5
+
+- Priority: medium (5)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=5; cells=47; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=0.939; best_total_score=0.939; score_margin=0.148; CellTypist=B Cell:31; Memory B Cell:12; Naive B Cell:4; PanHuman=Memory B Cell:41; Blood Cell:5; B Cell:1; scRefMap=Naive B Cell:28; Memory B Cell:13; not_available:4; Plasma Cell:2; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 Myeloid_lineage cluster 8
+
+- Priority: medium (5)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=8; cells=38; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=0.957; best_total_score=0.957; score_margin=0.306; CellTypist=B Cell:37; Memory B Cell:1; PanHuman=Memory B Cell:36; CD8 Cytotoxic / T Effector Memory:1; Blood Cell:1; scRefMap=Naive B Cell:19; Memory B Cell:18; not_available:1; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 Myeloid_lineage cluster 11
+
+- Priority: medium (5)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=vaccination_study_06; lineage=Myeloid_lineage; cluster=11; cells=11; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=1.000; best_total_score=1.000; score_margin=0.466; CellTypist=B Cell:7; Memory B Cell:2; CD4 Naive / T Central Memory:1; Naive B Cell:1; PanHuman=Memory B Cell:10; Blood Cell:1; scRefMap=Naive B Cell:7; Plasma Cell:2; CD4 Naive / T Central Memory:1; Memory B Cell:1; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 T_NK_lineage cluster 19
+
+- Priority: medium (4)
+- Suggested action: evaluate_ontology_gap_or_conservative_policy
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=19; cells=270; final=CD4 Naive / T Central Memory; marker_assignment=Treg; raw_marker_winner=Treg; assignment_reason=raw_marker_winner; marker_score=0.519; best_total_score=2.609; score_margin=1.081; CellTypist=CD4 Naive / T Central Memory:87; CD8 Cytotoxic / T Effector Memory:86; Treg:79; NK Cell:10; MAIT Cell:3; PanHuman=Blood Cell:65; CD4 T Cell (ab):61; Treg:55; T Cell:24; NK Cell:22; scRefMap=CD4 Naive / T Central Memory:125; not_available:99; CD4 T Effector Memory:27; Treg:19; review_reasons=marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 T_NK_lineage cluster 20
+
+- Priority: medium (4)
+- Suggested action: evaluate_ontology_gap_or_conservative_policy
+- Evidence packet: Study=vaccination_study_06; lineage=T_NK_lineage; cluster=20; cells=160; final=NK Cell; marker_assignment=NK Cell; raw_marker_winner=NKT Cell; assignment_reason=conservative_policy_blocks_raw_marker_winner; marker_score=0.952; best_total_score=3.367; score_margin=2.416; CellTypist=NK Cell:150; CD8 Cytotoxic / T Effector Memory:10; PanHuman=NK Cell:93; T Cell:27; Blood Cell:26; CD8 Cytotoxic / T Effector Memory:12; CD4 Naive / T Central Memory:1; scRefMap=not_available:159; CD4 T Effector Memory:1; review_reasons=raw_marker_winner_changed_by_policy,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 B_lineage cluster 1
 
 - Priority: low (2)
 - Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=4; cells=294; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.244; best_total_score=3.322; score_margin=2.636; CellTypist=B Cell:278; Memory B Cell:15; Naive B Cell:1; PanHuman=Memory B Cell:293; Blood Cell:1; scRefMap=Memory B Cell:179; Naive B Cell:106; Plasma Cell:9; review_reasons=marker_assignment_disagrees_with_final.
+- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=1; cells=211; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.769; best_total_score=3.032; score_margin=1.527; CellTypist=Memory B Cell:132; B Cell:76; Naive B Cell:3; PanHuman=Memory B Cell:211; scRefMap=Naive B Cell:123; Memory B Cell:76; Plasma Cell:12; review_reasons=marker_assignment_disagrees_with_final.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 B_lineage cluster 2
+
+- Priority: low (2)
+- Suggested action: review_marker_vs_reference_disagreement
+- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=2; cells=179; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.163; best_total_score=2.590; score_margin=1.533; CellTypist=B Cell:117; Memory B Cell:58; CD4 Naive / T Central Memory:2; CD8 Cytotoxic / T Effector Memory:1; Naive B Cell:1; PanHuman=Memory B Cell:147; Blood Cell:23; B Cell:3; Treg:2; Plasma Cell:1; scRefMap=Naive B Cell:129; Memory B Cell:37; not_available:7; Plasma Cell:4; CD4 T Effector Memory:1; review_reasons=marker_assignment_disagrees_with_final.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## vaccination_study_06 B_lineage cluster 5
+
+- Priority: low (2)
+- Suggested action: review_marker_vs_reference_disagreement
+- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=5; cells=173; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.218; best_total_score=3.173; score_margin=2.407; CellTypist=B Cell:173; PanHuman=Memory B Cell:172; Blood Cell:1; scRefMap=Memory B Cell:84; Naive B Cell:79; Plasma Cell:10; review_reasons=marker_assignment_disagrees_with_final.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
@@ -150,15 +198,15 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 - Priority: low (2)
 - Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=6; cells=269; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.003; best_total_score=2.886; score_margin=2.141; CellTypist=B Cell:193; Memory B Cell:38; CD8 Cytotoxic / T Effector Memory:11; Blood Cell:9; Naive B Cell:9; PanHuman=Memory B Cell:249; Blood Cell:12; Plasma Cell:6; B Cell:2; scRefMap=Naive B Cell:147; Memory B Cell:101; Plasma Cell:15; not_available:6; review_reasons=marker_assignment_disagrees_with_final.
+- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=6; cells=165; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.084; best_total_score=2.628; score_margin=1.647; CellTypist=Memory B Cell:81; B Cell:80; CD4 Naive / T Central Memory:2; CD8 Cytotoxic / T Effector Memory:1; Naive B Cell:1; PanHuman=Memory B Cell:137; Blood Cell:20; Plasma Cell:3; B Cell:2; Platelet:1; scRefMap=Naive B Cell:119; Memory B Cell:29; not_available:8; Plasma Cell:6; CD4 Naive / T Central Memory:2; review_reasons=marker_assignment_disagrees_with_final.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
 ## vaccination_study_06 B_lineage cluster 7
 
 - Priority: low (2)
-- Suggested action: accept
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=7; cells=265; final=Naive B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.193; best_total_score=2.267; score_margin=0.027; CellTypist=B Cell:118; Naive B Cell:101; Blood Cell:14; CD4 Naive / T Central Memory:8; Memory B Cell:8; PanHuman=Memory B Cell:225; Blood Cell:29; B Cell:7; Naive B Cell:2; Plasma Cell:1; scRefMap=Naive B Cell:237; not_available:23; Memory B Cell:5; review_reasons=low_total_score_or_margin.
+- Suggested action: review_marker_vs_reference_disagreement
+- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=7; cells=144; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.129; best_total_score=2.889; score_margin=2.082; CellTypist=Memory B Cell:75; B Cell:62; CD4 Naive / T Central Memory:3; NK Cell:2; CD8 Cytotoxic / T Effector Memory:1; PanHuman=Memory B Cell:131; Blood Cell:10; Plasma Cell:1; Naive B Cell:1; CD4 T Cell (ab):1; scRefMap=Naive B Cell:77; Memory B Cell:53; Plasma Cell:6; not_available:5; CD4 Naive / T Central Memory:2; review_reasons=marker_assignment_disagrees_with_final.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
@@ -166,7 +214,7 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 - Priority: low (2)
 - Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=8; cells=251; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.086; best_total_score=3.340; score_margin=2.825; CellTypist=B Cell:140; Memory B Cell:97; Blood Cell:8; Naive B Cell:4; CD4 Naive / T Central Memory:2; PanHuman=Memory B Cell:248; Blood Cell:2; Plasma Cell:1; scRefMap=Memory B Cell:157; Naive B Cell:81; not_available:8; Plasma Cell:5; review_reasons=marker_assignment_disagrees_with_final.
+- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=8; cells=141; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.293; best_total_score=2.850; score_margin=1.422; CellTypist=B Cell:88; Memory B Cell:31; Naive B Cell:20; CD4 Naive / T Central Memory:2; PanHuman=Memory B Cell:127; Blood Cell:12; CD4 T Cell (ab):1; CD4 Naive / T Central Memory:1; scRefMap=Naive B Cell:90; Memory B Cell:39; Plasma Cell:4; not_available:3; CD4 Naive / T Central Memory:3; review_reasons=marker_assignment_disagrees_with_final.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
@@ -174,62 +222,22 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 - Priority: low (2)
 - Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=9; cells=209; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.399; best_total_score=3.215; score_margin=1.442; CellTypist=Memory B Cell:129; Naive B Cell:55; B Cell:21; CD4 T Effector Memory:2; Blood Cell:1; PanHuman=Memory B Cell:207; B Cell:1; Blood Cell:1; scRefMap=Naive B Cell:120; Memory B Cell:85; not_available:3; CD4 Naive / T Central Memory:1; review_reasons=marker_assignment_disagrees_with_final.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 B_lineage cluster 12
-
-- Priority: low (2)
-- Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=12; cells=173; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.963; best_total_score=2.440; score_margin=0.191; CellTypist=B Cell:148; Blood Cell:17; Naive B Cell:8; PanHuman=Memory B Cell:161; Blood Cell:10; B Cell:2; scRefMap=Naive B Cell:168; Memory B Cell:3; Plasma Cell:2; review_reasons=marker_assignment_disagrees_with_final.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 B_lineage cluster 13
-
-- Priority: low (2)
-- Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=13; cells=169; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.329; best_total_score=3.867; score_margin=3.235; CellTypist=Memory B Cell:126; B Cell:39; Naive B Cell:4; PanHuman=Memory B Cell:168; Blood Cell:1; scRefMap=Memory B Cell:135; Naive B Cell:34; review_reasons=marker_assignment_disagrees_with_final.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 B_lineage cluster 14
-
-- Priority: low (2)
-- Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=14; cells=131; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.191; best_total_score=2.501; score_margin=1.832; CellTypist=Memory B Cell:86; Plasma Cell:15; Naive B Cell:10; Plasmablast:7; B Cell:5; PanHuman=Blood Cell:85; Memory B Cell:27; B Cell:11; Plasma Cell:4; Naive B Cell:4; scRefMap=Memory B Cell:65; not_available:29; Naive B Cell:24; CD4 Naive / T Central Memory:10; Treg:2; review_reasons=marker_assignment_disagrees_with_final.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 B_lineage cluster 15
-
-- Priority: low (2)
-- Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=15; cells=98; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.117; best_total_score=3.063; score_margin=1.998; CellTypist=Memory B Cell:54; B Cell:32; Naive B Cell:8; CD8 Cytotoxic / T Effector Memory:2; CD4 Naive / T Central Memory:1; PanHuman=Memory B Cell:94; Naive B Cell:1; Blood Cell:1; Plasma Cell:1; B Cell:1; scRefMap=Naive B Cell:58; Memory B Cell:40; review_reasons=marker_assignment_disagrees_with_final.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## vaccination_study_06 B_lineage cluster 16
-
-- Priority: low (2)
-- Suggested action: review_marker_vs_reference_disagreement
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=16; cells=86; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.525; best_total_score=3.479; score_margin=2.556; CellTypist=B Cell:76; Blood Cell:4; Memory B Cell:3; Naive B Cell:3; PanHuman=Memory B Cell:86; scRefMap=Memory B Cell:63; Naive B Cell:22; Plasma Cell:1; review_reasons=marker_assignment_disagrees_with_final.
+- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=9; cells=135; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.114; best_total_score=2.785; score_margin=1.948; CellTypist=B Cell:99; Memory B Cell:33; CD4 Naive / T Central Memory:2; Naive B Cell:1; PanHuman=Memory B Cell:118; Blood Cell:9; B Cell:4; Plasma Cell:2; Naive B Cell:1; scRefMap=Naive B Cell:77; Memory B Cell:42; Plasma Cell:11; not_available:4; CD4 Naive / T Central Memory:1; review_reasons=marker_assignment_disagrees_with_final.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
 ## vaccination_study_06 B_lineage cluster 10
 
-- Priority: low (1)
-- Suggested action: accept
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=10; cells=204; final=Plasma Cell; marker_assignment=Plasma Cell; raw_marker_winner=Plasma Cell; assignment_reason=raw_marker_winner; marker_score=0.160; best_total_score=1.900; score_margin=1.593; CellTypist=Plasma Cell:135; Memory B Cell:21; B Cell:20; Plasmablast:17; Naive B Cell:10; PanHuman=Blood Cell:203; Plasma Cell:1; scRefMap=not_available:153; CD4 Naive / T Central Memory:22; CD4 T Effector Memory:21; Naive B Cell:4; Memory B Cell:3; review_reasons=screfmapping_not_available.
+- Priority: low (2)
+- Suggested action: review_marker_vs_reference_disagreement
+- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=10; cells=133; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.086; best_total_score=2.758; score_margin=2.103; CellTypist=Memory B Cell:127; B Cell:3; NK Cell:2; CD4 Naive / T Central Memory:1; PanHuman=Memory B Cell:125; Blood Cell:6; HSC:1; B Cell:1; scRefMap=Naive B Cell:63; Plasma Cell:40; Memory B Cell:24; not_available:5; CD4 Naive / T Central Memory:1; review_reasons=marker_assignment_disagrees_with_final.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_06 B_lineage cluster 17
+## vaccination_study_06 B_lineage cluster 11
 
-- Priority: low (0)
-- Suggested action: accept
-- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=17; cells=84; final=Memory B Cell; marker_assignment=Memory B Cell; raw_marker_winner=Memory B Cell; assignment_reason=raw_marker_winner; marker_score=0.039; best_total_score=1.801; score_margin=0.939; CellTypist=Memory B Cell:34; Plasma Cell:24; Naive B Cell:11; B Cell:8; CD4 Naive / T Central Memory:4; PanHuman=Blood Cell:63; Memory B Cell:17; Plasma Cell:3; B Cell:1; scRefMap=Naive B Cell:35; Memory B Cell:28; not_available:10; Plasma Cell:4; CD4 Naive / T Central Memory:3; review_reasons=spot_check.
+- Priority: low (2)
+- Suggested action: review_marker_vs_reference_disagreement
+- Evidence packet: Study=vaccination_study_06; lineage=B_lineage; cluster=11; cells=133; final=Memory B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.847; best_total_score=2.756; score_margin=0.812; CellTypist=B Cell:128; Naive B Cell:4; Memory B Cell:1; PanHuman=Memory B Cell:131; Blood Cell:2; scRefMap=Naive B Cell:113; Memory B Cell:20; review_reasons=marker_assignment_disagrees_with_final.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?

@@ -1,22 +1,17 @@
 study	predicted_cell_type	n_cells
-infection_study_01	Classical Monocyte	17372
-infection_study_01	NK Cell	9740
-infection_study_01	CD8 Cytotoxic / T Effector Memory	8855
-infection_study_01	CD4 Naive / T Central Memory	4743
-infection_study_01	Naive B Cell	4233
-infection_study_01	Memory B Cell	2120
-infection_study_01	Non-Classical Monocyte	1916
-infection_study_01	Platelet	1347
-infection_study_01	Doublet	1278
-infection_study_01	MAIT Cell	936
-infection_study_01	CD4 T Effector Memory	778
-infection_study_01	Treg	520
-infection_study_01	Conventional DC 2	440
-infection_study_01	Blood Cell	279
-infection_study_01	Plasma Cell	127
-infection_study_01	Plasmacytoid DC	102
-infection_study_01	Plasmablast	43
-infection_study_01	B Cell	40
-infection_study_01	Conventional DC 1	33
-infection_study_01	Neutrophil	14
-infection_study_01	HSC	8
+infection_study_01	Classical Monocyte	17789
+infection_study_01	CD8 Cytotoxic / T Effector Memory	10509
+infection_study_01	NK Cell	8060
+infection_study_01	CD4 T Effector Memory	4387
+infection_study_01	Naive B Cell	4269
+infection_study_01	CD4 Naive / T Central Memory	2341
+infection_study_01	Memory B Cell	2100
+infection_study_01	Non-Classical Monocyte	1979
+infection_study_01	Platelet	1313
+infection_study_01	Doublet	981
+infection_study_01	Conventional DC 2	469
+infection_study_01	MAIT Cell	284
+infection_study_01	Blood Cell	178
+infection_study_01	Plasma Cell	128
+infection_study_01	Plasmacytoid DC	93
+infection_study_01	Plasmablast	44

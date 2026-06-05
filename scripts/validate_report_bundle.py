@@ -3,12 +3,17 @@ import argparse
 import re
 from pathlib import Path
 
-EXPECTED_STUDIES = [
+DEFAULT_EXPECTED_STUDIES = [
     "infection_study_01",
+    "infection_study_03",
     "infection_study_04",
+    "infection_study_06",
+    "infection_study_07",
+    "vaccination_study_01",
     "vaccination_study_04",
     "vaccination_study_06",
     "vaccination_study_09",
+    "vaccination_study_10",
 ]
 FORBIDDEN_PATTERNS = [
     "v13",
@@ -27,6 +32,7 @@ REQUIRED_PHRASES_EN = [
     "Subcluster Marker Score Review",
     "Marker Assignment Feedback",
     "LLM Review Queue",
+    "Annotation Source Effectiveness",
     "true subcluster",
 ]
 REQUIRED_PHRASES_JA = [
@@ -37,6 +43,7 @@ REQUIRED_PHRASES_JA = [
     "Subcluster Marker Score Review",
     "Marker Assignment Feedback",
     "LLM Review Queue",
+    "アノテーションソース効果",
     "true subcluster",
 ]
 REQUIRED_TOPIC_PATTERNS = [
@@ -48,7 +55,9 @@ REQUIRED_TOPIC_PATTERNS = [
 parser = argparse.ArgumentParser(description="Validate committed HIPC report bundle before release.")
 parser.add_argument("--report-root", default="reports/current")
 parser.add_argument("--min-images-per-study", type=int, default=23)
+parser.add_argument("--studies", default=",".join(DEFAULT_EXPECTED_STUDIES), help="Comma-separated study IDs expected in this report bundle.")
 args = parser.parse_args()
+expected_studies = [study.strip() for study in args.studies.split(",") if study.strip()]
 
 root = Path(args.report_root)
 errors = []
@@ -62,6 +71,7 @@ summary_required = [
     root / "summary/tables/final_annotation_label_counts.tsv",
     root / "summary/tables/lineage_subcluster_evidence.tsv.gz",
     root / "summary/tables/source_disagreement_summary.tsv",
+    root / "summary/tables/source_effectiveness_summary.tsv",
     root / "summary/tables/lineage_panel_status.tsv",
     root / "summary/tables/marker_assignment_feedback.tsv",
 ]
@@ -71,7 +81,7 @@ for path in summary_required:
 
 inline_link_total = 0
 png_total = 0
-for study in EXPECTED_STUDIES:
+for study in expected_studies:
     study_dir = root / study
     if not study_dir.exists():
         errors.append(f"Missing study directory: {study_dir}")
@@ -82,6 +92,7 @@ for study in EXPECTED_STUDIES:
         study_dir / "tables/final_annotation_summary.tsv",
         study_dir / "tables/lineage_subcluster_evidence.tsv.gz",
         study_dir / "tables/source_disagreement_summary.tsv",
+        study_dir / "tables/source_effectiveness_summary.tsv",
         study_dir / "tables/subcluster_candidate_scores.tsv",
         study_dir / "tables/lineage_panel_status.tsv",
         study_dir / "tables/marker_assignment_feedback.tsv",
@@ -164,7 +175,7 @@ for path in root.rglob("*.md"):
             errors.append(f"Forbidden old-version string in {path}: {forbidden}")
 
 print(f"report_root={root}")
-print(f"expected_studies={len(EXPECTED_STUDIES)}")
+print(f"expected_studies={len(expected_studies)}")
 print(f"png_files={png_total}")
 print(f"inline_image_links={inline_link_total}")
 print(f"errors={len(errors)}")

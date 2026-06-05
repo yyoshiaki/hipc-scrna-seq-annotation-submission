@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import os
 import subprocess
 from pathlib import Path
 
@@ -42,8 +43,10 @@ manifest = pd.DataFrame(
 )
 manifest.to_csv(manifest_path, sep="	", index=False)
 
+python_bin = os.environ.get("HIPC_SCANPY_PYTHON", "/gpfs/gibbs/project/hafler/yy693/conda_envs/scanpy1.10.2/bin/python")
+
 cmd = [
-    "/gpfs/gibbs/project/hafler/yy693/conda_envs/scanpy1.10.2/bin/python",
+    python_bin,
     "scripts/pipeline/hipc_annotate.py",
     "--config",
     args.config,

@@ -1,4 +1,4 @@
 study	lineage	n_cells	status	reason
-vaccination_study_09	B_lineage	15945	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_09	T_NK_lineage	90244	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_09	Myeloid_lineage	31295	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_09	B_lineage	15746	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_09	T_NK_lineage	90587	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_09	Myeloid_lineage	33096	generated	true lineage-specific subcluster UMAP generated

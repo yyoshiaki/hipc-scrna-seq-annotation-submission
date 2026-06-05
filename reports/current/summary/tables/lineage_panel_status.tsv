@@ -1,16 +1,31 @@
 study	lineage	n_cells	status	reason
-infection_study_01	B_lineage	6563	generated	true lineage-specific subcluster UMAP generated
-infection_study_01	T_NK_lineage	25572	generated	true lineage-specific subcluster UMAP generated
-infection_study_01	Myeloid_lineage	19877	generated	true lineage-specific subcluster UMAP generated
-infection_study_04	B_lineage	6337	generated	true lineage-specific subcluster UMAP generated
-infection_study_04	T_NK_lineage	22830	generated	true lineage-specific subcluster UMAP generated
-infection_study_04	Myeloid_lineage	12484	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_04	B_lineage	109	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_04	T_NK_lineage	263	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_04	Myeloid_lineage	64111	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_06	B_lineage	4023	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_06	T_NK_lineage	50804	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_06	Myeloid_lineage	46	skipped_lt50	fewer than 50 cells assigned to this broad lineage
-vaccination_study_09	B_lineage	15945	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_09	T_NK_lineage	90244	generated	true lineage-specific subcluster UMAP generated
-vaccination_study_09	Myeloid_lineage	31295	generated	true lineage-specific subcluster UMAP generated
+infection_study_01	B_lineage	6541	generated	true lineage-specific subcluster UMAP generated
+infection_study_01	T_NK_lineage	25581	generated	true lineage-specific subcluster UMAP generated
+infection_study_01	Myeloid_lineage	20330	generated	true lineage-specific subcluster UMAP generated
+infection_study_03	B_lineage	93274	generated	true lineage-specific subcluster UMAP generated
+infection_study_03	T_NK_lineage	200576	generated	true lineage-specific subcluster UMAP generated
+infection_study_03	Myeloid_lineage	137478	generated	true lineage-specific subcluster UMAP generated
+infection_study_04	B_lineage	6617	generated	true lineage-specific subcluster UMAP generated
+infection_study_04	T_NK_lineage	23049	generated	true lineage-specific subcluster UMAP generated
+infection_study_04	Myeloid_lineage	13432	generated	true lineage-specific subcluster UMAP generated
+infection_study_06	B_lineage	0	skipped_lt50	fewer than 50 cells assigned to this broad lineage
+infection_study_06	T_NK_lineage	0	skipped_lt50	fewer than 50 cells assigned to this broad lineage
+infection_study_06	Myeloid_lineage	0	skipped_lt50	fewer than 50 cells assigned to this broad lineage
+infection_study_07	B_lineage	679	generated	true lineage-specific subcluster UMAP generated
+infection_study_07	T_NK_lineage	1803	generated	true lineage-specific subcluster UMAP generated
+infection_study_07	Myeloid_lineage	1500	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_01	B_lineage	40449	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_01	T_NK_lineage	96727	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_01	Myeloid_lineage	86258	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_04	B_lineage	126	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_04	T_NK_lineage	683	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_04	Myeloid_lineage	63319	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_06	B_lineage	2686	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_06	T_NK_lineage	51180	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_06	Myeloid_lineage	542	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_09	B_lineage	15746	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_09	T_NK_lineage	90587	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_09	Myeloid_lineage	33096	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_10	B_lineage	5637	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_10	T_NK_lineage	14642	generated	true lineage-specific subcluster UMAP generated
+vaccination_study_10	Myeloid_lineage	9624	generated	true lineage-specific subcluster UMAP generated

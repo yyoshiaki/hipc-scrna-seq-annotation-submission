@@ -1,0 +1,6 @@
+study	source	source_column	n_cells	informative_cells	coverage_fraction	final_concordant_cells	final_concordance_over_informative	final_concordance_over_all	discordant_informative_cells	discordant_fraction_over_informative	high_confidence_informative_cells	high_confidence_concordance_over_informative	top_labels	unique_support_cells	unique_support_fraction_over_all
+vaccination_study_10	CellTypist	celltypist_v3_label	47511	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
+vaccination_study_10	Pan-human Azimuth	panhuman_fine_v3_label	47511	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
+vaccination_study_10	Cluster consensus	cluster_consensus_v3_label	47511	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
+vaccination_study_10	scRefMapping	screfmapping_official_label	47511	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
+vaccination_study_10	Cluster marker assignment	cluster_marker_gene_assignment	47511	29903	0.6293910883795332	0	0.0	0.0	29903	1.0	0	0.0	Intermediate Monocyte:5060; NK Cell:4160; CD8 Cytotoxic / T Effector Memory:4082; CD4 Naive / T Central Memory:3234; Conventional DC 2:3195; CD8 Naive / T Central Memory:2641; Naive B Cell:2439; Plasma Cell:1867	0	0.0
