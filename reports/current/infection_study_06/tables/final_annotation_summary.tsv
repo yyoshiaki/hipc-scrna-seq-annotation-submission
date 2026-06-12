@@ -1,2 +1,0 @@
-study	n_cells	n_genes	pre_hvg_n_genes	counts_layer_n_genes	n_labels	b_cell_n	t_cell_n	myeloid_cell_n	blood_cell_n	parent_or_blood_n	parent_or_blood_fraction	artifact_n	doublet_n	effector_b_n	median_confidence	low_confidence_n	source_disagreement_flag_n	source_disagreement_flag_fraction	invalid_labels
-infection_study_06	827389	37298	37298	37298	1	0	0	0	827389	827389	1.0	0	0	0	0.45	827389	0	0.0	

@@ -1,0 +1,16 @@
+predicted_cell_type	n_cells	fraction
+Classical Monocyte	11458	0.261795
+CD4 Naive / T Central Memory	8829	0.201727
+CD8 Cytotoxic / T Effector Memory	7788	0.177942
+NK Cell	6433	0.146983
+Plasma Cell	3150	0.071972
+Naive B Cell	2126	0.048575
+Memory B Cell	1344	0.030708
+Non-Classical Monocyte	1214	0.027738
+Blood Cell	436	0.009962
+Conventional DC 2	338	0.007723
+Plasmacytoid DC	229	0.005232
+Neutrophil	195	0.004455
+Platelet	86	0.001965
+HSC	80	0.001828
+Doublet	61	0.001394

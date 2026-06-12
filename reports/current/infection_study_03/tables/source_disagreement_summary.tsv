@@ -1,5 +1,0 @@
-study	predicted_cell_type	n_cells	median_source_agreement_fraction	source_disagreement_flag_n	source_disagreement_flag_fraction
-infection_study_03	B Cell	93274	0.0	0	0.0
-infection_study_03	Blood Cell	215411	0.0	0	0.0
-infection_study_03	Myeloid Cell	137478	0.0	0	0.0
-infection_study_03	T Cell	200576	0.0	0	0.0

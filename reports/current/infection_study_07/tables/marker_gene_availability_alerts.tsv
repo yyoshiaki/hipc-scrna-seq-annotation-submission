@@ -1,3 +1,0 @@
-study	marker_set	official_labels_relevant_to_set	n_genes_expected	n_genes_present	present_fraction	alert_level	missing_critical_markers	present_genes	missing_genes
-infection_study_07	B_memory_ABC	Memory B Cell	8	3	0.375	warning	TNFRSF13B;FCRL5	CD27;ITGAX;TBX21	TNFRSF13B;FCRL5;AIM2;BANK1;CD86
-infection_study_07	Plasma_ASC	Plasma Cell;Plasmablast	9	5	0.5555555555555556	warning	JCHAIN	MZB1;XBP1;PRDM1;IRF4;IGHA1	JCHAIN;SDC1;TNFRSF17;IGHG1

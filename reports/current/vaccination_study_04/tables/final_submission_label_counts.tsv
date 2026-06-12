@@ -1,0 +1,15 @@
+predicted_cell_type	n_cells	fraction
+Classical Monocyte	33958	0.514009
+Non-Classical Monocyte	15469	0.234148
+Conventional DC 2	7621	0.115356
+Plasmacytoid DC	5375	0.081359
+Doublet	1249	0.018906
+Conventional DC 1	1026	0.01553
+NK Cell	609	0.009218
+Blood Cell	474	0.007175
+Plasma Cell	97	0.001468
+HSC	84	0.001271
+T Cell	74	0.00112
+B Cell	23	0.000348
+Naive B Cell	4	6.1e-05
+Memory B Cell	2	3e-05

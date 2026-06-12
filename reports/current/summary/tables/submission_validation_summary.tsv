@@ -1,0 +1,10 @@
+study	columns_ok	invalid_label_n	invalid_labels	confidence_min	confidence_max
+infection_study_01	True	0		0.45	0.85
+infection_study_03	True	0		0.3847	0.5432
+infection_study_04	True	0		0.45	0.85
+infection_study_06	True	0		0.3748	0.5185
+vaccination_study_01	True	0		0.3647	0.55
+vaccination_study_04	True	0		0.389	0.85
+vaccination_study_06	True	0		0.387	0.85
+vaccination_study_09	True	0		0.3889	0.85
+vaccination_study_10	True	0		0.3647	0.55

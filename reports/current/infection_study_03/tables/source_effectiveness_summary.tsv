@@ -1,6 +1,0 @@
-study	source	source_column	n_cells	informative_cells	coverage_fraction	final_concordant_cells	final_concordance_over_informative	final_concordance_over_all	discordant_informative_cells	discordant_fraction_over_informative	high_confidence_informative_cells	high_confidence_concordance_over_informative	top_labels	unique_support_cells	unique_support_fraction_over_all
-infection_study_03	CellTypist	celltypist_v3_label	646739	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-infection_study_03	Pan-human Azimuth	panhuman_fine_v3_label	646739	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-infection_study_03	Cluster consensus	cluster_consensus_v3_label	646739	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-infection_study_03	scRefMapping	screfmapping_official_label	646739	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-infection_study_03	Cluster marker assignment	cluster_marker_gene_assignment	646739	431328	0.6669274622374713	0	0.0	0.0	431328	1.0	0	0.0	NKT Cell:171789; Neutrophil:109557; Naive B Cell:64785; CD8 Naive / T Central Memory:28787; Eosinophil:24497; Plasmablast:18787; Plasma Cell:9702; Intermediate Monocyte:3424	0	0.0

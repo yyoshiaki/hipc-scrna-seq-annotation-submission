@@ -1,0 +1,13 @@
+predicted_cell_type	n_cells	fraction
+CD4 Naive / T Central Memory	29818	0.519305
+CD8 Cytotoxic / T Effector Memory	10013	0.174385
+NK Cell	9877	0.172016
+Memory B Cell	2547	0.044358
+Doublet	2162	0.037653
+MAIT Cell	1538	0.026786
+Blood Cell	746	0.012992
+Myeloid Cell	468	0.008151
+Naive B Cell	175	0.003048
+Non-Classical Monocyte	54	0.00094
+Intermediate Monocyte	20	0.000348
+B Cell	1	1.7e-05

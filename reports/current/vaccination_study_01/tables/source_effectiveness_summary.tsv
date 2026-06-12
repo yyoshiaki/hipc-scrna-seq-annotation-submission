@@ -1,6 +1,0 @@
-study	source	source_column	n_cells	informative_cells	coverage_fraction	final_concordant_cells	final_concordance_over_informative	final_concordance_over_all	discordant_informative_cells	discordant_fraction_over_informative	high_confidence_informative_cells	high_confidence_concordance_over_informative	top_labels	unique_support_cells	unique_support_fraction_over_all
-vaccination_study_01	CellTypist	celltypist_v3_label	307194	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-vaccination_study_01	Pan-human Azimuth	panhuman_fine_v3_label	307194	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-vaccination_study_01	Cluster consensus	cluster_consensus_v3_label	307194	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-vaccination_study_01	scRefMapping	screfmapping_official_label	307194	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-vaccination_study_01	Cluster marker assignment	cluster_marker_gene_assignment	307194	223434	0.7273384245786051	0	0.0	0.0	223434	1.0	0	0.0	Neutrophil:65678; NKT Cell:60823; CD4 Naive / T Central Memory:35904; Intermediate Monocyte:20580; Naive B Cell:15584; Memory B Cell:8927; Plasmablast:8098; Plasma Cell:7840	0	0.0

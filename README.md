@@ -32,36 +32,37 @@ The active clean submission set contains 9 datasets:
 
 Older development manifests may remain for audit history only. Do not use `configs/manifest.team04.beta_all.tsv` or `configs/manifest.team04.shared.tsv` for clean submission generation.
 
-## Current Clean-Run Status
+## Current Submission Status
 
-Updated: 2026-06-05 18:09:59 EDT
+Updated: 2026-06-12 11:49:00 EDT
 
-The current clean run completed for all 9 active datasets and excluded `infection_study_07`.
-
-Local run root:
+The deadline package used for submission review is the emergency no-recompute package:
 
 ```text
-/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_current_clean
+/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_package_emergency_260612.zip
 ```
 
-Submission package:
+It contains 9 active Team04 datasets and excludes `infection_study_07` because the organizers stated that raw counts are unavailable for that study. Each TSV uses the `study_annotation_template.tsv` barcode order and includes `cell_barcode`, `predicted_cell_type`, and `confidence_score`.
+
+Report bundle in this repository:
 
 ```text
-/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_package_current_clean.zip
+reports/current/
 ```
 
-Validation status:
+Validation status for the emergency package:
 
-- All 9 active datasets have matching submission rows and H5AD cells.
+- All 9 included TSVs match the corresponding template row counts.
+- All 9 included TSVs match the corresponding template barcode order.
 - No invalid ontology labels were emitted.
-- `reports/current` validates with 9 expected datasets, 261 PNG files, and 504 inline image links.
+- `confidence_score` is present for all submitted cells.
 
-Important blocker:
+Source selection for the emergency package:
 
-- This clean run is not final annotation quality. It intentionally removed old evidence-container inputs and therefore lacks refreshed CellTypist, Azimuth/Pan-human, and scRefMapping evidence for most datasets.
-- The resulting TSVs are parent-label/low-confidence heavy: each active dataset currently has only 4 submitted labels and all cells are below 0.60 confidence.
-- Treat this as a successful input-contract and workflow recovery run, not as the final upload package.
-- Next required step: regenerate reference-mapping evidence from the clean count-compatible inputs, then rerun the same clean single-dataset workflow.
+- Reviewed v22 evidence-derived TSVs were used for `infection_study_01`, `infection_study_04`, `vaccination_study_04`, `vaccination_study_06`, and `vaccination_study_09`.
+- Current-clean fallback TSVs were used for `infection_study_03`, `infection_study_06`, `vaccination_study_01`, and `vaccination_study_10`.
+
+This package is a deadline-driven submission artifact. It is not a new full recomputation of all evidence layers. The committed `reports/current` bundle is generated directly from the submitted TSVs so that GitHub `main` matches the submission package rather than stale v22 diagnostic reports.
 
 Large H5ADs, generated H5ADs, and upload TSVs are not committed to GitHub. They are generated under the Yale server workspace and packaged separately.
 
@@ -76,7 +77,7 @@ Large H5ADs, generated H5ADs, and upload TSVs are not committed to GitHub. They 
 - `scripts/pipeline/`: deterministic annotation implementation.
 - `scripts/package_clean_reports.py`: packages generated per-dataset reports into `reports/current/`.
 - `scripts/package_submission_files.py`: packages per-study submission TSVs into a review/upload directory and ZIP.
-- `reports/current/`: committed lightweight report bundle only.
+- `reports/current/`: committed lightweight report bundle matching `submission_package_emergency_260612.zip`.
 
 ## Standard Codex Workflow
 
@@ -202,20 +203,19 @@ confidence_score
 
 ## Packaging Reports and Submission Files
 
-Report bundle packaging:
+Current GitHub `main` reports are aligned to the emergency package:
 
-```bash
-python scripts/package_clean_reports.py   --run-root /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_current_clean   --report-root reports/current   --replace
-python scripts/validate_report_bundle.py --report-root reports/current
+```text
+/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_package_emergency_260612.zip
 ```
 
-Submission TSV package:
+The committed report bundle was generated from the submitted TSV files, not from stale v22 diagnostic assets:
 
-```bash
-python scripts/package_submission_files.py   --run-root /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_current_clean   --out /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_package_current_clean   --replace
+```text
+reports/current/
 ```
 
-The package helper writes per-study TSVs, a summary table, a README, and a ZIP archive.
+For future clean recomputation, use the helper scripts against a fresh run root and regenerate both the submission package and `reports/current` from the same run. Do not mix reports from one run with TSVs from another run.
 
 ## Validation Contract
 

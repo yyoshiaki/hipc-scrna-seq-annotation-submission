@@ -1,0 +1,10 @@
+study	source_package	n_rows	template_rows	barcode_order_matches_template	n_labels	median_confidence	low_confidence_n
+infection_study_01	v22	54924	54924	True	16	0.7772	2527
+infection_study_03	current_clean	646739	646739	True	4	0.4437	646739
+infection_study_04	v22	43767	43767	True	15	0.7762	497
+infection_study_06	current_clean	827389	827389	True	4	0.45	827389
+vaccination_study_01	current_clean	307194	307194	True	4	0.4366	307194
+vaccination_study_04	v22	66065	66065	True	14	0.8063	1820
+vaccination_study_06	v22	57419	57419	True	12	0.7724	3430
+vaccination_study_09	v22	139960	139960	True	18	0.7772	478
+vaccination_study_10	current_clean	47511	47511	True	4	0.45	47511
