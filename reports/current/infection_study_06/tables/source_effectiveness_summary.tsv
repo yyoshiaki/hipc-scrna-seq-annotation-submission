@@ -3,4 +3,4 @@ infection_study_06	CellTypist	celltypist_v3_label	827389	0	0.0	0	0.0	0.0	0	0.0	0
 infection_study_06	Pan-human Azimuth	panhuman_fine_v3_label	827389	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
 infection_study_06	Cluster consensus	cluster_consensus_v3_label	827389	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
 infection_study_06	scRefMapping	screfmapping_official_label	827389	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-infection_study_06	Cluster marker assignment	cluster_marker_gene_assignment	827389	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
+infection_study_06	Cluster marker assignment	cluster_marker_gene_assignment	827389	591831	0.7152995749278755	146131	0.24691339250563082	0.1766170447032774	445700	0.7530866074943692	0	0.0	NKT Cell:209699; Neutrophil:127792; Classical Monocyte:68359; CD8 Cytotoxic / T Effector Memory:48073; Naive B Cell:42295; Plasma Cell:24289; Eosinophil:23556; Plasmablast:20839	146131	0.1766170447032774

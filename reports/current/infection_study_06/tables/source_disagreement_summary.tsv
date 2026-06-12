@@ -1,2 +1,10 @@
 study	predicted_cell_type	n_cells	median_source_agreement_fraction	source_disagreement_flag_n	source_disagreement_flag_fraction
-infection_study_06	Blood Cell	827389	0.0	0	0.0
+infection_study_06	B Cell	73729	0.0	0	0.0
+infection_study_06	Blood Cell	235558	0.0	0	0.0
+infection_study_06	CD8 Naive / T Central Memory	19442	0.0	0	0.0
+infection_study_06	Classical Monocyte	21846	0.0	0	0.0
+infection_study_06	Myeloid Cell	197279	0.0	0	0.0
+infection_study_06	NKT Cell	83080	0.0	0	0.0
+infection_study_06	Naive B Cell	18040	0.0	0	0.0
+infection_study_06	Neutrophil	3723	0.0	0	0.0
+infection_study_06	T Cell	174692	0.0	0	0.0

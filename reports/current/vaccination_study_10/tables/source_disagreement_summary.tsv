@@ -1,5 +1,5 @@
 study	predicted_cell_type	n_cells	median_source_agreement_fraction	source_disagreement_flag_n	source_disagreement_flag_fraction
-vaccination_study_10	B Cell	5637	0.0	0	0.0
-vaccination_study_10	Blood Cell	17608	0.0	0	0.0
-vaccination_study_10	Myeloid Cell	9624	0.0	0	0.0
-vaccination_study_10	T Cell	14642	0.0	0	0.0
+vaccination_study_10	B Cell	5903	0.0	0	0.0
+vaccination_study_10	Blood Cell	17560	0.0	0	0.0
+vaccination_study_10	Myeloid Cell	9534	0.0	0	0.0
+vaccination_study_10	T Cell	14514	0.0	0	0.0

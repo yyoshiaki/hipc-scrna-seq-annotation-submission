@@ -1,2 +1,10 @@
 study	predicted_cell_type	n_cells
-infection_study_06	Blood Cell	827389
+infection_study_06	Blood Cell	235558
+infection_study_06	Myeloid Cell	197279
+infection_study_06	T Cell	174692
+infection_study_06	NKT Cell	83080
+infection_study_06	B Cell	73729
+infection_study_06	Classical Monocyte	21846
+infection_study_06	CD8 Naive / T Central Memory	19442
+infection_study_06	Naive B Cell	18040
+infection_study_06	Neutrophil	3723

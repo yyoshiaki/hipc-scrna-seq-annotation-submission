@@ -36,3 +36,11 @@ However, v24 safe is too conservative for several datasets and leaves many paren
 - [Safe package summary](tables/submission_package_v24_safe_260612_summary.tsv)
 - [Aggressive package summary](tables/submission_package_v23_aggressive_260612_summary.tsv)
 
+## Detailed Reports for Review
+
+These are the four detailed dataset reports to inspect on UMAP before submission.
+
+- [infection_study_03 English](../infection_study_03/report_en.md), [Japanese](../infection_study_03/report_ja.md)
+- [infection_study_06 English](../infection_study_06/report_en.md), [Japanese](../infection_study_06/report_ja.md)
+- [vaccination_study_01 English](../vaccination_study_01/report_en.md), [Japanese](../vaccination_study_01/report_ja.md)
+- [vaccination_study_10 English](../vaccination_study_10/report_en.md), [Japanese](../vaccination_study_10/report_ja.md)

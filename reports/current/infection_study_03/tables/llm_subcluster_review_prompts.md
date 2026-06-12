@@ -2,107 +2,27 @@
 
 Use these packets as a review layer. Do not directly mutate per-cell labels. Return dataset-specific concerns, ontology-gap hypotheses, and general policy updates to test in the deterministic pipeline.
 
+## infection_study_03 T_NK_lineage cluster 5
+
+- Priority: high (12)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=5; cells=25968; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.775; best_total_score=0.775; score_margin=0.046; CellTypist=not_available:25968; PanHuman=not_available:25968; scRefMap=not_available:25968; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 T_NK_lineage cluster 3
+
+- Priority: high (12)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=3; cells=24218; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.639; best_total_score=0.639; score_margin=0.023; CellTypist=not_available:24218; PanHuman=not_available:24218; scRefMap=not_available:24218; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
 ## infection_study_03 T_NK_lineage cluster 2
 
 - Priority: high (12)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=2; cells=21707; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.633; best_total_score=0.633; score_margin=0.039; CellTypist=not_available:21707; PanHuman=not_available:21707; scRefMap=not_available:21707; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 T_NK_lineage cluster 7
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=7; cells=18018; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.757; best_total_score=0.757; score_margin=0.044; CellTypist=not_available:18018; PanHuman=not_available:18018; scRefMap=not_available:18018; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 T_NK_lineage cluster 10
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=10; cells=16556; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.700; best_total_score=0.700; score_margin=0.046; CellTypist=not_available:16556; PanHuman=not_available:16556; scRefMap=not_available:16556; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 T_NK_lineage cluster 4
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=4; cells=16280; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.816; best_total_score=0.816; score_margin=0.064; CellTypist=not_available:16280; PanHuman=not_available:16280; scRefMap=not_available:16280; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 T_NK_lineage cluster 9
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=9; cells=14768; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.838; best_total_score=0.838; score_margin=0.056; CellTypist=not_available:14768; PanHuman=not_available:14768; scRefMap=not_available:14768; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 T_NK_lineage cluster 6
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=6; cells=14672; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.708; best_total_score=0.708; score_margin=0.038; CellTypist=not_available:14672; PanHuman=not_available:14672; scRefMap=not_available:14672; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 T_NK_lineage cluster 12
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=12; cells=12839; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.643; best_total_score=0.643; score_margin=0.066; CellTypist=not_available:12839; PanHuman=not_available:12839; scRefMap=not_available:12839; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 T_NK_lineage cluster 11
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=11; cells=10820; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.621; best_total_score=0.621; score_margin=0.023; CellTypist=not_available:10820; PanHuman=not_available:10820; scRefMap=not_available:10820; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 T_NK_lineage cluster 1
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=1; cells=9724; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.620; best_total_score=0.620; score_margin=0.066; CellTypist=not_available:9724; PanHuman=not_available:9724; scRefMap=not_available:9724; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 B_lineage cluster 4
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=4; cells=9714; final=B Cell; marker_assignment=Plasmablast; raw_marker_winner=Plasmablast; assignment_reason=raw_marker_winner; marker_score=0.835; best_total_score=0.835; score_margin=0.010; CellTypist=not_available:9714; PanHuman=not_available:9714; scRefMap=not_available:9714; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 B_lineage cluster 2
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=2; cells=9073; final=B Cell; marker_assignment=Plasmablast; raw_marker_winner=Plasmablast; assignment_reason=raw_marker_winner; marker_score=0.682; best_total_score=0.682; score_margin=0.175; CellTypist=not_available:9073; PanHuman=not_available:9073; scRefMap=not_available:9073; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 B_lineage cluster 1
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=1; cells=5017; final=B Cell; marker_assignment=Plasma Cell; raw_marker_winner=Plasma Cell; assignment_reason=raw_marker_winner; marker_score=0.616; best_total_score=0.616; score_margin=0.009; CellTypist=not_available:5017; PanHuman=not_available:5017; scRefMap=not_available:5017; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 B_lineage cluster 0
-
-- Priority: high (12)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=0; cells=4685; final=B Cell; marker_assignment=Plasma Cell; raw_marker_winner=Plasma Cell; assignment_reason=raw_marker_winner; marker_score=0.671; best_total_score=0.671; score_margin=0.006; CellTypist=not_available:4685; PanHuman=not_available:4685; scRefMap=not_available:4685; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=2; cells=21324; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.745; best_total_score=0.745; score_margin=0.038; CellTypist=not_available:21324; PanHuman=not_available:21324; scRefMap=not_available:21324; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
@@ -110,39 +30,95 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 - Priority: high (12)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=0; cells=4437; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.697; best_total_score=0.697; score_margin=0.199; CellTypist=not_available:4437; PanHuman=not_available:4437; scRefMap=not_available:4437; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=0; cells=17363; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.797; best_total_score=0.797; score_margin=0.063; CellTypist=not_available:17363; PanHuman=not_available:17363; scRefMap=not_available:17363; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 Myeloid_lineage cluster 6
+## infection_study_03 T_NK_lineage cluster 10
 
-- Priority: high (10)
+- Priority: high (12)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=6; cells=40314; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.562; best_total_score=0.562; score_margin=0.022; CellTypist=not_available:40314; PanHuman=not_available:40314; scRefMap=not_available:40314; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=10; cells=15033; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.731; best_total_score=0.731; score_margin=0.062; CellTypist=not_available:15033; PanHuman=not_available:15033; scRefMap=not_available:15033; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 T_NK_lineage cluster 3
+## infection_study_03 T_NK_lineage cluster 1
 
-- Priority: high (10)
+- Priority: high (12)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=3; cells=28787; final=T Cell; marker_assignment=CD8 Naive / T Central Memory; raw_marker_winner=CD8 Naive / T Central Memory; assignment_reason=raw_marker_winner; marker_score=0.775; best_total_score=0.775; score_margin=0.011; CellTypist=not_available:28787; PanHuman=not_available:28787; scRefMap=not_available:28787; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=1; cells=14371; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.677; best_total_score=0.677; score_margin=0.023; CellTypist=not_available:14371; PanHuman=not_available:14371; scRefMap=not_available:14371; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 Myeloid_lineage cluster 5
+## infection_study_03 T_NK_lineage cluster 9
 
-- Priority: high (10)
+- Priority: high (12)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=5; cells=24497; final=Myeloid Cell; marker_assignment=Eosinophil; raw_marker_winner=Eosinophil; assignment_reason=raw_marker_winner; marker_score=0.546; best_total_score=0.546; score_margin=0.002; CellTypist=not_available:24497; PanHuman=not_available:24497; scRefMap=not_available:24497; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=9; cells=14010; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.834; best_total_score=0.834; score_margin=0.055; CellTypist=not_available:14010; PanHuman=not_available:14010; scRefMap=not_available:14010; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 T_NK_lineage cluster 5
+## infection_study_03 T_NK_lineage cluster 11
+
+- Priority: high (12)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=11; cells=12271; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.626; best_total_score=0.626; score_margin=0.090; CellTypist=not_available:12271; PanHuman=not_available:12271; scRefMap=not_available:12271; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 T_NK_lineage cluster 8
+
+- Priority: high (12)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=8; cells=11953; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.637; best_total_score=0.637; score_margin=0.046; CellTypist=not_available:11953; PanHuman=not_available:11953; scRefMap=not_available:11953; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 3
+
+- Priority: high (12)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=3; cells=10455; final=B Cell; marker_assignment=Plasmablast; raw_marker_winner=Plasmablast; assignment_reason=raw_marker_winner; marker_score=0.828; best_total_score=0.828; score_margin=0.009; CellTypist=not_available:10455; PanHuman=not_available:10455; scRefMap=not_available:10455; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 T_NK_lineage cluster 7
+
+- Priority: high (12)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=7; cells=10132; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.629; best_total_score=0.629; score_margin=0.090; CellTypist=not_available:10132; PanHuman=not_available:10132; scRefMap=not_available:10132; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 5
+
+- Priority: high (12)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=5; cells=9079; final=B Cell; marker_assignment=Plasma Cell; raw_marker_winner=Plasma Cell; assignment_reason=raw_marker_winner; marker_score=0.630; best_total_score=0.630; score_margin=0.009; CellTypist=not_available:9079; PanHuman=not_available:9079; scRefMap=not_available:9079; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 8
+
+- Priority: high (12)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=8; cells=2818; final=B Cell; marker_assignment=Plasmablast; raw_marker_winner=Plasmablast; assignment_reason=raw_marker_winner; marker_score=0.651; best_total_score=0.651; score_margin=0.143; CellTypist=not_available:2818; PanHuman=not_available:2818; scRefMap=not_available:2818; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 Myeloid_lineage cluster 7
 
 - Priority: high (10)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=5; cells=23985; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.875; best_total_score=0.875; score_margin=0.256; CellTypist=not_available:23985; PanHuman=not_available:23985; scRefMap=not_available:23985; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=7; cells=33932; final=Myeloid Cell; marker_assignment=Classical Monocyte; raw_marker_winner=Classical Monocyte; assignment_reason=raw_marker_winner; marker_score=0.596; best_total_score=0.596; score_margin=0.031; CellTypist=not_available:33932; PanHuman=not_available:33932; scRefMap=not_available:33932; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 Myeloid_lineage cluster 9
+
+- Priority: high (10)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=9; cells=21420; final=Myeloid Cell; marker_assignment=Eosinophil; raw_marker_winner=Eosinophil; assignment_reason=raw_marker_winner; marker_score=0.546; best_total_score=0.546; score_margin=0.002; CellTypist=not_available:21420; PanHuman=not_available:21420; scRefMap=not_available:21420; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
@@ -150,55 +126,15 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 - Priority: high (10)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=0; cells=21549; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.543; best_total_score=0.543; score_margin=0.055; CellTypist=not_available:21549; PanHuman=not_available:21549; scRefMap=not_available:21549; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=0; cells=19475; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.544; best_total_score=0.544; score_margin=0.063; CellTypist=not_available:19475; PanHuman=not_available:19475; scRefMap=not_available:19475; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 B_lineage cluster 3
+## infection_study_03 Myeloid_lineage cluster 5
 
 - Priority: high (10)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=3; cells=19057; final=B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.705; best_total_score=0.705; score_margin=0.705; CellTypist=not_available:19057; PanHuman=not_available:19057; scRefMap=not_available:19057; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 Myeloid_lineage cluster 3
-
-- Priority: high (10)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=3; cells=14243; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.537; best_total_score=0.537; score_margin=0.077; CellTypist=not_available:14243; PanHuman=not_available:14243; scRefMap=not_available:14243; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 Myeloid_lineage cluster 1
-
-- Priority: high (10)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=1; cells=13138; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.530; best_total_score=0.530; score_margin=0.054; CellTypist=not_available:13138; PanHuman=not_available:13138; scRefMap=not_available:13138; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 B_lineage cluster 8
-
-- Priority: high (10)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=8; cells=13111; final=B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.612; best_total_score=0.612; score_margin=0.594; CellTypist=not_available:13111; PanHuman=not_available:13111; scRefMap=not_available:13111; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 B_lineage cluster 5
-
-- Priority: high (10)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=5; cells=11816; final=B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.660; best_total_score=0.660; score_margin=0.660; CellTypist=not_available:11816; PanHuman=not_available:11816; scRefMap=not_available:11816; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
-
-Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
-
-## infection_study_03 B_lineage cluster 9
-
-- Priority: high (10)
-- Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=9; cells=11192; final=B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.641; best_total_score=0.641; score_margin=0.630; CellTypist=not_available:11192; PanHuman=not_available:11192; scRefMap=not_available:11192; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=5; cells=17535; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.546; best_total_score=0.546; score_margin=0.049; CellTypist=not_available:17535; PanHuman=not_available:17535; scRefMap=not_available:17535; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
@@ -206,31 +142,31 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 - Priority: high (10)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=2; cells=8728; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.547; best_total_score=0.547; score_margin=0.105; CellTypist=not_available:8728; PanHuman=not_available:8728; scRefMap=not_available:8728; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=2; cells=13119; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.555; best_total_score=0.555; score_margin=0.110; CellTypist=not_available:13119; PanHuman=not_available:13119; scRefMap=not_available:13119; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 B_lineage cluster 6
+## infection_study_03 Myeloid_lineage cluster 3
 
 - Priority: high (10)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=6; cells=8399; final=B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.457; best_total_score=0.457; score_margin=0.225; CellTypist=not_available:8399; PanHuman=not_available:8399; scRefMap=not_available:8399; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=3; cells=12903; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.528; best_total_score=0.528; score_margin=0.056; CellTypist=not_available:12903; PanHuman=not_available:12903; scRefMap=not_available:12903; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 T_NK_lineage cluster 8
+## infection_study_03 Myeloid_lineage cluster 1
 
 - Priority: high (10)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=T_NK_lineage; cluster=8; cells=7983; final=T Cell; marker_assignment=NKT Cell; raw_marker_winner=NKT Cell; assignment_reason=raw_marker_winner; marker_score=0.860; best_total_score=0.860; score_margin=0.324; CellTypist=not_available:7983; PanHuman=not_available:7983; scRefMap=not_available:7983; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,ambiguous_or_missing_label_candidate,screfmapping_not_available.
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=1; cells=9064; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.533; best_total_score=0.533; score_margin=0.081; CellTypist=not_available:9064; PanHuman=not_available:9064; scRefMap=not_available:9064; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 Myeloid_lineage cluster 4
+## infection_study_03 Myeloid_lineage cluster 6
 
 - Priority: high (10)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=4; cells=6666; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.555; best_total_score=0.555; score_margin=0.104; CellTypist=not_available:6666; PanHuman=not_available:6666; scRefMap=not_available:6666; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=6; cells=4836; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.471; best_total_score=0.471; score_margin=0.071; CellTypist=not_available:4836; PanHuman=not_available:4836; scRefMap=not_available:4836; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
@@ -238,6 +174,70 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 - Priority: high (10)
 - Suggested action: check_if_finer_official_label_is_supported
-- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=8; cells=3424; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=0.530; best_total_score=0.530; score_margin=0.090; CellTypist=not_available:3424; PanHuman=not_available:3424; scRefMap=not_available:3424; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=8; cells=3449; final=Myeloid Cell; marker_assignment=Intermediate Monocyte; raw_marker_winner=Intermediate Monocyte; assignment_reason=raw_marker_winner; marker_score=0.531; best_total_score=0.531; score_margin=0.089; CellTypist=not_available:3449; PanHuman=not_available:3449; scRefMap=not_available:3449; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 Myeloid_lineage cluster 4
+
+- Priority: high (10)
+- Suggested action: check_if_finer_official_label_is_supported
+- Evidence packet: Study=infection_study_03; lineage=Myeloid_lineage; cluster=4; cells=1828; final=Myeloid Cell; marker_assignment=Neutrophil; raw_marker_winner=Neutrophil; assignment_reason=raw_marker_winner; marker_score=0.548; best_total_score=0.548; score_margin=0.074; CellTypist=not_available:1828; PanHuman=not_available:1828; scRefMap=not_available:1828; review_reasons=parent_or_broad_final_label,marker_assignment_disagrees_with_final,screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 4
+
+- Priority: medium (5)
+- Suggested action: accept
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=4; cells=24451; final=Naive B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.728; best_total_score=0.728; score_margin=0.728; CellTypist=not_available:24451; PanHuman=not_available:24451; scRefMap=not_available:24451; review_reasons=screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 1
+
+- Priority: medium (5)
+- Suggested action: accept
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=1; cells=14216; final=Naive B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.652; best_total_score=0.652; score_margin=0.644; CellTypist=not_available:14216; PanHuman=not_available:14216; scRefMap=not_available:14216; review_reasons=screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 0
+
+- Priority: medium (5)
+- Suggested action: accept
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=0; cells=13682; final=Naive B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.627; best_total_score=0.627; score_margin=0.587; CellTypist=not_available:13682; PanHuman=not_available:13682; scRefMap=not_available:13682; review_reasons=screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 6
+
+- Priority: medium (5)
+- Suggested action: accept
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=6; cells=11147; final=Naive B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.630; best_total_score=0.630; score_margin=0.630; CellTypist=not_available:11147; PanHuman=not_available:11147; scRefMap=not_available:11147; review_reasons=screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 2
+
+- Priority: medium (5)
+- Suggested action: accept
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=2; cells=4095; final=Plasmablast; marker_assignment=Plasmablast; raw_marker_winner=Plasmablast; assignment_reason=raw_marker_winner; marker_score=0.679; best_total_score=0.679; score_margin=0.171; CellTypist=not_available:4095; PanHuman=not_available:4095; scRefMap=not_available:4095; review_reasons=screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 7
+
+- Priority: medium (5)
+- Suggested action: accept
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=7; cells=2693; final=Plasmablast; marker_assignment=Plasmablast; raw_marker_winner=Plasmablast; assignment_reason=raw_marker_winner; marker_score=0.726; best_total_score=0.726; score_margin=0.219; CellTypist=not_available:2693; PanHuman=not_available:2693; scRefMap=not_available:2693; review_reasons=screfmapping_not_available,low_total_score_or_margin.
+
+Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
+
+## infection_study_03 B_lineage cluster 9
+
+- Priority: medium (5)
+- Suggested action: accept
+- Evidence packet: Study=infection_study_03; lineage=B_lineage; cluster=9; cells=1215; final=Naive B Cell; marker_assignment=Naive B Cell; raw_marker_winner=Naive B Cell; assignment_reason=raw_marker_winner; marker_score=0.643; best_total_score=0.643; score_margin=0.487; CellTypist=not_available:1215; PanHuman=not_available:1215; scRefMap=not_available:1215; review_reasons=screfmapping_not_available,low_total_score_or_margin.
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?

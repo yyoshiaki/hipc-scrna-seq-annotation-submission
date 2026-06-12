@@ -3,4 +3,4 @@ infection_study_03	CellTypist	celltypist_v3_label	646739	0	0.0	0	0.0	0.0	0	0.0	0
 infection_study_03	Pan-human Azimuth	panhuman_fine_v3_label	646739	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
 infection_study_03	Cluster consensus	cluster_consensus_v3_label	646739	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
 infection_study_03	scRefMapping	screfmapping_official_label	646739	0	0.0	0	0.0	0.0	0	0.0	0	0.0	not_available	0	0.0
-infection_study_03	Cluster marker assignment	cluster_marker_gene_assignment	646739	431328	0.6669274622374713	0	0.0	0.0	431328	1.0	0	0.0	NKT Cell:171789; Neutrophil:109557; Naive B Cell:64785; CD8 Naive / T Central Memory:28787; Eosinophil:24497; Plasmablast:18787; Plasma Cell:9702; Intermediate Monocyte:3424	0	0.0
+infection_study_03	Cluster marker assignment	cluster_marker_gene_assignment	646739	431381	0.667009411833831	104825	0.2429986485264766	0.16208238563006097	326556	0.7570013514735234	0	0.0	NKT Cell:199969; Neutrophil:78760; Naive B Cell:64711; Classical Monocyte:33932; Eosinophil:21420; Plasmablast:20061; Plasma Cell:9079; Intermediate Monocyte:3449	104825	0.16208238563006097

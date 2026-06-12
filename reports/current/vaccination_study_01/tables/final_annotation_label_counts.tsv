@@ -1,5 +1,10 @@
 study	predicted_cell_type	n_cells
-vaccination_study_01	T Cell	96727
-vaccination_study_01	Myeloid Cell	86258
-vaccination_study_01	Blood Cell	83760
-vaccination_study_01	B Cell	40449
+vaccination_study_01	Myeloid Cell	84466
+vaccination_study_01	Blood Cell	83762
+vaccination_study_01	T Cell	65401
+vaccination_study_01	NKT Cell	31060
+vaccination_study_01	B Cell	30032
+vaccination_study_01	Naive B Cell	8881
+vaccination_study_01	Intermediate Monocyte	1742
+vaccination_study_01	Memory B Cell	1210
+vaccination_study_01	Plasmablast	640

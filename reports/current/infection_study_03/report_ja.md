@@ -1,6 +1,6 @@
 # HIPC データセットアノテーションレポート: infection_study_03
 
-更新日: 2026-06-05 EDT
+更新日: 2026-06-12 EDT
 
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
@@ -8,7 +8,7 @@
 
 | study | cells | analysis_X_genes | pre_hvg_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_03 | 646,739 | 24,929 | 24,929 | 24,929 | 4 | 1.000 | 215,411 | 0 | 0 | 0.444 | 646,739 | 0 (0.000) | none |
+| infection_study_03 | 646,739 | 24,929 | 24,929 | 24,929 | 7 | 0.838 | 215,358 | 0 | 0 | 0.445 | 646,739 | 0 (0.000) | none |
 
 ## 実行概要
 
@@ -19,13 +19,13 @@
 
 ## データセット固有の解釈
 
-- `infection_study_03`: 646,739 cells、analysis X/var 24,929 genes、pre-HVG slot 24,929 genes、submitted label 4 種、parent/Blood residual fraction 1.000、median confidence 0.444。
+- `infection_study_03`: 646,739 cells、analysis X/var 24,929 genes、pre-HVG slot 24,929 genes、submitted label 7 種、parent/Blood residual fraction 0.838、median confidence 0.445。
   - 646,739 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
-  - 215,411 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
+  - 215,358 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
 
 ## データセット固有の評価
 
-- 全体像: 646,739 cells / analysis X/var 24,929 genes / pre-HVG slot 24,929 genes。parent/Blood residual は 1.000、low-confidence は 646,739 cells、source disagreement flag は 0 cells (0.000)。
+- 全体像: 646,739 cells / analysis X/var 24,929 genes / pre-HVG slot 24,929 genes。parent/Blood residual は 0.838、low-confidence は 646,739 cells、source disagreement flag は 0 cells (0.000)。
 - 優先確認: low-confidence 領域が QC UMAP と source-disagreement UMAP で同じ場所に集まるかを確認する。
 - 優先確認: `Blood Cell` 残存が孤立 cluster なのか、複数 lineage に分散した曖昧領域なのかを UMAP で確認する。
 
@@ -37,10 +37,13 @@
 
 | study | predicted_cell_type | cells | median_source_agreement | disagreement_cells | disagreement_fraction |
 | --- | --- | --- | --- | --- | --- |
-| infection_study_03 | B Cell | 93,274 | 0.000 | 0 | 0.000 |
-| infection_study_03 | Blood Cell | 215,411 | 0.000 | 0 | 0.000 |
-| infection_study_03 | Myeloid Cell | 137,478 | 0.000 | 0 | 0.000 |
-| infection_study_03 | T Cell | 200,576 | 0.000 | 0 | 0.000 |
+| infection_study_03 | B Cell | 22,352 | 0.000 | 0 | 0.000 |
+| infection_study_03 | Blood Cell | 215,358 | 0.000 | 0 | 0.000 |
+| infection_study_03 | Myeloid Cell | 137,561 | 0.000 | 0 | 0.000 |
+| infection_study_03 | NKT Cell | 33,326 | 0.000 | 0 | 0.000 |
+| infection_study_03 | Naive B Cell | 64,711 | 0.000 | 0 | 0.000 |
+| infection_study_03 | Plasmablast | 6,788 | 0.000 | 0 | 0.000 |
+| infection_study_03 | T Cell | 166,643 | 0.000 | 0 | 0.000 |
 
 ## アノテーションソース効果
 
@@ -48,7 +51,7 @@
 
 | study | source | informative_cells | coverage | final_concordance | high_conf_concordance | unique_support | discordant |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_03 | Cluster marker assignment | 431,328 | 0.667 | 0.000 | 0.000 | 0 | 431,328 |
+| infection_study_03 | Cluster marker assignment | 431,381 | 0.667 | 0.243 | 0.000 | 104,825 | 326,556 |
 | infection_study_03 | CellTypist | 0 | 0.000 | 0.000 | 0.000 | 0 | 0 |
 | infection_study_03 | Pan-human Azimuth | 0 | 0.000 | 0.000 | 0.000 | 0 | 0 |
 | infection_study_03 | Cluster consensus | 0 | 0.000 | 0.000 | 0.000 | 0 | 0 |
@@ -58,17 +61,20 @@
 
 | study | concern | cells |
 | --- | --- | --- |
-| infection_study_03 | Large Blood Cell/ambiguous residual remains | 215,411 |
+| infection_study_03 | Large Blood Cell/ambiguous residual remains | 215,358 |
 | infection_study_03 | Many low-confidence cells; QC or mixed-marker effects likely remain | 646,739 |
 
 ## ラベル構成
 
 | study | predicted_cell_type | cells |
 | --- | --- | --- |
-| infection_study_03 | Blood Cell | 215,411 |
-| infection_study_03 | T Cell | 200,576 |
-| infection_study_03 | Myeloid Cell | 137,478 |
-| infection_study_03 | B Cell | 93,274 |
+| infection_study_03 | Blood Cell | 215,358 |
+| infection_study_03 | T Cell | 166,643 |
+| infection_study_03 | Myeloid Cell | 137,561 |
+| infection_study_03 | Naive B Cell | 64,711 |
+| infection_study_03 | NKT Cell | 33,326 |
+| infection_study_03 | B Cell | 22,352 |
+| infection_study_03 | Plasmablast | 6,788 |
 
 ## Inline Figures
 
@@ -153,26 +159,26 @@ Marker gene assignment は final label を強制的に上書きするもので�
 
 | study | lineage | cluster | cells | chosen_label | marker_assignment | raw_marker_winner | assignment_reason | marker_score | base_score | penalty | flags |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_03 | Myeloid_lineage | 6 | 40,314 | Myeloid Cell | Neutrophil | Neutrophil | raw_marker_winner | 0.562 | 1.000 | 0.438 | marker_final_disagreement |
-| infection_study_03 | T_NK_lineage | 3 | 28,787 | T Cell | CD8 Naive / T Central Memory | CD8 Naive / T Central Memory | raw_marker_winner | 0.775 | 1.000 | 0.225 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | Myeloid_lineage | 5 | 24,497 | Myeloid Cell | Eosinophil | Eosinophil | raw_marker_winner | 0.546 | 1.000 | 0.454 | marker_final_disagreement |
-| infection_study_03 | T_NK_lineage | 5 | 23,985 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.875 | 1.000 | 0.125 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | T_NK_lineage | 2 | 21,707 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.633 | 1.000 | 0.367 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | Myeloid_lineage | 0 | 21,549 | Myeloid Cell | Neutrophil | Neutrophil | raw_marker_winner | 0.543 | 1.000 | 0.457 | marker_final_disagreement |
-| infection_study_03 | B_lineage | 3 | 19,057 | B Cell | Naive B Cell | Naive B Cell | raw_marker_winner | 0.705 | 1.000 | 0.295 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | T_NK_lineage | 7 | 18,018 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.757 | 0.959 | 0.202 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | T_NK_lineage | 10 | 16,556 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.700 | 1.000 | 0.300 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | T_NK_lineage | 4 | 16,280 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.816 | 0.965 | 0.149 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | T_NK_lineage | 9 | 14,768 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.838 | 0.956 | 0.118 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | T_NK_lineage | 6 | 14,672 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.708 | 0.977 | 0.269 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | Myeloid_lineage | 3 | 14,243 | Myeloid Cell | Neutrophil | Neutrophil | raw_marker_winner | 0.537 | 1.000 | 0.463 | marker_final_disagreement |
-| infection_study_03 | Myeloid_lineage | 1 | 13,138 | Myeloid Cell | Neutrophil | Neutrophil | raw_marker_winner | 0.530 | 1.000 | 0.470 | marker_final_disagreement |
-| infection_study_03 | B_lineage | 8 | 13,111 | B Cell | Naive B Cell | Naive B Cell | raw_marker_winner | 0.612 | 0.881 | 0.269 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | T_NK_lineage | 12 | 12,839 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.643 | 1.000 | 0.357 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | B_lineage | 5 | 11,816 | B Cell | Naive B Cell | Naive B Cell | raw_marker_winner | 0.660 | 1.000 | 0.340 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | B_lineage | 9 | 11,192 | B Cell | Naive B Cell | Naive B Cell | raw_marker_winner | 0.641 | 1.000 | 0.359 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | T_NK_lineage | 11 | 10,820 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.621 | 1.000 | 0.379 | marker_final_disagreement;screfmapping_missing_for_scope |
-| infection_study_03 | T_NK_lineage | 1 | 9,724 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.620 | 1.000 | 0.380 | marker_final_disagreement;screfmapping_missing_for_scope |
+| infection_study_03 | Myeloid_lineage | 7 | 33,932 | Myeloid Cell | Classical Monocyte | Classical Monocyte | raw_marker_winner | 0.596 | 1.000 | 0.404 | marker_final_disagreement |
+| infection_study_03 | T_NK_lineage | 5 | 25,968 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.775 | 0.942 | 0.167 | marker_final_disagreement;screfmapping_missing_for_scope |
+| infection_study_03 | B_lineage | 4 | 24,451 | Naive B Cell | Naive B Cell | Naive B Cell | raw_marker_winner | 0.728 | 1.000 | 0.272 | screfmapping_missing_for_scope |
+| infection_study_03 | T_NK_lineage | 3 | 24,218 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.639 | 1.000 | 0.361 | marker_final_disagreement;screfmapping_missing_for_scope |
+| infection_study_03 | Myeloid_lineage | 9 | 21,420 | Myeloid Cell | Eosinophil | Eosinophil | raw_marker_winner | 0.546 | 1.000 | 0.454 | marker_final_disagreement |
+| infection_study_03 | T_NK_lineage | 2 | 21,324 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.745 | 0.956 | 0.210 | marker_final_disagreement;screfmapping_missing_for_scope |
+| infection_study_03 | Myeloid_lineage | 0 | 19,475 | Myeloid Cell | Neutrophil | Neutrophil | raw_marker_winner | 0.544 | 1.000 | 0.456 | marker_final_disagreement |
+| infection_study_03 | Myeloid_lineage | 5 | 17,535 | Myeloid Cell | Neutrophil | Neutrophil | raw_marker_winner | 0.546 | 1.000 | 0.454 | marker_final_disagreement |
+| infection_study_03 | T_NK_lineage | 0 | 17,363 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.797 | 0.965 | 0.167 | marker_final_disagreement;screfmapping_missing_for_scope |
+| infection_study_03 | T_NK_lineage | 12 | 16,459 | NKT Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.894 | 1.000 | 0.106 | screfmapping_missing_for_scope |
+| infection_study_03 | T_NK_lineage | 4 | 15,652 | NKT Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.855 | 1.000 | 0.145 | screfmapping_missing_for_scope |
+| infection_study_03 | T_NK_lineage | 10 | 15,033 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.731 | 0.978 | 0.247 | marker_final_disagreement;screfmapping_missing_for_scope |
+| infection_study_03 | T_NK_lineage | 1 | 14,371 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.677 | 1.000 | 0.323 | marker_final_disagreement;screfmapping_missing_for_scope |
+| infection_study_03 | B_lineage | 1 | 14,216 | Naive B Cell | Naive B Cell | Naive B Cell | raw_marker_winner | 0.652 | 1.000 | 0.348 | screfmapping_missing_for_scope |
+| infection_study_03 | T_NK_lineage | 9 | 14,010 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.834 | 0.954 | 0.120 | marker_final_disagreement;screfmapping_missing_for_scope |
+| infection_study_03 | B_lineage | 0 | 13,682 | Naive B Cell | Naive B Cell | Naive B Cell | raw_marker_winner | 0.627 | 1.000 | 0.373 | screfmapping_missing_for_scope |
+| infection_study_03 | Myeloid_lineage | 2 | 13,119 | Myeloid Cell | Neutrophil | Neutrophil | raw_marker_winner | 0.555 | 1.000 | 0.445 | marker_final_disagreement |
+| infection_study_03 | Myeloid_lineage | 3 | 12,903 | Myeloid Cell | Neutrophil | Neutrophil | raw_marker_winner | 0.528 | 1.000 | 0.472 | marker_final_disagreement |
+| infection_study_03 | T_NK_lineage | 11 | 12,271 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.626 | 1.000 | 0.374 | marker_final_disagreement;screfmapping_missing_for_scope |
+| infection_study_03 | T_NK_lineage | 8 | 11,953 | T Cell | NKT Cell | NKT Cell | raw_marker_winner | 0.637 | 1.000 | 0.363 | marker_final_disagreement;screfmapping_missing_for_scope |
 
 ## LLM Review Queue
 
@@ -180,70 +186,70 @@ Marker gene assignment は final label を強制的に上書きするもので�
 
 | study | lineage | cluster | cells | priority | reasons | suggested_action | final_label | marker_assignment | raw_marker_winner | score_margin |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_03 | T_NK_lineage | 2 | 21,707 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.039 |
-| infection_study_03 | T_NK_lineage | 7 | 18,018 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.044 |
-| infection_study_03 | T_NK_lineage | 10 | 16,556 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.046 |
-| infection_study_03 | T_NK_lineage | 4 | 16,280 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.064 |
-| infection_study_03 | T_NK_lineage | 9 | 14,768 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.056 |
-| infection_study_03 | T_NK_lineage | 6 | 14,672 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.038 |
-| infection_study_03 | T_NK_lineage | 12 | 12,839 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.066 |
-| infection_study_03 | T_NK_lineage | 11 | 10,820 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.023 |
-| infection_study_03 | T_NK_lineage | 1 | 9,724 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.066 |
-| infection_study_03 | B_lineage | 4 | 9,714 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasmablast | Plasmablast | 0.010 |
-| infection_study_03 | B_lineage | 2 | 9,073 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasmablast | Plasmablast | 0.175 |
-| infection_study_03 | B_lineage | 1 | 5,017 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.009 |
-| infection_study_03 | B_lineage | 0 | 4,685 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.006 |
-| infection_study_03 | T_NK_lineage | 0 | 4,437 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.199 |
-| infection_study_03 | Myeloid_lineage | 6 | 40,314 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Neutrophil | Neutrophil | 0.022 |
-| infection_study_03 | T_NK_lineage | 3 | 28,787 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | CD8 Naive / T Central Memory | CD8 Naive / T Central Memory | 0.011 |
-| infection_study_03 | Myeloid_lineage | 5 | 24,497 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Eosinophil | Eosinophil | 0.002 |
-| infection_study_03 | T_NK_lineage | 5 | 23,985 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.256 |
-| infection_study_03 | Myeloid_lineage | 0 | 21,549 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Neutrophil | Neutrophil | 0.055 |
-| infection_study_03 | B_lineage | 3 | 19,057 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Naive B Cell | Naive B Cell | 0.705 |
+| infection_study_03 | T_NK_lineage | 5 | 25,968 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.046 |
+| infection_study_03 | T_NK_lineage | 3 | 24,218 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.023 |
+| infection_study_03 | T_NK_lineage | 2 | 21,324 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.038 |
+| infection_study_03 | T_NK_lineage | 0 | 17,363 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.063 |
+| infection_study_03 | T_NK_lineage | 10 | 15,033 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.062 |
+| infection_study_03 | T_NK_lineage | 1 | 14,371 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.023 |
+| infection_study_03 | T_NK_lineage | 9 | 14,010 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.055 |
+| infection_study_03 | T_NK_lineage | 11 | 12,271 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.090 |
+| infection_study_03 | T_NK_lineage | 8 | 11,953 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.046 |
+| infection_study_03 | B_lineage | 3 | 10,455 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasmablast | Plasmablast | 0.009 |
+| infection_study_03 | T_NK_lineage | 7 | 10,132 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.090 |
+| infection_study_03 | B_lineage | 5 | 9,079 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.009 |
+| infection_study_03 | B_lineage | 8 | 2,818 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasmablast | Plasmablast | 0.143 |
+| infection_study_03 | Myeloid_lineage | 7 | 33,932 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Classical Monocyte | Classical Monocyte | 0.031 |
+| infection_study_03 | Myeloid_lineage | 9 | 21,420 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Eosinophil | Eosinophil | 0.002 |
+| infection_study_03 | Myeloid_lineage | 0 | 19,475 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Neutrophil | Neutrophil | 0.063 |
+| infection_study_03 | Myeloid_lineage | 5 | 17,535 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Neutrophil | Neutrophil | 0.049 |
+| infection_study_03 | Myeloid_lineage | 2 | 13,119 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Neutrophil | Neutrophil | 0.110 |
+| infection_study_03 | Myeloid_lineage | 3 | 12,903 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Neutrophil | Neutrophil | 0.056 |
+| infection_study_03 | Myeloid_lineage | 1 | 9,064 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Neutrophil | Neutrophil | 0.081 |
 
 ## Cluster Consensus Evidence
 
 | study | lineage | cluster | cells | chosen_label | accepted | score_margin | cluster_marker_assignment | treg_key_any | treg_key_bonus | marker_set | marker_alert |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| infection_study_03 | B_lineage | 3 | 19,057 | B Cell | False | 0.705 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| infection_study_03 | B_lineage | 8 | 13,111 | B Cell | False | 0.594 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| infection_study_03 | B_lineage | 5 | 11,816 | B Cell | False | 0.660 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| infection_study_03 | B_lineage | 9 | 11,192 | B Cell | False | 0.630 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| infection_study_03 | B_lineage | 4 | 9,714 | B Cell | False | 0.010 | Plasmablast | nan | nan | registry__plasmablast | pass |
-| infection_study_03 | B_lineage | 2 | 9,073 | B Cell | False | 0.175 | Plasmablast | nan | nan | registry__plasmablast | pass |
-| infection_study_03 | B_lineage | 6 | 8,399 | B Cell | False | 0.225 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| infection_study_03 | B_lineage | 1 | 5,017 | B Cell | False | 0.009 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| infection_study_03 | B_lineage | 0 | 4,685 | B Cell | False | 0.006 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| infection_study_03 | B_lineage | 7 | 1,210 | B Cell | False | 0.487 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| infection_study_03 | Myeloid_lineage | 6 | 40,314 | Myeloid Cell | False | 0.022 | Neutrophil | nan | nan | registry__neutrophil | pass |
-| infection_study_03 | Myeloid_lineage | 5 | 24,497 | Myeloid Cell | False | 0.002 | Eosinophil | nan | nan | registry__eosinophil | pass |
-| infection_study_03 | Myeloid_lineage | 0 | 21,549 | Myeloid Cell | False | 0.055 | Neutrophil | nan | nan | registry__neutrophil | pass |
-| infection_study_03 | Myeloid_lineage | 3 | 14,243 | Myeloid Cell | False | 0.077 | Neutrophil | nan | nan | registry__neutrophil | pass |
-| infection_study_03 | Myeloid_lineage | 1 | 13,138 | Myeloid Cell | False | 0.054 | Neutrophil | nan | nan | registry__neutrophil | pass |
-| infection_study_03 | Myeloid_lineage | 2 | 8,728 | Myeloid Cell | False | 0.105 | Neutrophil | nan | nan | registry__neutrophil | pass |
-| infection_study_03 | Myeloid_lineage | 4 | 6,666 | Myeloid Cell | False | 0.104 | Neutrophil | nan | nan | registry__neutrophil | pass |
-| infection_study_03 | Myeloid_lineage | 8 | 3,424 | Myeloid Cell | False | 0.090 | Intermediate Monocyte | nan | nan | registry__intermediate_monocyte | pass |
-| infection_study_03 | Myeloid_lineage | 9 | 2,629 | Myeloid Cell | False | 0.058 | Neutrophil | nan | nan | registry__neutrophil | pass |
-| infection_study_03 | Myeloid_lineage | 7 | 2,290 | Myeloid Cell | False | 0.070 | Neutrophil | nan | nan | registry__neutrophil | pass |
-| infection_study_03 | T_NK_lineage | 3 | 28,787 | T Cell | False | 0.011 | CD8 Naive / T Central Memory | 0.105 | 0.000 | registry__cd8_naive_t_central_memory | pass |
-| infection_study_03 | T_NK_lineage | 5 | 23,985 | T Cell | False | 0.256 | NKT Cell | 0.007 | 0.000 | registry__nkt_cell | pass |
-| infection_study_03 | T_NK_lineage | 2 | 21,707 | T Cell | False | 0.039 | NKT Cell | 0.025 | 0.000 | registry__nkt_cell | pass |
-| infection_study_03 | T_NK_lineage | 7 | 18,018 | T Cell | False | 0.044 | NKT Cell | 0.150 | 0.000 | registry__nkt_cell | pass |
-| infection_study_03 | T_NK_lineage | 10 | 16,556 | T Cell | False | 0.046 | NKT Cell | 0.021 | 0.000 | registry__nkt_cell | pass |
-| infection_study_03 | T_NK_lineage | 4 | 16,280 | T Cell | False | 0.064 | NKT Cell | 0.131 | 0.000 | registry__nkt_cell | pass |
-| infection_study_03 | T_NK_lineage | 9 | 14,768 | T Cell | False | 0.056 | NKT Cell | 0.130 | 0.000 | registry__nkt_cell | pass |
-| infection_study_03 | T_NK_lineage | 6 | 14,672 | T Cell | False | 0.038 | NKT Cell | 0.110 | 0.000 | registry__nkt_cell | pass |
-| infection_study_03 | T_NK_lineage | 12 | 12,839 | T Cell | False | 0.066 | NKT Cell | 0.031 | 0.000 | registry__nkt_cell | pass |
-| infection_study_03 | T_NK_lineage | 11 | 10,820 | T Cell | False | 0.023 | NKT Cell | 0.028 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | B_lineage | 4 | 24,451 | Naive B Cell | True | 0.728 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_03 | B_lineage | 1 | 14,216 | Naive B Cell | True | 0.644 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_03 | B_lineage | 0 | 13,682 | Naive B Cell | True | 0.587 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_03 | B_lineage | 6 | 11,147 | Naive B Cell | True | 0.630 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_03 | B_lineage | 3 | 10,455 | B Cell | False | 0.009 | Plasmablast | nan | nan | registry__plasmablast | pass |
+| infection_study_03 | B_lineage | 5 | 9,079 | B Cell | False | 0.009 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
+| infection_study_03 | B_lineage | 2 | 4,095 | Plasmablast | True | 0.171 | Plasmablast | nan | nan | registry__plasmablast | pass |
+| infection_study_03 | B_lineage | 8 | 2,818 | B Cell | False | 0.143 | Plasmablast | nan | nan | registry__plasmablast | pass |
+| infection_study_03 | B_lineage | 7 | 2,693 | Plasmablast | True | 0.219 | Plasmablast | nan | nan | registry__plasmablast | pass |
+| infection_study_03 | B_lineage | 9 | 1,215 | Naive B Cell | True | 0.487 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
+| infection_study_03 | Myeloid_lineage | 7 | 33,932 | Myeloid Cell | False | 0.031 | Classical Monocyte | nan | nan | registry__classical_monocyte | pass |
+| infection_study_03 | Myeloid_lineage | 9 | 21,420 | Myeloid Cell | False | 0.002 | Eosinophil | nan | nan | registry__eosinophil | pass |
+| infection_study_03 | Myeloid_lineage | 0 | 19,475 | Myeloid Cell | False | 0.063 | Neutrophil | nan | nan | registry__neutrophil | pass |
+| infection_study_03 | Myeloid_lineage | 5 | 17,535 | Myeloid Cell | False | 0.049 | Neutrophil | nan | nan | registry__neutrophil | pass |
+| infection_study_03 | Myeloid_lineage | 2 | 13,119 | Myeloid Cell | False | 0.110 | Neutrophil | nan | nan | registry__neutrophil | pass |
+| infection_study_03 | Myeloid_lineage | 3 | 12,903 | Myeloid Cell | False | 0.056 | Neutrophil | nan | nan | registry__neutrophil | pass |
+| infection_study_03 | Myeloid_lineage | 1 | 9,064 | Myeloid Cell | False | 0.081 | Neutrophil | nan | nan | registry__neutrophil | pass |
+| infection_study_03 | Myeloid_lineage | 6 | 4,836 | Myeloid Cell | False | 0.071 | Neutrophil | nan | nan | registry__neutrophil | pass |
+| infection_study_03 | Myeloid_lineage | 8 | 3,449 | Myeloid Cell | False | 0.089 | Intermediate Monocyte | nan | nan | registry__intermediate_monocyte | pass |
+| infection_study_03 | Myeloid_lineage | 4 | 1,828 | Myeloid Cell | False | 0.074 | Neutrophil | nan | nan | registry__neutrophil | pass |
+| infection_study_03 | T_NK_lineage | 5 | 25,968 | T Cell | False | 0.046 | NKT Cell | 0.113 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | T_NK_lineage | 3 | 24,218 | T Cell | False | 0.023 | NKT Cell | 0.023 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | T_NK_lineage | 2 | 21,324 | T Cell | False | 0.038 | NKT Cell | 0.133 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | T_NK_lineage | 0 | 17,363 | T Cell | False | 0.063 | NKT Cell | 0.130 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | T_NK_lineage | 12 | 16,459 | NKT Cell | True | 0.288 | NKT Cell | 0.006 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | T_NK_lineage | 4 | 15,652 | NKT Cell | True | 0.259 | NKT Cell | 0.010 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | T_NK_lineage | 10 | 15,033 | T Cell | False | 0.062 | NKT Cell | 0.116 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | T_NK_lineage | 1 | 14,371 | T Cell | False | 0.023 | NKT Cell | 0.026 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | T_NK_lineage | 9 | 14,010 | T Cell | False | 0.055 | NKT Cell | 0.130 | 0.000 | registry__nkt_cell | pass |
+| infection_study_03 | T_NK_lineage | 11 | 12,271 | T Cell | False | 0.090 | NKT Cell | 0.034 | 0.000 | registry__nkt_cell | pass |
 
 ## 出力ファイル
 
-- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_03/submissions/`
-- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_03/cellxgene/`
-- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_03/tables/marker_gene_availability.tsv`
-- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_03/tables/marker_gene_availability_alerts.tsv`
-- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_03/tables/lineage_subcluster_evidence.tsv.gz`
-- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_03/tables/source_disagreement_summary.tsv`
-- Source effectiveness summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_03/tables/source_effectiveness_summary.tsv`
-- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_03/tables/`
+- Submission TSVs: `outputs/submission_v23_marker_rescue_scavenge/infection_study_03/submissions/`
+- cellxgene H5ADs: `outputs/submission_v23_marker_rescue_scavenge/infection_study_03/cellxgene/`
+- Marker availability table: `outputs/submission_v23_marker_rescue_scavenge/infection_study_03/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `outputs/submission_v23_marker_rescue_scavenge/infection_study_03/tables/marker_gene_availability_alerts.tsv`
+- Subcluster evidence: `outputs/submission_v23_marker_rescue_scavenge/infection_study_03/tables/lineage_subcluster_evidence.tsv.gz`
+- Source disagreement summary: `outputs/submission_v23_marker_rescue_scavenge/infection_study_03/tables/source_disagreement_summary.tsv`
+- Source effectiveness summary: `outputs/submission_v23_marker_rescue_scavenge/infection_study_03/tables/source_effectiveness_summary.tsv`
+- Diagnostics tables: `outputs/submission_v23_marker_rescue_scavenge/infection_study_03/tables/`
 

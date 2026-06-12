@@ -36,3 +36,11 @@ v23 は marker-only rescue により parent/Blood label を減らせますが、
 - [Safe package summary](tables/submission_package_v24_safe_260612_summary.tsv)
 - [Aggressive package summary](tables/submission_package_v23_aggressive_260612_summary.tsv)
 
+## Detailed Reports for Review
+
+submission 前に UMAP 上で確認すべき 4 dataset の detailed report です。
+
+- [infection_study_03 Japanese](../infection_study_03/report_ja.md), [English](../infection_study_03/report_en.md)
+- [infection_study_06 Japanese](../infection_study_06/report_ja.md), [English](../infection_study_06/report_en.md)
+- [vaccination_study_01 Japanese](../vaccination_study_01/report_ja.md), [English](../vaccination_study_01/report_en.md)
+- [vaccination_study_10 Japanese](../vaccination_study_10/report_ja.md), [English](../vaccination_study_10/report_en.md)

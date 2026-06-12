@@ -1,5 +1,8 @@
 study	predicted_cell_type	n_cells
-infection_study_03	Blood Cell	215411
-infection_study_03	T Cell	200576
-infection_study_03	Myeloid Cell	137478
-infection_study_03	B Cell	93274
+infection_study_03	Blood Cell	215358
+infection_study_03	T Cell	166643
+infection_study_03	Myeloid Cell	137561
+infection_study_03	Naive B Cell	64711
+infection_study_03	NKT Cell	33326
+infection_study_03	B Cell	22352
+infection_study_03	Plasmablast	6788
