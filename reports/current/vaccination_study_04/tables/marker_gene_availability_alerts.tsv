@@ -1,0 +1,9 @@
+study	marker_set	official_labels_relevant_to_set	n_genes_expected	n_genes_present	present_fraction	alert_level	missing_critical_markers	present_genes	missing_genes
+vaccination_study_04	CD4_naive_tcm	CD4 Naive / T Central Memory	9	3	0.3333333333333333	warning		CD4;SELL;LTB	CD3D;CD3E;IL7R;CCR7;TCF7;LEF1
+vaccination_study_04	CD4_effector_memory	CD4 T Effector Memory	8	1	0.125	critical	GZMK;CCL5;PRF1;GZMB	NKG7	GZMK;CCL5;GNLY;PRF1;GZMB;CXCR3;KLRB1
+vaccination_study_04	Treg	Treg	7	0	0.0	critical	FOXP3;IL2RA;CTLA4		FOXP3;IL2RA;CTLA4;IKZF2;TIGIT;TNFRSF18;CCR8
+vaccination_study_04	gdT	gdT Cell	6	0	0.0	critical	TRDC;TRGC1;TRGC2		CD3D;CD3E;TRDC;TRGC1;TRGC2;TRDV2
+vaccination_study_04	NKT	NKT Cell	7	2	0.2857142857142857	critical	CD3D	NKG7;ZBTB16	CD3D;CD3E;TRAC;GNLY;KLRD1
+vaccination_study_04	B_naive	Naive B Cell	8	2	0.25	critical		CD79B;IL4R	MS4A1;CD79A;TCL1A;IGHD;IGHM;FCER2
+vaccination_study_04	B_memory_ABC	Memory B Cell	8	3	0.375	warning	CD27;TNFRSF13B;FCRL5;TBX21	ITGAX;BANK1;CD86	CD27;TNFRSF13B;FCRL5;TBX21;AIM2
+vaccination_study_04	Plasma_ASC	Plasma Cell;Plasmablast	9	3	0.3333333333333333	warning	MZB1;JCHAIN	XBP1;PRDM1;IRF4	MZB1;JCHAIN;SDC1;TNFRSF17;IGHG1;IGHA1

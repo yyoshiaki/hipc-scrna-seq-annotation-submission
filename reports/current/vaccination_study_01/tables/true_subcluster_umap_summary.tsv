@@ -1,0 +1,4 @@
+study	lineage	n_cells	n_local_clusters
+vaccination_study_01	B_lineage	40449	35
+vaccination_study_01	T_NK_lineage	96727	10
+vaccination_study_01	Myeloid_lineage	86258	10

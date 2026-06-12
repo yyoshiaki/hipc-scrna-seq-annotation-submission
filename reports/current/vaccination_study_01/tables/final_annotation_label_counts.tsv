@@ -1,0 +1,5 @@
+study	predicted_cell_type	n_cells
+vaccination_study_01	T Cell	96727
+vaccination_study_01	Myeloid Cell	86258
+vaccination_study_01	Blood Cell	83760
+vaccination_study_01	B Cell	40449

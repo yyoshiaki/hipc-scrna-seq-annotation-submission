@@ -1,0 +1,6 @@
+study	concern	n_cells
+infection_study_04	High source disagreement for Blood Cell	436
+infection_study_04	High source disagreement for Doublet	61
+infection_study_04	High source disagreement for Neutrophil	195
+infection_study_04	High dataset-level source disagreement	9576
+infection_study_04	warning marker availability for Plasma_ASC	3150

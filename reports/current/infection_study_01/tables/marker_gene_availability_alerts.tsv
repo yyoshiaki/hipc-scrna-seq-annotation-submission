@@ -1,0 +1,4 @@
+study	marker_set	official_labels_relevant_to_set	n_genes_expected	n_genes_present	present_fraction	alert_level	missing_critical_markers	present_genes	missing_genes
+infection_study_01	Treg	Treg	7	1	0.14285714285714285	critical	FOXP3;IL2RA;CTLA4	TIGIT	FOXP3;IL2RA;CTLA4;IKZF2;TNFRSF18;CCR8
+infection_study_01	B_memory_ABC	Memory B Cell	8	4	0.5	warning	TNFRSF13B;FCRL5	CD27;ITGAX;TBX21;BANK1	TNFRSF13B;FCRL5;AIM2;CD86
+infection_study_01	Plasma_ASC	Plasma Cell;Plasmablast	9	4	0.4444444444444444	warning	MZB1	XBP1;JCHAIN;PRDM1;IGHA1	MZB1;SDC1;IRF4;TNFRSF17;IGHG1

@@ -1,0 +1,15 @@
+study	predicted_cell_type	n_cells
+vaccination_study_04	Classical Monocyte	33958
+vaccination_study_04	Non-Classical Monocyte	15469
+vaccination_study_04	Conventional DC 2	7621
+vaccination_study_04	Plasmacytoid DC	5375
+vaccination_study_04	Doublet	1249
+vaccination_study_04	Conventional DC 1	1026
+vaccination_study_04	NK Cell	609
+vaccination_study_04	Blood Cell	474
+vaccination_study_04	Plasma Cell	97
+vaccination_study_04	HSC	84
+vaccination_study_04	T Cell	74
+vaccination_study_04	B Cell	23
+vaccination_study_04	Naive B Cell	4
+vaccination_study_04	Memory B Cell	2
