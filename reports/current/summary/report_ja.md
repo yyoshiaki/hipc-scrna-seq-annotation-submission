@@ -2,6 +2,7 @@
 
 この bundle は clean single-dataset output から package したものです。各 dataset directory には deterministic annotation pipeline が生成した report、assets、tables だけを含めています。
 
+- [2026-06-12 提出候補アップデート](submission_update_260612_ja.md), [English](submission_update_260612_en.md)
 - [infection_study_01 English](../infection_study_01/report_en.md), [Japanese](../infection_study_01/report_ja.md)
 - [infection_study_03 English](../infection_study_03/report_en.md), [Japanese](../infection_study_03/report_ja.md)
 - [infection_study_04 English](../infection_study_04/report_en.md), [Japanese](../infection_study_04/report_ja.md)
