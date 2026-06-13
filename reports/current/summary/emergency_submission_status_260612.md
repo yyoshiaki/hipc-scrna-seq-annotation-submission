@@ -15,7 +15,7 @@ This package combines:
 
 The per-study package summary is stored at:
 
-`reports/current/summary/tables/submission_package_v24_pragmatic_summary.tsv`
+`reports/current/summary/tables/submission_package_v24_pragmatic_260612_summary.tsv`
 
 ## Why The Result Is Still Not Good Enough
 
