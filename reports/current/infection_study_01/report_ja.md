@@ -1,6 +1,19 @@
 # HIPC データセットアノテーションレポート: infection_study_01
 
-更新日: 2026-06-05 EDT
+更新日: 2026-06-12 EDT
+
+## 現行提出用サマリー
+
+| 項目 | 内容 |
+| --- | --- |
+| 提出候補 package | v24 pragmatic package |
+| 採用 source | `outputs/submission_final_v22/infection_study_01/submissions/infection_study_01_annotation.tsv` |
+| 細胞数 | 54,924 |
+| label 数 | 16 |
+| parent/Blood residual | 178 cells (0.0032) |
+| median confidence | 0.7772 |
+| 上位 label | Classical Monocyte: 17,789; CD8 Cytotoxic / T Effector Memory: 10,509; NK Cell: 8,060; CD4 T Effector Memory: 4,387; Naive B Cell: 4,269; CD4 Naive / T Central Memory: 2,341; Memory B Cell: 2,100; Non-Classical Monocyte: 1,979 |
+| 現状判断 | 提出候補として比較的良好。parent/Blood residual は低く、個別 UMAP と marker evidence の確認を優先する。 |
 
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
@@ -276,4 +289,3 @@ Marker gene assignment は final label を強制的に上書きするもので�
 - Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_01/tables/source_disagreement_summary.tsv`
 - Source effectiveness summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_01/tables/source_effectiveness_summary.tsv`
 - Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/infection_study_01/tables/`
-

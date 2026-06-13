@@ -2,6 +2,19 @@
 
 更新日: 2026-06-12 EDT
 
+## 現行提出用サマリー
+
+| 項目 | 内容 |
+| --- | --- |
+| 提出候補 package | v24 pragmatic package |
+| 採用 source | `outputs/submission_v23_marker_rescue_scavenge/infection_study_03/submissions/infection_study_03_annotation.tsv` |
+| 細胞数 | 646,739 |
+| label 数 | 7 |
+| parent/Blood residual | 541,914 cells (0.8379) |
+| median confidence | 0.4449 |
+| 上位 label | Blood Cell: 215,358; T Cell: 166,643; Myeloid Cell: 137,561; Naive B Cell: 64,711; NKT Cell: 33,326; B Cell: 22,352; Plasmablast: 6,788 |
+| 現状判断 | 提出候補には含めるが低信頼。broad parent / Blood Cell が多く、Harmony などの batch-corrected clustering で再評価する必要がある。 |
+
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
 ## 2026-06-12 提出候補メモ

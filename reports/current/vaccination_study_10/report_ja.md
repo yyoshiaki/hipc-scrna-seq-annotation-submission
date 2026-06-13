@@ -2,6 +2,19 @@
 
 更新日: 2026-06-12 EDT
 
+## 現行提出用サマリー
+
+| 項目 | 内容 |
+| --- | --- |
+| 提出候補 package | v24 pragmatic package |
+| 採用 source | `outputs/submission_v24_safe_rescue_scavenge/vaccination_study_10/submissions/vaccination_study_10_annotation.tsv` |
+| 細胞数 | 47,511 |
+| label 数 | 4 |
+| parent/Blood residual | 47,511 cells (1.0000) |
+| median confidence | 0.4500 |
+| 上位 label | Blood Cell: 17,560; T Cell: 14,514; Myeloid Cell: 9,534; B Cell: 5,903 |
+| 現状判断 | v24 safe fallback。1271-gene transformed input のため fine annotation は現状困難で、提出用としては最も保守的な broad label に留めている。raw / all-gene 入力の再確認が必要。 |
+
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
 ## 2026-06-12 提出候補メモ

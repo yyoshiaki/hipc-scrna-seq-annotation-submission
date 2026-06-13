@@ -1,6 +1,19 @@
 # HIPC データセットアノテーションレポート: vaccination_study_06
 
-更新日: 2026-06-05 EDT
+更新日: 2026-06-12 EDT
+
+## 現行提出用サマリー
+
+| 項目 | 内容 |
+| --- | --- |
+| 提出候補 package | v24 pragmatic package |
+| 採用 source | `outputs/submission_final_v22/vaccination_study_06/submissions/vaccination_study_06_annotation.tsv` |
+| 細胞数 | 57,419 |
+| label 数 | 12 |
+| parent/Blood residual | 1,215 cells (0.0212) |
+| median confidence | 0.7724 |
+| 上位 label | CD4 Naive / T Central Memory: 29,818; CD8 Cytotoxic / T Effector Memory: 10,013; NK Cell: 9,877; Memory B Cell: 2,547; Doublet: 2,162; MAIT Cell: 1,538; Blood Cell: 746; Myeloid Cell: 468 |
+| 現状判断 | 提出候補として概ね良好。T/NK dominant dataset として、T subset の粗さと doublet marker を個別 UMAP で確認する。 |
 
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
@@ -273,4 +286,3 @@ Marker gene assignment は final label を強制的に上書きするもので�
 - Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_06/tables/source_disagreement_summary.tsv`
 - Source effectiveness summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_06/tables/source_effectiveness_summary.tsv`
 - Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_06/tables/`
-

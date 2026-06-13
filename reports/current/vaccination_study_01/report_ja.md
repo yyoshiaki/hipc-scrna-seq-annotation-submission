@@ -2,6 +2,19 @@
 
 更新日: 2026-06-12 EDT
 
+## 現行提出用サマリー
+
+| 項目 | 内容 |
+| --- | --- |
+| 提出候補 package | v24 pragmatic package |
+| 採用 source | `outputs/submission_v23_marker_rescue_scavenge/vaccination_study_01/submissions/vaccination_study_01_annotation.tsv` |
+| 細胞数 | 307,194 |
+| label 数 | 9 |
+| parent/Blood residual | 263,661 cells (0.8583) |
+| median confidence | 0.4376 |
+| 上位 label | Myeloid Cell: 84,466; Blood Cell: 83,762; T Cell: 65,401; NKT Cell: 31,060; B Cell: 30,032; Naive B Cell: 8,881; Intermediate Monocyte: 1,742; Memory B Cell: 1,210 |
+| 現状判断 | 提出候補には含めるが低信頼。Treg marker 欠損と broad parent 残存が大きく、Harmony 後に marker evidence と reference evidence を再評価する必要がある。 |
+
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
 ## 2026-06-12 提出候補メモ
