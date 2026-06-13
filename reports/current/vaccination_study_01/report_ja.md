@@ -4,6 +4,13 @@
 
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
+## 2026-06-12 提出候補メモ
+
+- 現行の緊急提出候補では、この dataset は v23 aggressive marker-rescue output を採用しています。
+- CellTypist の過去出力は存在しますが、barcode/input 世代の整合性に不安があり、直接の全面置換には使っていません。
+- parent/Blood residual fraction は 0.8583 と高く、Treg marker も `FOXP3/IL2RA/CTLA4` 欠損のため、細かい T cell annotation は信頼しにくいです。
+- 次に改善するなら、sample/batch-aware な Harmony embedding を作り、cluster 単位で CellTypist / marker / reference evidence を再評価する必要があります。
+
 ## データセット概要
 
 | study | cells | analysis_X_genes | pre_hvg_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
@@ -260,4 +267,3 @@ Marker gene assignment は final label を強制的に上書きするもので�
 - Source disagreement summary: `outputs/submission_v23_marker_rescue_scavenge/vaccination_study_01/tables/source_disagreement_summary.tsv`
 - Source effectiveness summary: `outputs/submission_v23_marker_rescue_scavenge/vaccination_study_01/tables/source_effectiveness_summary.tsv`
 - Diagnostics tables: `outputs/submission_v23_marker_rescue_scavenge/vaccination_study_01/tables/`
-
