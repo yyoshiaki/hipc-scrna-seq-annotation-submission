@@ -6,6 +6,37 @@ Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark Team
 
 This repository is organized around a Codex skill plus deterministic helper scripts. The intended interface is not a hand-written one-off notebook: Codex receives an ontology and one dataset, checks or builds the marker registry, runs the deterministic annotation workflow, validates outputs, inspects the generated report, and only then returns a completion summary.
 
+## Final Submission State
+
+Updated: 2026-06-15 EDT
+
+The submitted Team04 bundle was generated from the clean v25 run and uses the same top-level structure as the organizer fake submission:
+
+```text
+<submission_zip>/
+  Team04_Pipeline_ApproachSummary.docx
+  github_link.txt
+  README.md
+  submission_package_summary.tsv
+  infection_study_01_annotation.tsv
+  infection_study_03_annotation.tsv
+  infection_study_04_annotation.tsv
+  infection_study_06_annotation.tsv
+  vaccination_study_01_annotation.tsv
+  vaccination_study_04_annotation.tsv
+  vaccination_study_06_annotation.tsv
+  vaccination_study_09_annotation.tsv
+  vaccination_study_10_annotation.tsv
+```
+
+The final upload file on the Yale workspace is:
+
+```text
+/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/hipc_team04_submission_260615_final.zip
+```
+
+The GitHub repository intentionally keeps code, configuration, and review reports. It does not rely on committed large H5AD files or raw data. If the final zip needs to be regenerated, use `scripts/package_submission_files.py` with the clean run root documented below.
+
 ## Submission Scope
 
 Team04 beta target set is handled from the current May 11 beta distribution under:
@@ -28,9 +59,15 @@ The active clean submission set contains 9 datasets:
 - `vaccination_study_09`
 - `vaccination_study_10`
 
-`vaccination_study_10` remains in the active manifest, but it is flagged as a transformed 1,271-gene processed matrix because no additional raw-count file is visible in the current Team04 distribution. Raw-count-dependent evidence should not be interpreted normally for this dataset unless a corrected upstream file is provided.
+`vaccination_study_10` remains in the active manifest, but it is flagged as a transformed 1,271-gene processed matrix because no additional raw-count file is visible in the current Team04 distribution. Raw-count-dependent evidence should not be interpreted normally for this dataset unless a corrected upstream file is provided. The Team04 portal was checked on 2026-06-15 EDT: the visible files were only `vaccination_study_10_annotation_template.tsv`, `vaccination_study_10_processed.h5ad`, `vaccination_study_10_processed.rds`, and `vaccination_study_10_processed_QC_report.pdf`; no separate `raw`, `unfiltered`, or `filtered_raw` matrix was visible.
 
-Older development manifests may remain for audit history only. Do not use `configs/manifest.team04.beta_all.tsv` or `configs/manifest.team04.shared.tsv` for clean submission generation.
+Older development manifests remain for audit history only. Do not use `configs/manifest.example.tsv`, `configs/manifest.team04.beta_all.tsv`, or `configs/manifest.team04.shared.tsv` for clean submission generation.
+
+Manifest policy:
+
+- Use `configs/manifest.team04.current_clean.tsv` for the submitted Team04 target set.
+- Treat `configs/manifest.example.tsv` as documentation only.
+- Treat `configs/manifest.team04.beta_all.tsv` and `configs/manifest.team04.shared.tsv` as deprecated development/audit manifests. They include old evidence-container paths and should not drive a clean run.
 
 ## Current Clean-Run Status
 
@@ -47,7 +84,7 @@ Local run root:
 Submission package:
 
 ```text
-/vast/palmer/pi/hafler/yy693/hipc-scrna-seq-annotation-submission/outputs/current_submission_package.zip
+/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/hipc_team04_submission_260615_final.zip
 ```
 
 Validation status:
@@ -71,6 +108,7 @@ Large H5ADs, generated H5ADs, and upload TSVs are not committed to GitHub. They 
 - `configs/marker_registry.yaml`: frozen marker registry used by deterministic scoring.
 - `configs/manifest.team04.current_clean.tsv`: active clean Team04 beta inputs, excluding `infection_study_07`.
 - `configs/manifest.team04.beta_all.tsv`: deprecated mixed development manifest; do not use for final clean runs.
+- `configs/manifest.team04.shared.tsv`: deprecated shared evidence-container manifest; do not use for final clean runs.
 - `data/reference/`: small official ontology/reference files.
 - `scripts/pipeline/`: deterministic annotation implementation.
 - `scripts/package_clean_reports.py`: packages generated per-dataset reports into `reports/current/`.
@@ -214,7 +252,7 @@ Submission TSV package:
 python scripts/package_submission_files.py   --run-root /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_v25_harmony_reference_rescue   --out outputs/current_submission_package   --replace
 ```
 
-The package helper writes per-study TSVs, a summary table, a README, and a ZIP archive.
+The package helper writes organizer-compatible flat per-study TSVs, a summary table, a README, `github_link.txt`, `Team04_Pipeline_ApproachSummary.docx`, and a ZIP archive. The helper intentionally does not create a single combined `annotation.tsv`, because the organizer fake submission used one annotation TSV per study.
 
 ## Validation Contract
 
