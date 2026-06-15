@@ -1,4 +1,4 @@
 study	lineage	n_cells	n_local_clusters
-infection_study_01	B_lineage	6541	25
-infection_study_01	T_NK_lineage	25581	35
-infection_study_01	Myeloid_lineage	20330	26
+infection_study_01	B_lineage	6541	28
+infection_study_01	T_NK_lineage	25650	45
+infection_study_01	Myeloid_lineage	19900	30

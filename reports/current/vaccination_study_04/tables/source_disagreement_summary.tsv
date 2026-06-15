@@ -1,15 +1,16 @@
 study	predicted_cell_type	n_cells	median_source_agreement_fraction	source_disagreement_flag_n	source_disagreement_flag_fraction
-vaccination_study_04	B Cell	23	0.0	23	1.0
-vaccination_study_04	Blood Cell	474	0.0	474	1.0
-vaccination_study_04	Classical Monocyte	33958	1.0	842	0.024795335414335356
-vaccination_study_04	Conventional DC 1	1026	1.0	3	0.0029239766081871343
-vaccination_study_04	Conventional DC 2	7621	1.0	839	0.11009053929930455
-vaccination_study_04	Doublet	1249	0.0	1249	1.0
-vaccination_study_04	HSC	84	0.6666666666666666	0	0.0
-vaccination_study_04	Memory B Cell	2	0.3333333333333333	2	1.0
-vaccination_study_04	NK Cell	609	0.3333333333333333	341	0.5599343185550082
-vaccination_study_04	Naive B Cell	4	0.29166666666666663	3	0.75
-vaccination_study_04	Non-Classical Monocyte	15469	1.0	136	0.00879177710259228
-vaccination_study_04	Plasma Cell	97	0.75	8	0.08247422680412371
-vaccination_study_04	Plasmacytoid DC	5375	1.0	115	0.021395348837209303
-vaccination_study_04	T Cell	74	0.0	74	1.0
+vaccination_study_04	B Cell	33	0.0	33	1.0
+vaccination_study_04	Blood Cell	256	0.75	27	0.10546875
+vaccination_study_04	CD4 Naive / T Central Memory	28	0.6	11	0.39285714285714285
+vaccination_study_04	CD4 T Effector Memory	2	0.2	2	1.0
+vaccination_study_04	Classical Monocyte	33893	1.0	380	0.011211754639601097
+vaccination_study_04	Conventional DC 1	1089	1.0	20	0.018365472910927456
+vaccination_study_04	Conventional DC 2	7981	1.0	1089	0.13644906653301592
+vaccination_study_04	Doublet	647	0.0	647	1.0
+vaccination_study_04	HSC	346	0.75	1	0.002890173410404624
+vaccination_study_04	NK Cell	298	0.75	86	0.28859060402684567
+vaccination_study_04	Non-Classical Monocyte	15993	1.0	164	0.010254486337772775
+vaccination_study_04	Plasma Cell	115	0.6	24	0.20869565217391303
+vaccination_study_04	Plasmacytoid DC	5303	1.0	0	0.0
+vaccination_study_04	Platelet	4	0.5	0	0.0
+vaccination_study_04	T Cell	77	0.0	77	1.0

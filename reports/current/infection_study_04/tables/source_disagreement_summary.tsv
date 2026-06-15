@@ -1,16 +1,19 @@
 study	predicted_cell_type	n_cells	median_source_agreement_fraction	source_disagreement_flag_n	source_disagreement_flag_fraction
-infection_study_04	Blood Cell	436	0.0	436	1.0
-infection_study_04	CD4 Naive / T Central Memory	8829	0.75	2420	0.27409672669611507
-infection_study_04	CD8 Cytotoxic / T Effector Memory	7788	0.6666666666666666	2322	0.2981510015408321
-infection_study_04	Classical Monocyte	11458	1.0	1755	0.1531680921626811
-infection_study_04	Conventional DC 2	338	1.0	51	0.15088757396449703
-infection_study_04	Doublet	61	0.0	61	1.0
-infection_study_04	HSC	80	0.6666666666666666	0	0.0
-infection_study_04	Memory B Cell	1344	0.5	452	0.33630952380952384
-infection_study_04	NK Cell	6433	1.0	1138	0.1769003575314783
-infection_study_04	Naive B Cell	2126	0.75	507	0.23847601128880527
-infection_study_04	Neutrophil	195	0.3333333333333333	195	1.0
-infection_study_04	Non-Classical Monocyte	1214	1.0	158	0.1301482701812191
-infection_study_04	Plasma Cell	3150	0.75	73	0.023174603174603174
-infection_study_04	Plasmacytoid DC	229	1.0	8	0.034934497816593885
-infection_study_04	Platelet	86	0.6666666666666666	0	0.0
+infection_study_04	Blood Cell	746	0.25	479	0.6420911528150134
+infection_study_04	CD4 Naive / T Central Memory	8282	0.8	969	0.11700072446269018
+infection_study_04	CD8 Cytotoxic / T Effector Memory	6980	0.75	1417	0.20300859598853868
+infection_study_04	Classical Monocyte	10603	1.0	658	0.062057908139205885
+infection_study_04	Conventional DC 1	23	0.75	1	0.043478260869565216
+infection_study_04	Conventional DC 2	420	0.75	69	0.16428571428571428
+infection_study_04	Doublet	132	0.0	132	1.0
+infection_study_04	HSC	122	0.75	2	0.01639344262295082
+infection_study_04	MAIT Cell	392	0.5	181	0.461734693877551
+infection_study_04	Memory B Cell	1674	0.4	1365	0.8154121863799283
+infection_study_04	NK Cell	6812	1.0	813	0.11934820904286553
+infection_study_04	Naive B Cell	1790	0.6	690	0.3854748603351955
+infection_study_04	Neutrophil	132	0.25	132	1.0
+infection_study_04	Non-Classical Monocyte	1502	1.0	104	0.0692410119840213
+infection_study_04	Plasma Cell	3272	0.6	685	0.2093520782396088
+infection_study_04	Plasmacytoid DC	229	1.0	5	0.021834061135371178
+infection_study_04	Platelet	172	1.0	3	0.01744186046511628
+infection_study_04	Treg	484	0.6	131	0.2706611570247934

@@ -1,4 +1,0 @@
-study	lineage	n_cells	status	reason
-infection_study_07	B_lineage	679	generated	true lineage-specific subcluster UMAP generated
-infection_study_07	T_NK_lineage	1803	generated	true lineage-specific subcluster UMAP generated
-infection_study_07	Myeloid_lineage	1500	generated	true lineage-specific subcluster UMAP generated

@@ -1,6 +1,6 @@
 # HIPC scRNA-seq Annotation Submission
 
-Updated: 2026-06-05 18:09:59 EDT
+Updated: 2026-06-15 EDT
 
 Clean implementation repository for the HIPC scRNA-seq Annotation Benchmark Team04 workflow.
 
@@ -34,34 +34,33 @@ Older development manifests may remain for audit history only. Do not use `confi
 
 ## Current Clean-Run Status
 
-Updated: 2026-06-05 18:09:59 EDT
+Updated: 2026-06-15 EDT
 
 The current clean run completed for all 9 active datasets and excluded `infection_study_07`.
 
 Local run root:
 
 ```text
-/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_current_clean
+/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_v25_harmony_reference_rescue
 ```
 
 Submission package:
 
 ```text
-/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_package_current_clean.zip
+/vast/palmer/pi/hafler/yy693/hipc-scrna-seq-annotation-submission/outputs/current_submission_package.zip
 ```
 
 Validation status:
 
 - All 9 active datasets have matching submission rows and H5AD cells.
 - No invalid ontology labels were emitted.
+- Required CellTypist, Pan-human Azimuth, and Azimuth PBMC L2 coverage checks passed for all datasets where those evidence sources are required.
 - `reports/current` validates with 9 expected datasets, 261 PNG files, and 504 inline image links.
 
-Important blocker:
+Important caveat:
 
-- This clean run is not final annotation quality. It intentionally removed old evidence-container inputs and therefore lacks refreshed CellTypist, Azimuth/Pan-human, and scRefMapping evidence for most datasets.
-- The resulting TSVs are parent-label/low-confidence heavy: each active dataset currently has only 4 submitted labels and all cells are below 0.60 confidence.
-- Treat this as a successful input-contract and workflow recovery run, not as the final upload package.
-- Next required step: regenerate reference-mapping evidence from the clean count-compatible inputs, then rerun the same clean single-dataset workflow.
+- `vaccination_study_10` remains a known low-gene/raw-count-limited exception. It is included in the package, but reference-mapping evidence is unavailable in the current input contract and all cells are low confidence.
+- `infection_study_07` is excluded because raw counts are unavailable in the current organizer-provided Team04 distribution.
 
 Large H5ADs, generated H5ADs, and upload TSVs are not committed to GitHub. They are generated under the Yale server workspace and packaged separately.
 
@@ -205,14 +204,14 @@ confidence_score
 Report bundle packaging:
 
 ```bash
-python scripts/package_clean_reports.py   --run-root /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_current_clean   --report-root reports/current   --replace
+python scripts/package_clean_reports.py   --run-root /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_v25_harmony_reference_rescue   --report-root reports/current   --replace
 python scripts/validate_report_bundle.py --report-root reports/current
 ```
 
 Submission TSV package:
 
 ```bash
-python scripts/package_submission_files.py   --run-root /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_current_clean   --out /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_package_current_clean   --replace
+python scripts/package_submission_files.py   --run-root /vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_v25_harmony_reference_rescue   --out outputs/current_submission_package   --replace
 ```
 
 The package helper writes per-study TSVs, a summary table, a README, and a ZIP archive.

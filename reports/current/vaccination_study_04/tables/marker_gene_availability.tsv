@@ -1,9 +1,9 @@
 study	marker_set	official_labels_relevant_to_set	n_genes_expected	n_genes_present	present_fraction	alert_level	missing_critical_markers	present_genes	missing_genes
-vaccination_study_04	CD4_naive_tcm	CD4 Naive / T Central Memory	9	3	0.3333333333333333	warning		CD4;SELL;LTB	CD3D;CD3E;IL7R;CCR7;TCF7;LEF1
-vaccination_study_04	CD4_effector_memory	CD4 T Effector Memory	8	1	0.125	critical	GZMK;CCL5;PRF1;GZMB	NKG7	GZMK;CCL5;GNLY;PRF1;GZMB;CXCR3;KLRB1
-vaccination_study_04	Treg	Treg	7	0	0.0	critical	FOXP3;IL2RA;CTLA4		FOXP3;IL2RA;CTLA4;IKZF2;TIGIT;TNFRSF18;CCR8
-vaccination_study_04	gdT	gdT Cell	6	0	0.0	critical	TRDC;TRGC1;TRGC2		CD3D;CD3E;TRDC;TRGC1;TRGC2;TRDV2
-vaccination_study_04	NKT	NKT Cell	7	2	0.2857142857142857	critical	CD3D	NKG7;ZBTB16	CD3D;CD3E;TRAC;GNLY;KLRD1
-vaccination_study_04	B_naive	Naive B Cell	8	2	0.25	critical		CD79B;IL4R	MS4A1;CD79A;TCL1A;IGHD;IGHM;FCER2
-vaccination_study_04	B_memory_ABC	Memory B Cell	8	3	0.375	warning	CD27;TNFRSF13B;FCRL5;TBX21	ITGAX;BANK1;CD86	CD27;TNFRSF13B;FCRL5;TBX21;AIM2
-vaccination_study_04	Plasma_ASC	Plasma Cell;Plasmablast	9	3	0.3333333333333333	warning	MZB1;JCHAIN	XBP1;PRDM1;IRF4	MZB1;JCHAIN;SDC1;TNFRSF17;IGHG1;IGHA1
+vaccination_study_04	CD4_naive_tcm	CD4 Naive / T Central Memory	9	6	0.6666666666666666	pass		CD3E;CD4;CCR7;SELL;TCF7;LTB	CD3D;IL7R;LEF1
+vaccination_study_04	CD4_effector_memory	CD4 T Effector Memory	8	6	0.75	pass	GZMK;PRF1	CCL5;NKG7;GNLY;GZMB;CXCR3;KLRB1	GZMK;PRF1
+vaccination_study_04	Treg	Treg	7	2	0.2857142857142857	critical	FOXP3;IL2RA	CTLA4;IKZF2	FOXP3;IL2RA;TIGIT;TNFRSF18;CCR8
+vaccination_study_04	gdT	gdT Cell	6	1	0.16666666666666666	critical	TRDC;TRGC1;TRGC2	CD3E	CD3D;TRDC;TRGC1;TRGC2;TRDV2
+vaccination_study_04	NKT	NKT Cell	7	5	0.7142857142857143	pass	CD3D	CD3E;NKG7;GNLY;KLRD1;ZBTB16	CD3D;TRAC
+vaccination_study_04	B_naive	Naive B Cell	8	7	0.875	pass		CD79A;CD79B;TCL1A;IGHD;IGHM;FCER2;IL4R	MS4A1
+vaccination_study_04	B_memory_ABC	Memory B Cell	8	5	0.625	pass	CD27;TNFRSF13B;TBX21	FCRL5;ITGAX;AIM2;BANK1;CD86	CD27;TNFRSF13B;TBX21
+vaccination_study_04	Plasma_ASC	Plasma Cell;Plasmablast	9	7	0.7777777777777778	pass		MZB1;XBP1;JCHAIN;PRDM1;IRF4;TNFRSF17;IGHA1	SDC1;IGHG1

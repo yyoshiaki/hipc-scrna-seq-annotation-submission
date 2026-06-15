@@ -1,5 +1,15 @@
 study	predicted_cell_type	n_cells	median_source_agreement_fraction	source_disagreement_flag_n	source_disagreement_flag_fraction
-vaccination_study_01	B Cell	40449	0.0	0	0.0
-vaccination_study_01	Blood Cell	83760	0.0	0	0.0
-vaccination_study_01	Myeloid Cell	86258	0.0	0	0.0
-vaccination_study_01	T Cell	96727	0.0	0	0.0
+vaccination_study_01	B Cell	5271	0.0	5263	0.9984822614304686
+vaccination_study_01	Blood Cell	7172	0.0	5844	0.814835471277189
+vaccination_study_01	CD4 Naive / T Central Memory	70198	0.6666666666666666	25278	0.3600957292230548
+vaccination_study_01	CD8 Cytotoxic / T Effector Memory	13257	0.6666666666666666	4698	0.3543788187372709
+vaccination_study_01	Classical Monocyte	80515	0.6666666666666666	16261	0.20196236726075886
+vaccination_study_01	Conventional DC 2	15460	1.0	2060	0.1332470892626132
+vaccination_study_01	HSC	317	0.6666666666666666	0	0.0
+vaccination_study_01	Memory B Cell	9128	0.6666666666666666	1299	0.1423093777388256
+vaccination_study_01	NK Cell	52211	1.0	3338	0.0639328877056559
+vaccination_study_01	Naive B Cell	12528	1.0	1635	0.13050766283524903
+vaccination_study_01	Non-Classical Monocyte	25357	1.0	1179	0.04649603659738928
+vaccination_study_01	Plasma Cell	543	0.6666666666666666	89	0.16390423572744015
+vaccination_study_01	Plasmacytoid DC	7162	1.0	33	0.0046076514939960905
+vaccination_study_01	Platelet	8075	1.0	0	0.0

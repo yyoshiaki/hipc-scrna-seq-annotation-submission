@@ -1,3 +1,4 @@
 study	concern	n_cells
-infection_study_03	Large Blood Cell/ambiguous residual remains	215411
-infection_study_03	Many low-confidence cells; QC or mixed-marker effects likely remain	646739
+infection_study_03	High source disagreement for Blood Cell	1965
+infection_study_03	High dataset-level source disagreement	134542
+infection_study_03	Large Blood Cell/ambiguous residual remains	2324

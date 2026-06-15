@@ -1,5 +1,15 @@
 study	predicted_cell_type	n_cells
-infection_study_03	Blood Cell	215411
-infection_study_03	T Cell	200576
-infection_study_03	Myeloid Cell	137478
-infection_study_03	B Cell	93274
+infection_study_03	CD4 Naive / T Central Memory	184676
+infection_study_03	Classical Monocyte	130556
+infection_study_03	NK Cell	102938
+infection_study_03	CD8 Cytotoxic / T Effector Memory	102353
+infection_study_03	Naive B Cell	61829
+infection_study_03	Platelet	11371
+infection_study_03	Non-Classical Monocyte	10769
+infection_study_03	CD8 Naive / T Central Memory	9049
+infection_study_03	Plasma Cell	8842
+infection_study_03	Conventional DC 2	8329
+infection_study_03	Memory B Cell	6291
+infection_study_03	Plasmacytoid DC	4335
+infection_study_03	HSC	3077
+infection_study_03	Blood Cell	2324

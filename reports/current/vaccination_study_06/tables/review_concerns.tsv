@@ -1,8 +1,13 @@
 study	concern	n_cells
-vaccination_study_06	High source disagreement for Blood Cell	746
-vaccination_study_06	High source disagreement for Doublet	2162
-vaccination_study_06	High source disagreement for Intermediate Monocyte	20
-vaccination_study_06	High source disagreement for Myeloid Cell	468
-vaccination_study_06	High source disagreement for Naive B Cell	116
-vaccination_study_06	High source disagreement for Non-Classical Monocyte	54
-vaccination_study_06	High dataset-level source disagreement	14569
+vaccination_study_06	High source disagreement for B Cell	196
+vaccination_study_06	High source disagreement for Blood Cell	648
+vaccination_study_06	High source disagreement for Classical Monocyte	22
+vaccination_study_06	High source disagreement for Conventional DC 2	74
+vaccination_study_06	High source disagreement for Doublet	1502
+vaccination_study_06	High source disagreement for Intermediate Monocyte	48
+vaccination_study_06	High source disagreement for MAIT Cell	1551
+vaccination_study_06	High source disagreement for Memory B Cell	2335
+vaccination_study_06	High source disagreement for Myeloid Cell	256
+vaccination_study_06	High source disagreement for Naive B Cell	770
+vaccination_study_06	High dataset-level source disagreement	18710
+vaccination_study_06	Many low-confidence cells; QC or mixed-marker effects likely remain	12276

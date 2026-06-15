@@ -1,3 +1,6 @@
 study	concern	n_cells
-vaccination_study_01	Large Blood Cell/ambiguous residual remains	83760
-vaccination_study_01	Many low-confidence cells; QC or mixed-marker effects likely remain	307194
+vaccination_study_01	High source disagreement for B Cell	5263
+vaccination_study_01	High source disagreement for Blood Cell	5844
+vaccination_study_01	High dataset-level source disagreement	66977
+vaccination_study_01	Large Blood Cell/ambiguous residual remains	7172
+vaccination_study_01	Many low-confidence cells; QC or mixed-marker effects likely remain	12443

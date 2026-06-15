@@ -1,4 +1,4 @@
 study	lineage	n_cells	status	reason
-infection_study_06	B_lineage	0	skipped_lt50	fewer than 50 cells assigned to this broad lineage
-infection_study_06	T_NK_lineage	0	skipped_lt50	fewer than 50 cells assigned to this broad lineage
-infection_study_06	Myeloid_lineage	0	skipped_lt50	fewer than 50 cells assigned to this broad lineage
+infection_study_06	B_lineage	63603	generated	true lineage-specific subcluster UMAP generated
+infection_study_06	T_NK_lineage	482871	generated	true lineage-specific subcluster UMAP generated
+infection_study_06	Myeloid_lineage	275662	generated	true lineage-specific subcluster UMAP generated

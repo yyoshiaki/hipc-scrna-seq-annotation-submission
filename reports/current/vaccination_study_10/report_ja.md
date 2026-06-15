@@ -1,6 +1,6 @@
 # HIPC データセットアノテーションレポート: vaccination_study_10
 
-更新日: 2026-06-05 EDT
+更新日: 2026-06-15 EDT
 
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
@@ -8,7 +8,7 @@
 
 | study | cells | analysis_X_genes | pre_hvg_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_10 | 47,511 | 1,271 | 14,969 | 1,271 | 4 | 1.000 | 17,608 | 0 | 0 | 0.450 | 47,511 | 0 (0.000) | none |
+| vaccination_study_10 | 47,511 | 1,271 | 14,969 | 1,271 | 4 | 1.000 | 17,560 | 0 | 0 | 0.450 | 47,511 | 0 (0.000) | none |
 
 ## 実行概要
 
@@ -21,7 +21,7 @@
 
 - `vaccination_study_10`: 47,511 cells、analysis X/var 1,271 genes、pre-HVG slot 14,969 genes、submitted label 4 種、parent/Blood residual fraction 1.000、median confidence 0.450。
   - 47,511 cells は low confidence。QC / confidence UMAP 上で局在を確認する。
-  - 17,608 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
+  - 17,560 cells は `Blood Cell` として残存。これは filter-out ではなく、曖昧な細胞を公式 parent label で残したもの。
   - Marker gene 欠損アラート: CD4_naive_tcm, gdT, NKT, B_memory_ABC, Plasma_ASC。該当 marker set に依存する fine label は慎重に見る。
 
 ## データセット固有の評価
@@ -45,10 +45,10 @@
 
 | study | predicted_cell_type | cells | median_source_agreement | disagreement_cells | disagreement_fraction |
 | --- | --- | --- | --- | --- | --- |
-| vaccination_study_10 | B Cell | 5,637 | 0.000 | 0 | 0.000 |
-| vaccination_study_10 | Blood Cell | 17,608 | 0.000 | 0 | 0.000 |
-| vaccination_study_10 | Myeloid Cell | 9,624 | 0.000 | 0 | 0.000 |
-| vaccination_study_10 | T Cell | 14,642 | 0.000 | 0 | 0.000 |
+| vaccination_study_10 | B Cell | 5,903 | 0.000 | 0 | 0.000 |
+| vaccination_study_10 | Blood Cell | 17,560 | 0.000 | 0 | 0.000 |
+| vaccination_study_10 | Myeloid Cell | 9,534 | 0.000 | 0 | 0.000 |
+| vaccination_study_10 | T Cell | 14,514 | 0.000 | 0 | 0.000 |
 
 ## アノテーションソース効果
 
@@ -56,9 +56,11 @@
 
 | study | source | informative_cells | coverage | final_concordance | high_conf_concordance | unique_support | discordant |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_10 | Cluster marker assignment | 29,903 | 0.629 | 0.000 | 0.000 | 0 | 29,903 |
+| vaccination_study_10 | Cluster marker assignment | 29,951 | 0.630 | 0.000 | 0.000 | 0 | 29,951 |
 | vaccination_study_10 | CellTypist | 0 | 0.000 | 0.000 | 0.000 | 0 | 0 |
 | vaccination_study_10 | Pan-human Azimuth | 0 | 0.000 | 0.000 | 0.000 | 0 | 0 |
+| vaccination_study_10 | Azimuth PBMC L2 | 0 | 0.000 | 0.000 | 0.000 | 0 | 0 |
+| vaccination_study_10 | Azimuth PBMC L3 | 0 | 0.000 | 0.000 | 0.000 | 0 | 0 |
 | vaccination_study_10 | Cluster consensus | 0 | 0.000 | 0.000 | 0.000 | 0 | 0 |
 | vaccination_study_10 | scRefMapping | 0 | 0.000 | 0.000 | 0.000 | 0 | 0 |
 
@@ -66,17 +68,17 @@
 
 | study | concern | cells |
 | --- | --- | --- |
-| vaccination_study_10 | Large Blood Cell/ambiguous residual remains | 17,608 |
+| vaccination_study_10 | Large Blood Cell/ambiguous residual remains | 17,560 |
 | vaccination_study_10 | Many low-confidence cells; QC or mixed-marker effects likely remain | 47,511 |
 
 ## ラベル構成
 
 | study | predicted_cell_type | cells |
 | --- | --- | --- |
-| vaccination_study_10 | Blood Cell | 17,608 |
-| vaccination_study_10 | T Cell | 14,642 |
-| vaccination_study_10 | Myeloid Cell | 9,624 |
-| vaccination_study_10 | B Cell | 5,637 |
+| vaccination_study_10 | Blood Cell | 17,560 |
+| vaccination_study_10 | T Cell | 14,514 |
+| vaccination_study_10 | Myeloid Cell | 9,534 |
+| vaccination_study_10 | B Cell | 5,903 |
 
 ## Inline Figures
 
@@ -161,26 +163,26 @@ Marker gene assignment は final label を強制的に上書きするもので�
 
 | study | lineage | cluster | cells | chosen_label | marker_assignment | raw_marker_winner | assignment_reason | marker_score | base_score | penalty | flags |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_10 | T_NK_lineage | 0 | 1,189 | T Cell | NK Cell | NK Cell | raw_marker_winner | 0.933 | 1.000 | 0.067 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | T_NK_lineage | 1 | 1,124 | T Cell | NK Cell | NK Cell | raw_marker_winner | 0.859 | 1.000 | 0.141 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | T_NK_lineage | 2 | 980 | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.709 | 1.000 | 0.291 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | T_NK_lineage | 3 | 949 | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.933 | 1.000 | 0.067 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | Myeloid_lineage | 0 | 859 | Myeloid Cell | Non-Classical Monocyte | Non-Classical Monocyte | raw_marker_winner | 0.832 | 1.000 | 0.168 | marker_final_disagreement |
-| vaccination_study_10 | T_NK_lineage | 4 | 825 | T Cell | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | raw_marker_winner | 0.891 | 0.975 | 0.084 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | T_NK_lineage | 5 | 821 | T Cell | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | raw_marker_winner | 0.870 | 0.966 | 0.095 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | Myeloid_lineage | 1 | 819 | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | raw_marker_winner | 0.604 | 1.000 | 0.396 | marker_final_disagreement |
-| vaccination_study_10 | T_NK_lineage | 6 | 797 | T Cell | CD8 Naive / T Central Memory | CD8 Naive / T Central Memory | raw_marker_winner | 0.913 | 1.000 | 0.087 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | T_NK_lineage | 7 | 763 | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.871 | 1.000 | 0.129 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | Myeloid_lineage | 2 | 742 | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | raw_marker_winner | 0.529 | 1.000 | 0.471 | marker_final_disagreement |
-| vaccination_study_10 | Myeloid_lineage | 3 | 664 | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | raw_marker_winner | 0.475 | 1.000 | 0.525 | marker_final_disagreement |
-| vaccination_study_10 | T_NK_lineage | 8 | 646 | T Cell | CD8 Naive / T Central Memory | CD8 Naive / T Central Memory | raw_marker_winner | 0.920 | 1.000 | 0.080 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | T_NK_lineage | 9 | 634 | T Cell | NK Cell | NK Cell | raw_marker_winner | 0.922 | 1.000 | 0.078 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | T_NK_lineage | 10 | 609 | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.689 | 1.000 | 0.311 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | Myeloid_lineage | 4 | 601 | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | raw_marker_winner | 0.524 | 1.000 | 0.476 | marker_final_disagreement |
-| vaccination_study_10 | T_NK_lineage | 11 | 579 | T Cell | CD8 Naive / T Central Memory | CD8 Naive / T Central Memory | raw_marker_winner | 0.919 | 1.000 | 0.081 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | Myeloid_lineage | 5 | 565 | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | raw_marker_winner | 0.573 | 1.000 | 0.427 | marker_final_disagreement |
-| vaccination_study_10 | T_NK_lineage | 12 | 565 | T Cell | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | raw_marker_winner | 0.764 | 0.973 | 0.209 | marker_final_disagreement;screfmapping_missing_for_scope |
-| vaccination_study_10 | Myeloid_lineage | 6 | 536 | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | raw_marker_winner | 0.598 | 1.000 | 0.402 | marker_final_disagreement |
+| vaccination_study_10 | T_NK_lineage | 0 | 1,165 | T Cell | NK Cell | NK Cell | raw_marker_winner | 0.861 | 1.000 | 0.139 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | T_NK_lineage | 1 | 1,137 | T Cell | NK Cell | NK Cell | raw_marker_winner | 0.929 | 1.000 | 0.071 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | T_NK_lineage | 2 | 921 | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.706 | 1.000 | 0.294 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | T_NK_lineage | 3 | 878 | T Cell | CD8 Naive / T Central Memory | CD8 Naive / T Central Memory | raw_marker_winner | 0.928 | 1.000 | 0.072 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | Myeloid_lineage | 0 | 865 | Myeloid Cell | Non-Classical Monocyte | Non-Classical Monocyte | raw_marker_winner | 0.831 | 1.000 | 0.169 | marker_final_disagreement |
+| vaccination_study_10 | T_NK_lineage | 4 | 852 | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.930 | 1.000 | 0.070 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | T_NK_lineage | 5 | 804 | T Cell | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | raw_marker_winner | 0.898 | 0.980 | 0.082 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | Myeloid_lineage | 1 | 792 | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | raw_marker_winner | 0.609 | 1.000 | 0.391 | marker_final_disagreement |
+| vaccination_study_10 | T_NK_lineage | 6 | 689 | T Cell | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | raw_marker_winner | 0.865 | 0.974 | 0.109 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | Myeloid_lineage | 2 | 688 | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | raw_marker_winner | 0.688 | 1.000 | 0.312 | marker_final_disagreement |
+| vaccination_study_10 | Myeloid_lineage | 3 | 679 | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | raw_marker_winner | 0.550 | 1.000 | 0.450 | marker_final_disagreement |
+| vaccination_study_10 | Myeloid_lineage | 4 | 659 | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | raw_marker_winner | 0.553 | 1.000 | 0.447 | marker_final_disagreement |
+| vaccination_study_10 | T_NK_lineage | 7 | 638 | T Cell | NK Cell | NK Cell | raw_marker_winner | 0.937 | 1.000 | 0.063 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | T_NK_lineage | 8 | 610 | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.696 | 1.000 | 0.304 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | Myeloid_lineage | 5 | 608 | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | raw_marker_winner | 0.523 | 1.000 | 0.477 | marker_final_disagreement |
+| vaccination_study_10 | T_NK_lineage | 9 | 607 | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | raw_marker_winner | 0.813 | 0.924 | 0.111 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | T_NK_lineage | 10 | 595 | T Cell | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | raw_marker_winner | 0.820 | 0.914 | 0.094 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | T_NK_lineage | 12 | 589 | T Cell | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | raw_marker_winner | 0.778 | 0.971 | 0.193 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | T_NK_lineage | 11 | 589 | T Cell | CD8 Naive / T Central Memory | CD8 Naive / T Central Memory | raw_marker_winner | 0.896 | 1.000 | 0.104 | marker_final_disagreement;screfmapping_missing_for_scope |
+| vaccination_study_10 | Myeloid_lineage | 6 | 585 | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | raw_marker_winner | 0.521 | 1.000 | 0.479 | marker_final_disagreement |
 
 ## LLM Review Queue
 
@@ -188,70 +190,70 @@ Marker gene assignment は final label を強制的に上書きするもので�
 
 | study | lineage | cluster | cells | priority | reasons | suggested_action | final_label | marker_assignment | raw_marker_winner | score_margin |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_10 | T_NK_lineage | 15 | 487 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.000 |
-| vaccination_study_10 | T_NK_lineage | 0 | 1,189 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NK Cell | NK Cell | 0.000 |
-| vaccination_study_10 | T_NK_lineage | 1 | 1,124 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NK Cell | NK Cell | 0.000 |
-| vaccination_study_10 | B_lineage | 10 | 249 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.708 |
-| vaccination_study_10 | B_lineage | 20 | 88 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.343 |
-| vaccination_study_10 | B_lineage | 21 | 46 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasmablast | Plasmablast | 0.000 |
-| vaccination_study_10 | T_NK_lineage | 25 | 38 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.000 |
-| vaccination_study_10 | B_lineage | 23 | 17 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasmablast | Plasmablast | 0.019 |
-| vaccination_study_10 | T_NK_lineage | 2 | 980 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 0.064 |
-| vaccination_study_10 | Myeloid_lineage | 1 | 819 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | 0.149 |
-| vaccination_study_10 | Myeloid_lineage | 2 | 742 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | 0.129 |
-| vaccination_study_10 | Myeloid_lineage | 3 | 664 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | 0.030 |
-| vaccination_study_10 | T_NK_lineage | 9 | 634 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NK Cell | NK Cell | 0.000 |
-| vaccination_study_10 | T_NK_lineage | 10 | 609 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 0.012 |
-| vaccination_study_10 | Myeloid_lineage | 4 | 601 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | 0.054 |
-| vaccination_study_10 | T_NK_lineage | 12 | 565 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | 0.072 |
-| vaccination_study_10 | Myeloid_lineage | 5 | 565 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | 0.173 |
-| vaccination_study_10 | Myeloid_lineage | 6 | 536 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | 0.198 |
-| vaccination_study_10 | B_lineage | 0 | 525 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.783 |
-| vaccination_study_10 | Myeloid_lineage | 7 | 489 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | 0.329 |
+| vaccination_study_10 | T_NK_lineage | 16 | 441 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.000 |
+| vaccination_study_10 | B_lineage | 7 | 307 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.716 |
+| vaccination_study_10 | T_NK_lineage | 0 | 1,165 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NK Cell | NK Cell | 0.000 |
+| vaccination_study_10 | T_NK_lineage | 1 | 1,137 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NK Cell | NK Cell | 0.000 |
+| vaccination_study_10 | B_lineage | 19 | 85 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.665 |
+| vaccination_study_10 | B_lineage | 21 | 48 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.000 |
+| vaccination_study_10 | T_NK_lineage | 26 | 37 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NKT Cell | NKT Cell | 0.000 |
+| vaccination_study_10 | T_NK_lineage | 2 | 921 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 0.047 |
+| vaccination_study_10 | Myeloid_lineage | 1 | 792 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | 0.159 |
+| vaccination_study_10 | Myeloid_lineage | 2 | 688 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | 0.288 |
+| vaccination_study_10 | Myeloid_lineage | 3 | 679 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | 0.150 |
+| vaccination_study_10 | Myeloid_lineage | 4 | 659 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | 0.075 |
+| vaccination_study_10 | T_NK_lineage | 7 | 638 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | NK Cell | NK Cell | 0.000 |
+| vaccination_study_10 | T_NK_lineage | 8 | 610 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | CD8 Cytotoxic / T Effector Memory | CD8 Cytotoxic / T Effector Memory | 0.031 |
+| vaccination_study_10 | Myeloid_lineage | 5 | 608 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Conventional DC 2 | Conventional DC 2 | 0.045 |
+| vaccination_study_10 | Myeloid_lineage | 6 | 585 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | 0.121 |
+| vaccination_study_10 | Myeloid_lineage | 7 | 556 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | 0.225 |
+| vaccination_study_10 | Myeloid_lineage | 8 | 505 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | Myeloid Cell | Intermediate Monocyte | Intermediate Monocyte | 0.020 |
+| vaccination_study_10 | B_lineage | 2 | 499 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;ambiguous_or_missing_label_candidate;screfmapping_not_available | check_if_finer_official_label_is_supported | B Cell | Plasma Cell | Plasma Cell | 0.851 |
+| vaccination_study_10 | T_NK_lineage | 15 | 493 | high | parent_or_broad_final_label;marker_assignment_disagrees_with_final;screfmapping_not_available;low_total_score_or_margin | check_if_finer_official_label_is_supported | T Cell | CD4 Naive / T Central Memory | CD4 Naive / T Central Memory | 0.097 |
 
 ## Cluster Consensus Evidence
 
 | study | lineage | cluster | cells | chosen_label | accepted | score_margin | cluster_marker_assignment | treg_key_any | treg_key_bonus | marker_set | marker_alert |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| vaccination_study_10 | B_lineage | 0 | 525 | B Cell | False | 0.783 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| vaccination_study_10 | B_lineage | 1 | 463 | B Cell | False | 0.903 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| vaccination_study_10 | B_lineage | 2 | 417 | B Cell | False | 0.643 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| vaccination_study_10 | B_lineage | 3 | 414 | B Cell | False | 0.422 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
-| vaccination_study_10 | B_lineage | 4 | 355 | B Cell | False | 0.883 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| vaccination_study_10 | B_lineage | 5 | 346 | B Cell | False | 0.890 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| vaccination_study_10 | B_lineage | 6 | 334 | B Cell | False | 0.393 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
-| vaccination_study_10 | B_lineage | 7 | 307 | B Cell | False | 0.912 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| vaccination_study_10 | B_lineage | 8 | 285 | B Cell | False | 0.141 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| vaccination_study_10 | B_lineage | 9 | 260 | B Cell | False | 0.674 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| vaccination_study_10 | B_lineage | 10 | 249 | B Cell | False | 0.708 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| vaccination_study_10 | B_lineage | 11 | 238 | B Cell | False | 0.402 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
-| vaccination_study_10 | B_lineage | 12 | 230 | B Cell | False | 0.421 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| vaccination_study_10 | B_lineage | 13 | 194 | B Cell | False | 0.084 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| vaccination_study_10 | B_lineage | 14 | 185 | B Cell | False | 0.357 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| vaccination_study_10 | B_lineage | 15 | 158 | B Cell | False | 0.736 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| vaccination_study_10 | B_lineage | 16 | 136 | B Cell | False | 0.421 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
-| vaccination_study_10 | B_lineage | 17 | 127 | B Cell | False | 0.894 | Naive B Cell | nan | nan | registry__naive_b_cell | pass |
-| vaccination_study_10 | B_lineage | 18 | 117 | B Cell | False | 0.766 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| vaccination_study_10 | B_lineage | 19 | 110 | B Cell | False | 0.743 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
-| vaccination_study_10 | B_lineage | 20 | 88 | B Cell | False | 0.343 | Plasma Cell | nan | nan | registry__plasma_cell | pass |
-| vaccination_study_10 | B_lineage | 21 | 46 | B Cell | False | 0.000 | Plasmablast | nan | nan | registry__plasma_cell | pass |
-| vaccination_study_10 | B_lineage | 22 | 36 | B Cell | False | 0.052 | Memory B Cell | nan | nan | registry__memory_b_cell | pass |
-| vaccination_study_10 | B_lineage | 23 | 17 | B Cell | False | 0.019 | Plasmablast | nan | nan | registry__plasmablast | pass |
-| vaccination_study_10 | Myeloid_lineage | 0 | 859 | Myeloid Cell | False | 0.321 | Non-Classical Monocyte | nan | nan | registry__non_classical_monocyte | pass |
-| vaccination_study_10 | Myeloid_lineage | 1 | 819 | Myeloid Cell | False | 0.149 | Conventional DC 2 | nan | nan | registry__conventional_dc_2 | pass |
-| vaccination_study_10 | Myeloid_lineage | 2 | 742 | Myeloid Cell | False | 0.129 | Intermediate Monocyte | nan | nan | registry__intermediate_monocyte | pass |
-| vaccination_study_10 | Myeloid_lineage | 3 | 664 | Myeloid Cell | False | 0.030 | Intermediate Monocyte | nan | nan | registry__intermediate_monocyte | pass |
-| vaccination_study_10 | Myeloid_lineage | 4 | 601 | Myeloid Cell | False | 0.054 | Conventional DC 2 | nan | nan | registry__conventional_dc_2 | pass |
-| vaccination_study_10 | Myeloid_lineage | 5 | 565 | Myeloid Cell | False | 0.173 | Intermediate Monocyte | nan | nan | registry__intermediate_monocyte | pass |
+| vaccination_study_10 | B_lineage | 0 | 533 | B Cell | False | 0.900 | Naive B Cell | nan | nan | B_naive | pass |
+| vaccination_study_10 | B_lineage | 1 | 518 | B Cell | False | 0.786 | Naive B Cell | nan | nan | B_naive | pass |
+| vaccination_study_10 | B_lineage | 2 | 499 | B Cell | False | 0.851 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 3 | 381 | B Cell | False | 0.422 | Memory B Cell | nan | nan | B_memory_ABC | warning |
+| vaccination_study_10 | B_lineage | 4 | 339 | B Cell | False | 0.921 | Naive B Cell | nan | nan | B_naive | pass |
+| vaccination_study_10 | B_lineage | 5 | 334 | B Cell | False | 0.422 | Memory B Cell | nan | nan | B_memory_ABC | warning |
+| vaccination_study_10 | B_lineage | 6 | 326 | B Cell | False | 0.354 | Memory B Cell | nan | nan | B_memory_ABC | warning |
+| vaccination_study_10 | B_lineage | 7 | 307 | B Cell | False | 0.716 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 8 | 294 | B Cell | False | 0.863 | Naive B Cell | nan | nan | B_naive | pass |
+| vaccination_study_10 | B_lineage | 9 | 283 | B Cell | False | 0.425 | Naive B Cell | nan | nan | B_naive | pass |
+| vaccination_study_10 | B_lineage | 10 | 282 | B Cell | False | 0.229 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 11 | 279 | B Cell | False | 0.888 | Naive B Cell | nan | nan | B_naive | pass |
+| vaccination_study_10 | B_lineage | 12 | 272 | B Cell | False | 0.471 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 13 | 244 | B Cell | False | 0.710 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 14 | 179 | B Cell | False | 0.192 | Memory B Cell | nan | nan | B_memory_ABC | warning |
+| vaccination_study_10 | B_lineage | 15 | 161 | B Cell | False | 0.418 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 16 | 148 | B Cell | False | 0.782 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 17 | 98 | B Cell | False | 0.970 | Memory B Cell | nan | nan | B_memory_ABC | warning |
+| vaccination_study_10 | B_lineage | 18 | 97 | B Cell | False | 0.772 | Memory B Cell | nan | nan | B_memory_ABC | warning |
+| vaccination_study_10 | B_lineage | 19 | 85 | B Cell | False | 0.665 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 20 | 68 | B Cell | False | 0.715 | Naive B Cell | nan | nan | B_naive | pass |
+| vaccination_study_10 | B_lineage | 21 | 48 | B Cell | False | 0.000 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 22 | 47 | B Cell | False | 0.145 | Naive B Cell | nan | nan | B_naive | pass |
+| vaccination_study_10 | B_lineage | 23 | 45 | B Cell | False | 0.126 | Plasma Cell | nan | nan | Plasma_ASC | warning |
+| vaccination_study_10 | B_lineage | 24 | 36 | B Cell | False | 0.052 | Memory B Cell | nan | nan | B_memory_ABC | warning |
+| vaccination_study_10 | Myeloid_lineage | 0 | 865 | Myeloid Cell | False | 0.322 | Non-Classical Monocyte | nan | nan | registry__non_classical_monocyte | pass |
+| vaccination_study_10 | Myeloid_lineage | 1 | 792 | Myeloid Cell | False | 0.159 | Conventional DC 2 | nan | nan | registry__conventional_dc_2 | pass |
+| vaccination_study_10 | Myeloid_lineage | 2 | 688 | Myeloid Cell | False | 0.288 | Conventional DC 2 | nan | nan | registry__conventional_dc_2 | pass |
+| vaccination_study_10 | Myeloid_lineage | 3 | 679 | Myeloid Cell | False | 0.150 | Intermediate Monocyte | nan | nan | registry__intermediate_monocyte | pass |
+| vaccination_study_10 | Myeloid_lineage | 4 | 659 | Myeloid Cell | False | 0.075 | Intermediate Monocyte | nan | nan | registry__intermediate_monocyte | pass |
 
 ## 出力ファイル
 
-- Submission TSVs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_10/submissions/`
-- cellxgene H5ADs: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_10/cellxgene/`
-- Marker availability table: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_10/tables/marker_gene_availability.tsv`
-- Marker availability alerts: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_10/tables/marker_gene_availability_alerts.tsv`
-- Subcluster evidence: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_10/tables/lineage_subcluster_evidence.tsv.gz`
-- Source disagreement summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_10/tables/source_disagreement_summary.tsv`
-- Source effectiveness summary: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_10/tables/source_effectiveness_summary.tsv`
-- Diagnostics tables: `/vast/palmer/pi/hafler/yy693/HIPC-scRNAseq-Annotation/outputs/submission_final_v22/vaccination_study_10/tables/`
+- Submission TSVs: `outputs/submission_v25_harmony_reference_rescue/vaccination_study_10/submissions/`
+- cellxgene H5ADs: `outputs/submission_v25_harmony_reference_rescue/vaccination_study_10/cellxgene/`
+- Marker availability table: `outputs/submission_v25_harmony_reference_rescue/vaccination_study_10/tables/marker_gene_availability.tsv`
+- Marker availability alerts: `outputs/submission_v25_harmony_reference_rescue/vaccination_study_10/tables/marker_gene_availability_alerts.tsv`
+- Subcluster evidence: `outputs/submission_v25_harmony_reference_rescue/vaccination_study_10/tables/lineage_subcluster_evidence.tsv.gz`
+- Source disagreement summary: `outputs/submission_v25_harmony_reference_rescue/vaccination_study_10/tables/source_disagreement_summary.tsv`
+- Source effectiveness summary: `outputs/submission_v25_harmony_reference_rescue/vaccination_study_10/tables/source_effectiveness_summary.tsv`
+- Diagnostics tables: `outputs/submission_v25_harmony_reference_rescue/vaccination_study_10/tables/`
 
