@@ -4,13 +4,6 @@
 
 このレポートは `hipc-annotation` Codex workflow によって生成したデータセット別レビュー文書です。固定 method は repository README に置き、このレポートでは実際の evidence、弱い箇所、レビュー優先度、UMAP / dotplot を確認します。
 
-## 2026-06-12 提出候補メモ
-
-- 現行の緊急提出候補では、この dataset は v23 aggressive marker-rescue output を採用しています。
-- `feature_name` 由来の gene symbol 修正により marker gene は見えるようになりましたが、parent/Blood residual fraction は 0.8234 と高く、まだ fine annotation は不十分です。
-- reference-transfer evidence が弱く、marker-only rescue に寄っているため、NKT などの一部 label は過剰割り当ての可能性があります。
-- 次に改善するなら、Harmony などで batch/sample structure を補正した embedding を作り、cluster-level assignment をやり直す必要があります。
-
 ## データセット概要
 
 | study | cells | analysis_X_genes | pre_hvg_genes | counts_layer_genes | labels | parent_or_blood_fraction | Blood Cell | Doublet | artifact_like | median_confidence | low_confidence | source_disagreement | invalid_labels |
@@ -277,4 +270,3 @@ Marker gene assignment は final label を強制的に上書きするもので�
 - Source disagreement summary: `outputs/submission_v25_harmony_reference_rescue/infection_study_06/tables/source_disagreement_summary.tsv`
 - Source effectiveness summary: `outputs/submission_v25_harmony_reference_rescue/infection_study_06/tables/source_effectiveness_summary.tsv`
 - Diagnostics tables: `outputs/submission_v25_harmony_reference_rescue/infection_study_06/tables/`
-
