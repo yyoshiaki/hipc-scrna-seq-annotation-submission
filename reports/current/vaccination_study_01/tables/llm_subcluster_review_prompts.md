@@ -66,7 +66,7 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_01 T_NK_lineage cluster 3
+## vaccination_study_01 T_NK_lineage cluster 4
 
 - Priority: medium (6)
 - Suggested action: evaluate_ontology_gap_or_conservative_policy
@@ -138,7 +138,7 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_01 T_NK_lineage cluster 6
+## vaccination_study_01 T_NK_lineage cluster 9
 
 - Priority: low (3)
 - Suggested action: accept

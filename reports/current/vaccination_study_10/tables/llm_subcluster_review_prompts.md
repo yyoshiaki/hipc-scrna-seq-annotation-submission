@@ -26,7 +26,7 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_10 T_NK_lineage cluster 1
+## vaccination_study_10 B_lineage cluster 13
 
 - Priority: high (10)
 - Suggested action: check_if_finer_official_label_is_supported
@@ -234,7 +234,7 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## vaccination_study_10 B_lineage cluster 6
+## vaccination_study_10 Myeloid_lineage cluster 12
 
 - Priority: high (9)
 - Suggested action: check_if_finer_official_label_is_supported

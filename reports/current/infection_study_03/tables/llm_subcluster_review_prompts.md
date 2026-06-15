@@ -10,7 +10,7 @@ Use these packets as a review layer. Do not directly mutate per-cell labels. Ret
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 B_lineage cluster 6
+## infection_study_03 Myeloid_lineage cluster 3
 
 - Priority: high (7)
 - Suggested action: evaluate_ontology_gap_or_conservative_policy
@@ -138,7 +138,7 @@ Review question: Is the final official label appropriate, is this an ontology-ga
 
 Review question: Is the final official label appropriate, is this an ontology-gap case, or should a general registry/policy update be tested?
 
-## infection_study_03 T_NK_lineage cluster 8
+## infection_study_03 Myeloid_lineage cluster 1
 
 - Priority: medium (6)
 - Suggested action: evaluate_ontology_gap_or_conservative_policy
